@@ -7,18 +7,18 @@ exclude: [LICENSE, CNAME, README.md, .gitignore]
 # Theme customization - please change from the defaults!
 theme:
   # Color for top bar, links, etc
-  highlight_color: '#3498db'
+  highlight_color: '#019875'
 
   # Profile links on the left sidebar, leave blank to ignore
   social:
-    github: swanson
-    twitter: _swanson
-    hacker_news: swanson
+    github: wschorn
+    twitter: what_whit
+
 
   # "Hi, I'm _______"
-  name: Matt Swanson
-  email: test@example.com
-  tagline: "weak opinions, strongly held"
+  name: Whitman Schorn
+  email: ws@bit.ly
+  tagline: "mostly harmless"
 
   # Google Analytics key, leave blank to ignore
   google_analytics_key: UA-xxxx-x

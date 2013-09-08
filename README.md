@@ -36,9 +36,9 @@ There's a few other places that you'll want to change, too:
 - [CNAME][cname]: If you're using this on GitHub Pages with a custom domain name, 
   you'll want to change this to be the domain you're going to use. All that should 
   be in here is a domain name on the first line and nothing else (like: `example.com`).
-- [favicon.png][favicon]: This is the icon in your browser's address bar. You should 
+- [favicon.ico][favicon]: This is the icon in your browser's address bar. You should 
   change it to whatever you'd like.
-- [logo.png][logo]: A square-ish image that appears in the upper-left corner
+- [ws.svg][logo]: A square-ish image that appears in the upper-left corner
 
 ## Deployment
 
@@ -66,7 +66,7 @@ run into trouble or have suggestions. Pull Requests always welcome.
 [fork]: https://github.com/swanson/lagom/fork
 [config]: https://github.com/swanson/lagom/blob/master/_config.yml
 [cname]: https://github.com/swanson/lagom/blob/master/CNAME
-[favicon]: https://github.com/swanson/lagom/blob/master/favicon.png
-[logo]: https://github.com/swanson/lagom/blob/master/logo.png
+[favicon]: https://github.com/swanson/lagom/blob/master/favicon.ico
+[logo]: https://github.com/swanson/lagom/blob/master/ws.svg
 [pages]: http://pages.github.com
 [twitter]: https://twitter.com/_swanson

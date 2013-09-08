@@ -79,16 +79,16 @@ ul.posts {
 }
 
 ul.posts li {
-  line-height: 22px;
-  font-size: 16px;
-  margin-bottom: 0px;
+  line-height: 32px;
+  font-size: 28px;
+  margin-bottom: 5px;
 }
 
 ul.posts span {
-  font-family: 'Lucida Console', 'Andale Mono', monospace;
+  font-family: "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #aaa;
   padding-right: 5px;
-  font-size:14px;
+  font-size:28px;
 }
 
 .meta {
@@ -143,6 +143,8 @@ nav hr {
 }
 
 .sidebar {
+  position: fixed;
+  left: 3%;
   padding-top: 25px;
   font-family: "open sans", sans-serif;
 }
@@ -155,12 +157,19 @@ nav hr {
   font-weight: 600;
 }
 
+.right-side {
+  float: right;
+
+
+}
+
 .content {
   font: 400 16px/22px "open sans", sans-serif;
   border-left: 1px solid #DDD;
   padding-left: 40px;
   padding-top: 25px;
   min-height: 400px;
+
 }
 
 .footer {
