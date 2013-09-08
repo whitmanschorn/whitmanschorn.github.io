@@ -18,7 +18,7 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   color: #181818;
-  font-family: "open sans", sans-serif;
+  font-family: "Josefin Slab", "open sans", sans-serif;
   font-weight: 600;
 }
 
@@ -85,7 +85,7 @@ ul.posts li {
 }
 
 ul.posts span {
-  font-family: "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Josefin Slab", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #aaa;
   padding-right: 5px;
   font-size:28px;
@@ -146,7 +146,7 @@ nav hr {
   position: fixed;
   left: 3%;
   padding-top: 25px;
-  font-family: "open sans", sans-serif;
+  font-family: "Josefin Slab", "open sans", sans-serif;
 }
 
 .sidebar p {
@@ -164,7 +164,7 @@ nav hr {
 }
 
 .content {
-  font: 400 16px/22px "open sans", sans-serif;
+  font: 400 16px/22px "Josefin Slab", sans-serif;
   padding-left: 20px;
   padding-top: 25px;
   min-height: 400px;
@@ -218,7 +218,7 @@ nav hr {
 }
 
 span.icon-hn {
-  font-family: "open sans", sans-serif;
+  font-family: "Josefin Slab", "open sans", sans-serif;
   line-height: 20px;
   text-align: center;
   font-weight: bold;
