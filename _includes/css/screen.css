@@ -8,7 +8,7 @@ html, body {
 }
 
 body {
-  font-size: 16px;
+  font-size: 24px;
   background-color: white;
   color: #222222;
   line-height: 24px;
@@ -88,7 +88,7 @@ ul.posts span {
   font-family: "Josefin Slab", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #aaa;
   padding-right: 5px;
-  font-size:28px;
+  font-size:32px;
 }
 
 .meta {
@@ -116,7 +116,7 @@ nav hr {
 
 #social {
   margin-bottom: 10px;
-  font-size: 13px;
+  font-size: 24px;
 }
 
 #post pre {
