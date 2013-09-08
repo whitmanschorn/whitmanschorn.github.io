@@ -12,7 +12,7 @@
 
 
 
-.icon-desktop {
+.icon-laptop {
 		display: none;
 	}
 
@@ -28,6 +28,9 @@
 		display: none;
 	}
 
+	div#post {
+		font-weight: 600;
+	}
 
 	.resp-icon {
 
@@ -40,8 +43,12 @@
 
 @media only screen and (min-width: 959px)  {
 	/* desktop */
-	.icon-desktop {
+	.icon-laptop {
 		display: block;
+	}
+
+	.fitIcon {
+		font-size: 64px;
 	}
 
 }
@@ -94,7 +101,7 @@
 		color: #03B1FF;
 	}
 
-.icon-desktop {
+.icon-laptop {
 		color: #CB1630;
 	}
 
