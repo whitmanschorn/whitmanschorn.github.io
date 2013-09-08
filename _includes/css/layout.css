@@ -8,6 +8,73 @@
 */
 
 /* Smaller than standard 960 (devices and browsers) */
+
+
+
+
+.icon-desktop {
+		display: none;
+	}
+
+	.icon-mobile-phone {
+		display: none;
+	}
+
+	.icon-tablet {
+		display: none;
+	}
+
+	.icon-reply {
+		display: none;
+	}
+
+
+	.resp-icon {
+
+	}
+
+	.container {
+
+	}
+
+
+@media only screen and (min-width: 959px)  {
+	/* desktop */
+	.icon-desktop {
+		display: block;
+	}
+
+}
+
+@media only screen and (min-width: 480px) and (max-width: 959px) {
+	/* tablet */
+	.icon-tablet {
+		display: inline;
+	}
+
+
+}
+
+
+@media only screen and (min-width: 768px) and (max-width: 959px) {
+	/* tablet */
+	.icon-reply {
+		display: inline;
+	}
+
+
+}
+
+
+@media only screen and (max-width: 479px) {
+	/* mobile phone */
+	.icon-mobile-phone {
+		display: block;
+	}
+
+}
+
+
 @media only screen and (max-width: 3909px) {
 	/* lazy way to handle super-big images */
 					img.fit-img {
@@ -22,6 +89,27 @@
 	h1.name {
 	margin-left: 18px;
 }
+
+	.icon-mobile-phone {
+		color: #03B1FF;
+	}
+
+.icon-desktop {
+		color: #CB1630;
+	}
+
+
+
+.icon-tablet {
+	
+		color: #CB9F16;
+	}
+
+.icon-reply {
+	
+		color: #CB9F16;
+	}
+
 
 }
 @media only screen and (max-width: 959px) {
