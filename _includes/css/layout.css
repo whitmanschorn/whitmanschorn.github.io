@@ -8,16 +8,34 @@
 */
 
 /* Smaller than standard 960 (devices and browsers) */
+@media only screen and (max-width: 3909px) {
+	/* lazy way to handle super-big images */
+					img.fit-img {
+	max-width: 700px;
+	max-height: 300px;
+}
+
+	#logo {
+		width: 150px;
+	}
+
+}
 @media only screen and (max-width: 959px) {
 	#logo {
 		font-size: 21px;
-		margin-bottom: 15px; }
+		margin-bottom: 15px;
+		width: 75px; }
 	nav .button {
 		padding: 9px 20px 11px; }
+
+				img.fit-img {
+	max-width: 500px;
+	max-height: 250px;
+}
 }
 
 /* Tablet Portrait size to standard 960 (devices and browsers) */
-@media only screen and (min-width: 768px) and (max-width: 959px) {
+@media only screen and (min-width: 808px) and (max-width: 959px) {
 	nav {
 		width: 160px; }
 	.sidebar h2 {
@@ -27,39 +45,93 @@
 	.sidebar ul {
 		font-size: 14px;
 	}
+
+		img.fit-img {
+
+	max-width: 400px;
+	max-height: 250px;
+
+}
+
+	#logo {
+		width: 100px;
+	}
+
+	div#post {
+
+		margin-left: 40px;
+	}
+
+			.content .sidebar {
+		display: inline;
+		margin-right: -20px;
+	}
+
+
 }
 
 /* All Mobile Sizes (devices and browser) */
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: 808px) {
 	header h1 { font-size: 34px; line-height: 37px; }
 	nav { position: relative; }
 	nav ul,
-	#logo { text-align: left; }
+	#logo { text-align: left;
+	width: 200px; }
 	.sidebar {
-		display: none;
+		display: block;
 	}
 	.content {
 		border: 0px;
 		padding-left: 0px;
 	}
+
+		.right-side {
+		display: inline;
+		margin-right: -20px;
+	}
+
+
 }
 
 /* Mobile Landscape Size to Tablet Portrait (devices and browsers) */
-@media only screen and (min-width: 480px) and (max-width: 767px) {
-	.sidebar {
-		display: none;
+@media only screen and (min-width: 480px) and (max-width: 808px) {
+		.sidebar {
+		display: block;
+		position: relative;
+	}
+	.right-side {
+		display: block;
+		margin-top: 0px;
+		margin-left: 0px;
+		margin-right: 20px;
 	}
 
 	h1 {
 		font-size: 28px;
 		line-height: 36px;
 	}
+
+	img.fit-img {
+
+	max-width: 400px;
+	max-height: 250px;
+
+}
+
+
 }
 
 /* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */
 @media only screen and (max-width: 479px) {
 	.sidebar {
-		display: none;
+		display: block;
+		position: relative;
+	}
+	.right-side {
+		display: block;
+		margin-top: 0px;
+		margin-left: 0px;
+		margin-right: 0px;
 	}
 
 	h1 {
@@ -70,5 +142,17 @@
 	h2 {
 		font-size: 22px;
 		line-height: 24px;
+	}
+
+	img.fit-img {
+
+		max-width: 325px;
+		max-height: 150px;
+
+	}
+
+	div#post {
+
+		margin-left: 0px;
 	}
 }

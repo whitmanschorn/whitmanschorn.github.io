@@ -1,6 +1,6 @@
 # General Jekyll Config
 pygments: true
-url: http://example.com
+url: http://wschorn.com
 lsi: false
 exclude: [LICENSE, CNAME, README.md, .gitignore]
 
@@ -16,7 +16,7 @@ theme:
 
 
   # "Hi, I'm _______"
-  name: Whitman Schorn
+  name: frontendery
   email: ws@bit.ly
   tagline: "mostly harmless"
 
