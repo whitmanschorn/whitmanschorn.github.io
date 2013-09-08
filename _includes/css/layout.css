@@ -28,9 +28,11 @@
 		display: none;
 	}
 
-	div#post {
-		font-weight: 600;
+	ul.posts a {
+		font-weight: 700;
 	}
+
+
 
 	.resp-icon {
 
