@@ -16,15 +16,19 @@
 }
 
 	#logo {
-		width: 150px;
+		width: 125px;
 	}
+
+	h1.name {
+	margin-left: 18px;
+}
 
 }
 @media only screen and (max-width: 959px) {
 	#logo {
 		font-size: 21px;
 		margin-bottom: 15px;
-		width: 75px; }
+		width: 125px; }
 	nav .button {
 		padding: 9px 20px 11px; }
 
@@ -75,8 +79,7 @@
 	header h1 { font-size: 34px; line-height: 37px; }
 	nav { position: relative; }
 	nav ul,
-	#logo { text-align: left;
-	width: 200px; }
+	#logo { text-align: left; }
 	.sidebar {
 		display: block;
 	}
@@ -92,6 +95,17 @@
 
 
 }
+
+@media only screen and (max-width: 898px) and (min-width: 768px) { 
+	#logo { width: 100px; }
+}
+
+
+@media only screen and (max-width: 768px) and (min-width: 480px) { 
+	#logo { width: 300px; }
+
+}
+
 
 /* Mobile Landscape Size to Tablet Portrait (devices and browsers) */
 @media only screen and (min-width: 480px) and (max-width: 808px) {
@@ -155,4 +169,9 @@
 
 		margin-left: 0px;
 	}
+
+h1.name {
+	margin-left: 0px;
+}
+
 }
