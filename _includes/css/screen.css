@@ -165,8 +165,7 @@ nav hr {
 
 .content {
   font: 400 16px/22px "open sans", sans-serif;
-  border-left: 1px solid #DDD;
-  padding-left: 40px;
+  padding-left: 20px;
   padding-top: 25px;
   min-height: 400px;
 
