@@ -51,6 +51,17 @@
 		font-size: 64px;
 	}
 
+		h1.name {
+	/* margin-left: 18px; */
+	font-size: 36px;
+	font-weight: 400;
+}
+
+	div.two.columns.sidebar {
+
+		width: 200px;
+	}
+
 }
 
 @media only screen and (min-width: 480px) and (max-width: 959px) {
@@ -63,6 +74,11 @@
 		display: none;
 	}
 
+	h1.name {
+	/* margin-left: 18px; */
+	font-size: 56px;
+	font-weight: 400;
+}
 
 
 }
@@ -77,6 +93,13 @@
 	i.icon-rotate-90 {
 		display: inline;
 	}
+
+
+	h1.name {
+	/* margin-left: 18px; */
+	font-size: 36px;
+	font-weight: 400;
+}
 
 
 }
@@ -102,9 +125,7 @@
 		width: 125px;
 	}
 
-	h1.name {
-	margin-left: 18px;
-}
+
 
 	.icon-mobile-phone {
 		color: #03B1FF;
