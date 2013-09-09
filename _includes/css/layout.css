@@ -12,21 +12,7 @@
 
 
 
-div#spin-man i.icon-refresh.icon-spin {
-		display: none;
-	}
 
-	div#spin-man i.icon-refresh.nospin {
-		display: inline;
-	}
-
-	div#spin-man:hover i.icon-refresh.icon-spin {
-		display: inline;
-	}
-
-	div#spin-man:hover i.icon-refresh.nospin {
-		display: none;
-	}
 
 
 
