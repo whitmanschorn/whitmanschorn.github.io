@@ -16,12 +16,21 @@
   <i class="icon-sign-blank icon-stack-base"></i>
   <i class="icon-terminal icon-light"></i>
 </span>
-  <h2>☃<i class="icon-keyboard"></i></h2>
+  <h2>☃<a href="#"><i class="icon-keyboard random"></i></a></h2>
   </div>
   <script type="text/javascript">
     $(function() {
+    items = ["coffee", "book", "edit", "save", "camera-retro", "fire-extinguisher", "magic", "picture", "gamepad", "food", "beaker", "beer", "bar-chart"]
+    
     console.log( "ready!" );
-});
+    $('.random').click(function (e) {
+      e.preventDefault();
+      item = items[Math.floor(Math.random()*items.length)];
+      $(this).attr('class', "icon-"+item +" random");
+      $(this).addClass();
+    });
+  });
+  
 
   </script>
   <hr/>
