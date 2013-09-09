@@ -7,15 +7,6 @@
 * 8/17/2011
 */
 
-/* Smaller than standard 960 (devices and browsers) */
-
-
-
-
-
-
-
-
 .icon-laptop {
 		display: none;
 	}
@@ -68,13 +59,22 @@
 		display: inline;
 	}
 
+	i.icon-rotate-90 {
+		display: none;
+	}
+
+
 
 }
 
 
 @media only screen and (min-width: 768px) and (max-width: 959px) {
 	/* tablet */
-	.icon-reply {
+		.icon-tablet {
+		display: none;
+	}
+
+	i.icon-rotate-90 {
 		display: inline;
 	}
 
