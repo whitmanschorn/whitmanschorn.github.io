@@ -1,6 +1,6 @@
 ---
 layout: post
-title: frontendery
+title: Frontendery
 categories:
 - blog
 ---
