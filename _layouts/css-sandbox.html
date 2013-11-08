@@ -1,0 +1,14 @@
+	---
+layout: default
+title: css sandbox
+---
+  <link rel="stylesheet" href="/assets/css/sandbox.css">
+  
+<h1> Hey hi hi hi </h1> 	
+<div id="home">
+  <ul id="blog-posts" class="posts">
+    {% for post in site.posts %}
+      <li><span>{{ post.date | date_to_string }} </span><a href="{{ post.url }}">{{ post.title }}</a></li>
+    {% endfor %}
+  </ul>
+</div>
