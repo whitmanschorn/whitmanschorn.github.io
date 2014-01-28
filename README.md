@@ -10,13 +10,7 @@ Extracted lovingly from [http://mdswanson.com][mds] for your enjoyment!
 
 ## Licensing
 
-[MIT](https://github.com/swanson/lagom/blob/master/LICENSE) with no
-added caveats, so feel free to use this on your site without linking back to
-me or using a disclaimer or anything silly like that.
-
-## Contact
-I'd love to hear from you at [@_swanson][twitter]. Feel free to open issues if you
-run into trouble or have suggestions. Pull Requests always welcome.
+[MIT](https://github.com/swanson/lagom/blob/master/LICENSE) 
 
 [j]: http://jekyllrb.com/
 [mds]: http://mdswanson.com
