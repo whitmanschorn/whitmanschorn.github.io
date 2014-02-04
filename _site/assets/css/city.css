@@ -6,7 +6,11 @@
      bottom: 0;
      left: 0;
      width: 580px;
-     height: 295px;
-     background: url(//:wschorn.com/city.jpg);
+     height: 169px;
+     background: url(../../city.jpg);
+}
+
+body {
+	background: #fff;
 }
 
