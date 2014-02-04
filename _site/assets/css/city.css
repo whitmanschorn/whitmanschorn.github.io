@@ -1,0 +1,12 @@
+#city{
+     position: absolute;
+     margin: auto;
+     top: 0;
+     right: 0;
+     bottom: 0;
+     left: 0;
+     width: 580px;
+     height: 295px;
+     background: url(//:wschorn.com/city.jpg);
+}
+
