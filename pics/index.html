@@ -1,0 +1,66 @@
+ <link rel="stylesheet" href="/assets/css/pics.css">
+ <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300' rel='stylesheet' type='text/css'>
+ <p id="button">hi mom</p>
+ <ul class="instagram tag flip">
+ </ul>
+
+ <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+ <script src="/assets/js/instagram.js"></script>
+ <script src="/assets/js/stroll.min.js"></script>
+ <script>
+ Array.prototype.randomElement = function(last) {
+  return this[Math.floor(Math.random() * this.length)];
+}
+
+
+function createPhotoElement(photo) {
+  var innerHtml = $('<img>')
+  .addClass('instagram-image')
+  .attr('src', photo.images.standard_resolution.url);
+
+  innerHtml = $('<a>')
+  .attr('target', '_blank')
+  .attr('href', photo.link)
+  .append(innerHtml);
+
+  return $('<li>')
+  .addClass('instagram-placeholder')
+  .attr('id', photo.id)
+  .append(innerHtml);
+}
+
+function didLoadInstagram(event, response) {
+  var that = this;
+
+  $.each(response.data, function(i, photo) {
+    $(that).append(createPhotoElement(photo));
+  });
+}
+
+
+function loadInstagram() {
+  var clientId = 'baee48560b984845974f6b85a07bf7d9';
+  var tags = ['Manhattan', 'Brooklyn', 'Harlem', 'Flatiron', 'NYC', 'Texas', 'Austin', 'Oberlin', 'Ohio', 'Pinole']
+  var currTag = tags.randomElement();
+  console.log(currTag);
+  $('.instagram.tag').on('didLoadInstagram', didLoadInstagram);
+  $('.instagram.tag').instagram({
+    hash: currTag,
+    count: 3,
+    clientId: clientId,
+  });
+      //return this so we can add it to our list
+      return currTag;
+    }
+
+    $(document).ready(function() {
+      
+      $('#button').text(loadInstagram());
+
+      $( "#button" ).click(function() {
+        $( "#button" ).text($( "#button" ).text() + " + " + loadInstagram());
+      });
+
+    });
+
+    </script>
