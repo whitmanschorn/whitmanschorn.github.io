@@ -17,7 +17,7 @@ function createPhotoElement(photo) {
   var innerHtml = $('<img>')
   .addClass('instagram-image')
   .attr('src', photo.images.standard_resolution.url);
-
+  console.log(photo.id);
   innerHtml = $('<a>')
   .attr('target', '_blank')
   .attr('href', photo.link)
@@ -38,6 +38,10 @@ function didLoadInstagram(event, response) {
 }
 
 
+function loadMore() {
+ $( "#button" ).text($( "#button" ).text() + " + " + loadInstagram());
+}
+
 function loadInstagram() {
   var clientId = 'baee48560b984845974f6b85a07bf7d9';
   var tags = ['Manhattan', 'Brooklyn', 'Harlem', 'Flatiron', 'NYC', 'Texas', 'Austin', 'Oberlin', 'Ohio', 'Pinole']
@@ -54,12 +58,19 @@ function loadInstagram() {
     }
 
     $(document).ready(function() {
-      
+
       $('#button').text(loadInstagram());
 
       $( "#button" ).click(function() {
-        $( "#button" ).text($( "#button" ).text() + " + " + loadInstagram());
-      });
+       loadMore();
+     });
+
+      $('.tag').scroll(function () {
+       if($(this).scrollTop() +  $(this).innerHeight() >= $(this)[0].scrollHeight) {
+        loadMore();
+       }
+
+     });
 
     });
 
