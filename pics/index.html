@@ -7,6 +7,7 @@
  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
  <script src="/assets/js/instagram.js"></script>
  <script src="/assets/js/stroll.min.js"></script>
+  <script src="/assets/js/lodash.min.js"></script>
  <script>
  Array.prototype.randomElement = function(last) {
   return this[Math.floor(Math.random() * this.length)];
@@ -42,12 +43,14 @@ function loadMore() {
  $( "#button" ).text($( "#button" ).text() + " + " + loadInstagram());
 }
 
+var loadMoreThrottled = _.throttle(loadMore, 250);
+
+
 function loadInstagram() {
   var clientId = 'baee48560b984845974f6b85a07bf7d9';
-  var tags = ['Manhattan', 'Brooklyn', 'Harlem', 'Flatiron', 'NYC', 'Texas', 'Austin', 'Oberlin', 'Ohio', 'Pinole']
+  var tags = ['Manhattan', 'Brooklyn', 'Harlem', 'Flatiron', 'Gramercy', 'Williamsburg', 'LES', 'NYC', 'Texas', 'Austin', 'Oberlin', 'Ohio', 'Pinole', 'Caldwell']
   var currTag = tags.randomElement();
   console.log(currTag);
-  $('.instagram.tag').on('didLoadInstagram', didLoadInstagram);
   $('.instagram.tag').instagram({
     hash: currTag,
     count: 3,
@@ -57,8 +60,9 @@ function loadInstagram() {
       return currTag;
     }
 
-    $(document).ready(function() {
 
+    $(document).ready(function() {
+  $('.instagram.tag').on('didLoadInstagram', didLoadInstagram);
       $('#button').text(loadInstagram());
 
       $( "#button" ).click(function() {
@@ -67,7 +71,7 @@ function loadInstagram() {
 
       $('.tag').scroll(function () {
        if($(this).scrollTop() +  $(this).innerHeight() >= $(this)[0].scrollHeight) {
-        loadMore();
+        loadMoreThrottled();
        }
 
      });
