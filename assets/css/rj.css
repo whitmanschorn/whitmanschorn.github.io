@@ -1,6 +1,5 @@
-#title {
+.big {
      position: absolute;
-     margin: auto;
      top: 50;
      right: 0;
      bottom: 0;
@@ -12,6 +11,21 @@
      font-style: italic;
      color: #fff;
      text-shadow: 5px -5px 0px #000, 3px 3px 5px black;
+}
+
+.block1 {
+      margin: auto;
+}
+
+
+
+.block2 {
+     margin: 0 0 0 0;
+     display: none;
+}
+
+.back {
+     font-size: 32px !important;
 }
 
  
@@ -28,6 +42,18 @@ html {
 #r, #j {
      font-weight: 300;
     font-weight: 800;
+}
+
+
+#hg,  {
+     font-weight: 300;
+    font-weight: 800;
+     text-shadow: 5px -5px 0px #000, 3px 3px 5px black;
+ 
+}
+
+#hg a {
+     color: #FFD60D;
 }
 
 #r {
