@@ -21,11 +21,7 @@ $(document).ready ->
         console.log data.data.image_url
         $("#container").css("background", "url(" + nurl + ") no-repeat center center fixed").css("background-size", "cover").css("-webkit-background-size", "cover").css("-o-background-size", "cover").css "-moz-background-size", "cover"
         console.log "N " + nurl
-        return
 
-      return
-
-    return
 
   $(".back").click ->
     $(".block1").animate
@@ -38,8 +34,3 @@ $(document).ready ->
       $(".block2").css "display", "none"
       $("#hg").fitText 0.80
       $("#where").fitText 0.95
-      return
-
-    return
-
-  return
