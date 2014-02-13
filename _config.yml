@@ -1,5 +1,6 @@
 # General Jekyll Config
 pygments: true
+auto: true
 url: http://wschorn.com
 lsi: false
 exclude: [LICENSE, CNAME, README.md, .gitignore]
