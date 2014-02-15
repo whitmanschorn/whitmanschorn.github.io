@@ -1,16 +1,41 @@
  <link rel="stylesheet" href="/assets/css/pics.css">
  <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300' rel='stylesheet' type='text/css'>
  <p id="button">Where to?</p>
- <ul class="instagram tag flip" id="instafeed"></ul>
+ <ul class="instagram tag flip">
+ </ul>
 
  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
- <script src="/assets/js/instafeed.min.js"></script>
+ <script src="/assets/js/instagram.js"></script>
  <script src="/assets/js/stroll.min.js"></script>
- <script src="/assets/js/lodash.min.js"></script>
+  <script src="/assets/js/lodash.min.js"></script>
  <script>
- 
  Array.prototype.randomElement = function(last) {
   return this[Math.floor(Math.random() * this.length)];
+}
+
+
+function createPhotoElement(photo) {
+  var innerHtml = $('<img>')
+  .addClass('instagram-image')
+  .attr('src', photo.images.standard_resolution.url);
+  console.log(photo.id);
+  innerHtml = $('<a>')
+  .attr('target', '_blank')
+  .attr('href', photo.link)
+  .append(innerHtml);
+
+  return $('<li>')
+  .addClass('instagram-placeholder')
+  .attr('id', photo.id)
+  .append(innerHtml);
+}
+
+function didLoadInstagram(event, response) {
+  var that = this;
+
+  $.each(response.data, function(i, photo) {
+    $(that).append(createPhotoElement(photo));
+  });
 }
 
 
@@ -18,45 +43,26 @@ function loadMore() {
  $( "#button" ).text($( "#button" ).text() + " + " + loadInstagram());
 }
 
-var loadMoreThrottled = _.debounce(_.throttle(loadMore, 1000), 1000);
-
+var loadMoreThrottled = _.throttle(loadMore, 250);
 
 
 function loadInstagram() {
   var clientId = 'baee48560b984845974f6b85a07bf7d9';
-  //var tags = ['Manhattan', 'Brooklyn', 'Harlem', 'Flatiron', 'Gramercy', 'Williamsburg', 'LES', 'NYC', 'Texas', 'Austin', 'Oberlin', 'Ohio', 'Pinole', 'Caldwell']
-
-var tags = ['Manhattan']
-
+  var tags = ['Manhattan', 'Brooklyn', 'Harlem', 'Flatiron', 'Gramercy', 'Williamsburg', 'LES', 'NYC', 'Texas', 'Austin', 'Oberlin', 'Ohio', 'Pinole', 'Caldwell']
   var currTag = tags.randomElement();
   console.log(currTag);
-
-  var feed = new Instafeed({
-  get: 'tagged',
-  tagName: currTag,
-  limit: 3,
-  sortBy: 'random',
-  resolution: 'standard_resolution',
-  clientId: '2c5d43f5b0554669a5aac73a81aceb91',
-  template: '<li><span class="caption">{{caption}}</span><br/><a class="animation" href="{{link}}"><img src="{{image}}" /></a></li>'
-});
-
-
-  feed.run();
-  $('#instafeed').attr('id', 'full-list')
-  $('body').append($("<div id='instafeed'></div>"));
-
+  $('.instagram.tag').instagram({
+    hash: currTag,
+    count: 3,
+    clientId: clientId,
+  });
       //return this so we can add it to our list
       return currTag;
     }
 
 
-
-
-
     $(document).ready(function() {
-
-
+  $('.instagram.tag').on('didLoadInstagram', didLoadInstagram);
       $('#button').text(loadInstagram());
 
       $( "#button" ).click(function() {
@@ -66,9 +72,9 @@ var tags = ['Manhattan']
       $('.tag').scroll(function () {
        if($(this).scrollTop() +  $(this).innerHeight() >= $(this)[0].scrollHeight) {
         loadMoreThrottled();
-      }
+       }
 
-    });
+     });
 
     });
 
