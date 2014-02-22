@@ -18,7 +18,7 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   color: #181818;
-  font-family: "Montserrat", "open sans", sans-serif;
+  font-family: "Lato", "open sans", sans-serif;
   font-weight: 600;
 }
 
@@ -85,7 +85,7 @@ ul.posts li {
 }
 
 ul.posts span {
-  font-family: "Montserrat", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Lato", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #aaa;
   padding-right: 5px;
   font-size:32px;
@@ -146,7 +146,7 @@ nav hr {
   position: fixed;
   left: 3%;
   padding-top: 25px;
-  font-family: "Montserrat", "open sans", sans-serif;
+  font-family: "Lato", "open sans", sans-serif;
 }
 
 .sidebar p {
@@ -164,7 +164,7 @@ nav hr {
 }
 
 .content {
-  font: 400 16px/22px "Montserrat", sans-serif;
+  font: 400 16px/22px "Lato", sans-serif;
   padding-left: 20px;
   padding-top: 25px;
   min-height: 400px;
@@ -218,7 +218,7 @@ nav hr {
 }
 
 span.icon-hn {
-  font-family: "Montserrat", "open sans", sans-serif;
+  font-family: "Lato", "open sans", sans-serif;
   line-height: 20px;
   text-align: center;
   font-weight: bold;
