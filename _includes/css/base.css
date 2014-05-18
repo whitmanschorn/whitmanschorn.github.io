@@ -62,10 +62,20 @@
 
 /* #Typography
 ================================================== */
+
+	@font-face
+	{
+	font-family: "Essays1743-italic";
+	font-style: italic;
+	src: url(../font/Essays1743-italic.woff);
+	}
+
 	h1, h2, h3, h4, h5, h6 {
 		color: #181818;
-		font-family: "Lato", "Georgia", "Times New Roman", Helvetica, Arial, sans-serif;
+		font-style: italic;
+		font-family: "Essays1743-italic", "Lato", "Georgia", "Times New Roman", Helvetica, Arial, sans-serif;
 		font-weight: normal; }
+	
 	h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { font-weight: inherit; }
 	h1 { font-size: 46px; line-height: 50px; margin-bottom: 14px;}
 	h2 { font-size: 35px; line-height: 40px; margin-bottom: 10px; }

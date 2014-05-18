@@ -64,8 +64,17 @@
 
 
 	ul.posts a {
-		font-size: 48px;
+		font-size: 18px;
+		color: #2a2a2a;
+		text-decoration: none;
 
+
+	}
+
+	ul.posts a:hover {
+		font-style: none;
+		color: #999;
+  		font-style: italic;
 	}
 
 	ul.posts span {
