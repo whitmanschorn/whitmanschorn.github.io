@@ -43,8 +43,8 @@ body {
 
 
 h1.title, h2 a, h4, h5, h6, ul.posts a {
-  font-style: italic;
-  font-family: "Essays1743-italic", "Lato", "open sans", sans-serif;
+  font-style: normal;
+  font-family: "FuturaLT-Light", "Lato", "open sans", sans-serif;
      -webkit-transition:color 0.25s ease-in;
    -moz-transition:color 0.25s ease-in;
    -o-transition:color 0.25s ease-in;
@@ -91,7 +91,7 @@ a {
 
 a:hover {
   color: {{ site.theme.highlight_color }};
-  text-decoration: underline;
+ 
 }
 
 a:visited {
