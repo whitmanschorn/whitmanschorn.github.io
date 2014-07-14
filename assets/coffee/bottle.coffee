@@ -6,7 +6,7 @@ event2key =
   97: "a"
   98: "b"
   99: "c"
-  100: "d"
+  68: "d"
   101: "e"
   102: "f"
   103: "g"
@@ -21,7 +21,7 @@ event2key =
   112: "p"
   113: "q"
   114: "r"
-  115: "s"
+  83: "s"
   116: "t"
   117: "u"
   118: "v"
@@ -58,18 +58,18 @@ toggleStagger = ->
 documentKeys = (event) ->
   myKey = event2key[event.which] # Ex : 'p'
   letter = String.fromCharCode(event.charCode)
-  # console.log event.type, event.which, event.charCode, myKey, letter
+  console.log event.type, event.which, event.charCode, myKey, letter
   switch myKey
-    when "right", "a"
+    when "enter", "a"
       refreshAnimation()
     when "left", "s"
       toggleStagger()
-    when "down", "d"
+    when "right", "d"
       toggleDrag()
     else
 
 refreshAnimation = ->
-  $("#bottle div").velocity(animStr, {stagger: staggerInt})
+  $("#bottle div").velocity(animStr, {stagger: staggerInt, drag: dragBool})
 
 
 $(document).ready ->
@@ -84,18 +84,15 @@ $(document).ready ->
     evt.preventDefault()
     setAnimation $( "input.anim-box" ).val()
     refreshAnimation()
-    # console.log evt
 
   $("#uiPackEffects").change (evt) ->
     evt.preventDefault()
     setAnimation $( "select option:selected" ).val()
     refreshAnimation()
 
-
-
-  $(".border-btn").click ->
-    console.log "hey"
-    $("#bottle").toggleClass("border")
+  # $(".border-btn").click ->
+  #   console.log "hey"
+  #   $("#bottle").toggleClass("border")
 
 
   $(".refresh-btn").click ->

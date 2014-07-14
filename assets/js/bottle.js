@@ -11,7 +11,7 @@ event2key = {
   97: "a",
   98: "b",
   99: "c",
-  100: "d",
+  68: "d",
   101: "e",
   102: "f",
   103: "g",
@@ -26,7 +26,7 @@ event2key = {
   112: "p",
   113: "q",
   114: "r",
-  115: "s",
+  83: "s",
   116: "t",
   117: "u",
   118: "v",
@@ -67,14 +67,15 @@ documentKeys = function(event) {
   var letter, myKey;
   myKey = event2key[event.which];
   letter = String.fromCharCode(event.charCode);
+  console.log(event.type, event.which, event.charCode, myKey, letter);
   switch (myKey) {
-    case "right":
+    case "enter":
     case "a":
       return refreshAnimation();
     case "left":
     case "s":
       return toggleStagger();
-    case "down":
+    case "right":
     case "d":
       return toggleDrag();
   }
@@ -82,7 +83,8 @@ documentKeys = function(event) {
 
 refreshAnimation = function() {
   return $("#bottle div").velocity(animStr, {
-    stagger: staggerInt
+    stagger: staggerInt,
+    drag: dragBool
   });
 };
 
@@ -99,10 +101,6 @@ $(document).ready(function() {
     evt.preventDefault();
     setAnimation($("select option:selected").val());
     return refreshAnimation();
-  });
-  $(".border-btn").click(function() {
-    console.log("hey");
-    return $("#bottle").toggleClass("border");
   });
   $(".refresh-btn").click(function() {
     console.log("ref");
