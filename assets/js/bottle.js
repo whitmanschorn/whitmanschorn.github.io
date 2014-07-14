@@ -85,8 +85,10 @@ documentKeys = function(event) {
     case "esc":
       return forceIn();
     case "n":
+    case "down":
       return nextAnimation();
     case "b":
+    case "up":
       return prevAnimation();
   }
 };
@@ -126,6 +128,9 @@ $(document).ready(function() {
   });
   $(".next-btn").click(function() {
     return nextAnimation();
+  });
+  $(".prev-btn").click(function() {
+    return prevAnimation();
   });
   $(".refresh-btn").click(function() {
     return refreshAnimation();
