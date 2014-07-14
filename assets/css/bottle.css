@@ -1,0 +1,41 @@
+body {
+	background: #222;
+	color: #f3f3f3;
+}
+
+
+#control-panel {
+	position: absolute;
+	top: 15px;
+	right: 15px;
+}
+
+#container {
+	display: inline-block;
+	width: 80%;
+}
+
+#bottle {
+	margin: auto;
+	width: 400px;
+	padding: 2px;
+	text-align: center;
+	border: none;
+	line-height: 0.95;
+
+}
+
+span.is-active {
+	color: #fecefe;
+}
+
+#bottle div {
+	padding: 5px;
+	border: none;
+}
+
+#bottle.border div {
+		padding: 4px;
+		border: 1px solid #222;
+}
+
