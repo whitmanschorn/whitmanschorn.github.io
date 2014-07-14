@@ -1,5 +1,5 @@
 # Whitman Schorn 2014
-
+dragBool = false;
 staggerBool = true;
 staggerInt = 20;
 event2key =
@@ -46,10 +46,14 @@ setAnimation = (animationName) ->
   animStr = animationName
 
 
+toggleDrag = -> 
+  $(".drag-btn").toggleClass('is-active')
+  dragBool = !dragBool
+
 toggleStagger = -> 
   $(".stagger-btn").toggleClass('is-active')
   staggerBool = !staggerBool
-  staggerInt = if staggerBool then 20 else 0
+  staggerInt = if staggerBool then 200 else 0
 
 documentKeys = (event) ->
   myKey = event2key[event.which] # Ex : 'p'
@@ -58,8 +62,10 @@ documentKeys = (event) ->
   switch myKey
     when "right", "a"
       refreshAnimation()
-    when "left", "z"
+    when "left", "s"
       toggleStagger()
+    when "down", "d"
+      toggleDrag()
     else
 
 refreshAnimation = ->
