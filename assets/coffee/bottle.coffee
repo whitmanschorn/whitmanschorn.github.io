@@ -71,9 +71,9 @@ documentKeys = (event) ->
       toggleDrag()
     when "esc"
       forceIn()
-    when "n"
+    when "n", "down"
       nextAnimation()
-    when "b"
+    when "b", "up"
       prevAnimation()
     else
 
@@ -116,6 +116,9 @@ $(document).ready ->
 
   $(".next-btn").click ->
     nextAnimation()
+  $(".prev-btn").click ->
+    prevAnimation()
+
 
   $(".refresh-btn").click ->
     refreshAnimation()
