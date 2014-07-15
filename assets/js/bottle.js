@@ -126,6 +126,9 @@ $(document).ready(function() {
     setAnimation($("select option:selected").val());
     return refreshAnimation();
   });
+  $(".serif-btn").click(function() {
+    return $("#bottle").toggleClass('sans-serif');
+  });
   $(".next-btn").click(function() {
     return nextAnimation();
   });

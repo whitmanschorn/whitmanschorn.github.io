@@ -114,6 +114,9 @@ $(document).ready ->
   #   console.log "hey"
   #   $("#bottle").toggleClass("border")
 
+  $(".serif-btn").click ->
+    $("#bottle").toggleClass('sans-serif')
+
   $(".next-btn").click ->
     nextAnimation()
   $(".prev-btn").click ->
