@@ -4,39 +4,50 @@
 
 <div id="graph-container-switch">
 
-<div id="graph">
-</div>
+  <div id="graph">
+  </div>
 
-<div id="info">
-<span class="toggle-info-btn">INFO</span>
-<p>This is small demo environment for <a href="http://julian.com/research/velocity/">Velocity.js</a>, a jQuery plugin by <a href="https://twitter.com/shapiro">Julian Shapiro</a>. Velocity is small (9kb zipped), reasonably <a href="http://davidwalsh.name/css-js-animation">performant</a> and works with browsers back to IE8 and Android 2.3. </p>
-</div>
+  <div id="info">
+    <span class="toggle-info-btn">INFO</span>
+    <p>This is small demo environment for <a href="http://julian.com/research/velocity/">Velocity.js</a>, a jQuery plugin by <a href="https://twitter.com/shapiro">Julian Shapiro</a>. Velocity is small (9kb zipped), reasonably <a href="http://davidwalsh.name/css-js-animation">performant</a> and works with browsers back to IE8 and Android 2.3. </p>
 
-<div id="container">
+    <p>Still to add (to this demo, not velocity):
+      Transition timing, easing.
+    </p>
+  </div>
+
+  <div id="container">
     <div id="bottle">
-        <div>Parker's</div>
-        <div>Sour</div>
-        <div>Mash</div>
-        <div>"Old No. 77"</div>
-        <div>Parker Spirits</div>
-        <div id="location">Eades Hollow, Nelson County</div>
+      <div>Parker's</div>
+      <div>Sour</div>
+      <div>Mash</div>
+      <div>"Old No. 77"</div>
+      <div>Parker Spirits</div>
+      <div id="location">Eades Hollow, Nelson County</div>
     </div>
+    <span class="serif-btn">serif</span>
     
-</div>
+  </div>
+
 </div>
 
 <div id="control-panel">
-    <form id="anim">
-        <br/>
-        <select id="uiPackEffects">
-          <option value="" selected="" disabled="">Effect</option>
-          <option value="callout.bounce">callout.bounce</option><option value="callout.shake">callout.shake</option><option value="callout.flash">callout.flash</option><option value="callout.pulse">callout.pulse</option><option value="callout.swing">callout.swing</option><option value="callout.tada">callout.tada</option><option value="transition.fadeIn">transition.fadeIn</option><option value="transition.fadeOut">transition.fadeOut</option><option value="transition.flipXIn">transition.flipXIn</option><option value="transition.flipXOut">transition.flipXOut</option><option value="transition.flipYIn">transition.flipYIn</option><option value="transition.flipYOut">transition.flipYOut</option><option value="transition.flipBounceXIn">transition.flipBounceXIn</option><option value="transition.flipBounceXOut">transition.flipBounceXOut</option><option value="transition.flipBounceYIn">transition.flipBounceYIn</option><option value="transition.flipBounceYOut">transition.flipBounceYOut</option><option value="transition.swoopIn">transition.swoopIn</option><option value="transition.swoopOut">transition.swoopOut</option><option value="transition.whirlIn">transition.whirlIn</option><option value="transition.whirlOut">transition.whirlOut</option><option value="transition.shrinkIn">transition.shrinkIn</option><option value="transition.shrinkOut">transition.shrinkOut</option><option value="transition.expandIn">transition.expandIn</option><option value="transition.expandOut">transition.expandOut</option><option value="transition.bounceIn">transition.bounceIn</option><option value="transition.bounceOut">transition.bounceOut</option><option value="transition.bounceUpIn">transition.bounceUpIn</option><option value="transition.bounceUpOut">transition.bounceUpOut</option><option value="transition.bounceDownIn">transition.bounceDownIn</option><option value="transition.bounceDownOut">transition.bounceDownOut</option><option value="transition.bounceLeftIn">transition.bounceLeftIn</option><option value="transition.bounceLeftOut">transition.bounceLeftOut</option><option value="transition.bounceRightIn">transition.bounceRightIn</option><option value="transition.bounceRightOut">transition.bounceRightOut</option><option value="transition.slideUpIn">transition.slideUpIn</option><option value="transition.slideUpOut">transition.slideUpOut</option><option value="transition.slideDownIn">transition.slideDownIn</option><option value="transition.slideDownOut">transition.slideDownOut</option><option value="transition.slideLeftIn">transition.slideLeftIn</option><option value="transition.slideLeftOut">transition.slideLeftOut</option><option value="transition.slideRightIn">transition.slideRightIn</option><option value="transition.slideRightOut">transition.slideRightOut</option><option value="transition.slideUpBigIn">transition.slideUpBigIn</option><option value="transition.slideUpBigOut">transition.slideUpBigOut</option><option value="transition.slideDownBigIn">transition.slideDownBigIn</option><option value="transition.slideDownBigOut">transition.slideDownBigOut</option><option value="transition.slideLeftBigIn">transition.slideLeftBigIn</option><option value="transition.slideLeftBigOut">transition.slideLeftBigOut</option><option value="transition.slideRightBigIn">transition.slideRightBigIn</option><option value="transition.slideRightBigOut">transition.slideRightBigOut</option><option value="transition.perspectiveUpIn">transition.perspectiveUpIn</option><option value="transition.perspectiveUpOut">transition.perspectiveUpOut</option><option value="transition.perspectiveDownIn">transition.perspectiveDownIn</option><option value="transition.perspectiveDownOut">transition.perspectiveDownOut</option><option value="transition.perspectiveLeftIn">transition.perspectiveLeftIn</option><option value="transition.perspectiveLeftOut">transition.perspectiveLeftOut</option><option value="transition.perspectiveRightIn">transition.perspectiveRightIn</option><option value="transition.perspectiveRightOut">transition.perspectiveRightOut</option>
-          <option value="fadeIn">fadeIn</option><option value="fadeOut">fadeOut</option>
-      </select>
-      <input type="submit">
+  <form id="anim">
+    <br/>
+    <select id="uiPackEffects">
+      <option value="" selected="" disabled="">Effect</option>
+      <option value="callout.bounce">callout.bounce</option><option value="callout.shake">callout.shake</option><option value="callout.flash">callout.flash</option><option value="callout.pulse">callout.pulse</option><option value="callout.swing">callout.swing</option><option value="callout.tada">callout.tada</option><option value="transition.fadeIn">transition.fadeIn</option><option value="transition.fadeOut">transition.fadeOut</option><option value="transition.flipXIn">transition.flipXIn</option><option value="transition.flipXOut">transition.flipXOut</option><option value="transition.flipYIn">transition.flipYIn</option><option value="transition.flipYOut">transition.flipYOut</option><option value="transition.flipBounceXIn">transition.flipBounceXIn</option><option value="transition.flipBounceXOut">transition.flipBounceXOut</option><option value="transition.flipBounceYIn">transition.flipBounceYIn</option><option value="transition.flipBounceYOut">transition.flipBounceYOut</option><option value="transition.swoopIn">transition.swoopIn</option><option value="transition.swoopOut">transition.swoopOut</option><option value="transition.whirlIn">transition.whirlIn</option><option value="transition.whirlOut">transition.whirlOut</option><option value="transition.shrinkIn">transition.shrinkIn</option><option value="transition.shrinkOut">transition.shrinkOut</option><option value="transition.expandIn">transition.expandIn</option><option value="transition.expandOut">transition.expandOut</option><option value="transition.bounceIn">transition.bounceIn</option><option value="transition.bounceOut">transition.bounceOut</option><option value="transition.bounceUpIn">transition.bounceUpIn</option><option value="transition.bounceUpOut">transition.bounceUpOut</option><option value="transition.bounceDownIn">transition.bounceDownIn</option><option value="transition.bounceDownOut">transition.bounceDownOut</option><option value="transition.bounceLeftIn">transition.bounceLeftIn</option><option value="transition.bounceLeftOut">transition.bounceLeftOut</option><option value="transition.bounceRightIn">transition.bounceRightIn</option><option value="transition.bounceRightOut">transition.bounceRightOut</option><option value="transition.slideUpIn">transition.slideUpIn</option><option value="transition.slideUpOut">transition.slideUpOut</option><option value="transition.slideDownIn">transition.slideDownIn</option><option value="transition.slideDownOut">transition.slideDownOut</option><option value="transition.slideLeftIn">transition.slideLeftIn</option><option value="transition.slideLeftOut">transition.slideLeftOut</option><option value="transition.slideRightIn">transition.slideRightIn</option><option value="transition.slideRightOut">transition.slideRightOut</option><option value="transition.slideUpBigIn">transition.slideUpBigIn</option><option value="transition.slideUpBigOut">transition.slideUpBigOut</option><option value="transition.slideDownBigIn">transition.slideDownBigIn</option><option value="transition.slideDownBigOut">transition.slideDownBigOut</option><option value="transition.slideLeftBigIn">transition.slideLeftBigIn</option><option value="transition.slideLeftBigOut">transition.slideLeftBigOut</option><option value="transition.slideRightBigIn">transition.slideRightBigIn</option><option value="transition.slideRightBigOut">transition.slideRightBigOut</option><option value="transition.perspectiveUpIn">transition.perspectiveUpIn</option><option value="transition.perspectiveUpOut">transition.perspectiveUpOut</option><option value="transition.perspectiveDownIn">transition.perspectiveDownIn</option><option value="transition.perspectiveDownOut">transition.perspectiveDownOut</option><option value="transition.perspectiveLeftIn">transition.perspectiveLeftIn</option><option value="transition.perspectiveLeftOut">transition.perspectiveLeftOut</option><option value="transition.perspectiveRightIn">transition.perspectiveRightIn</option><option value="transition.perspectiveRightOut">transition.perspectiveRightOut</option>
+      <option value="fadeIn">fadeIn</option><option value="fadeOut">fadeOut</option>
+    </select>
+    <input type="submit">
   </form>
-  <span class="stagger-btn is-active">stagger(L)</span>
-  <span class="drag-btn">drag(R)</span>
+  <span class="drag-btn">drag(d)</span>
+  <br/>
+
+  <span class="stagger-btn is-active">stagger(s)</span>
+  <br/>
+  <input type="range" id="stagger-slider" name="stagger" min="1" max="100"></input>
+  <div id="stagger-slider-val">50</div>
   <br/>
   <div id="anim-controls">
     <span class="refresh-btn">redo(enter)</span>
@@ -45,10 +56,10 @@
     <span class="next-btn">next (down)</span>
     <span class="prev-btn">prev (up)</span>
     <br/>
-    <span class="serif-btn">serif</span>
-    <br/>
+    Graph
+    <span class="toggle-graph-btn">toggle graph(g)</span>
     <span class="new-graph-btn">new graph(r)</span>
-</div>
+  </div>
 
 
 </div>

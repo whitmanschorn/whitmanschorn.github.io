@@ -62,7 +62,7 @@ toggleDrag = ->
 toggleStagger = -> 
   $(".stagger-btn").toggleClass('is-active')
   staggerBool = !staggerBool
-  staggerInt = if staggerBool then 100 else 0
+  staggerInt = if staggerBool then $("#stagger-slider").val() else 0
 
 documentKeys = (event) ->
   myKey = event2key[event.which] # Ex : 'p'
@@ -71,9 +71,9 @@ documentKeys = (event) ->
   switch myKey
     when "enter", "a"
       refreshAnimation()
-    when "left", "s"
+    when "s"
       toggleStagger()
-    when "right", "d"
+    when "d"
       toggleDrag()
     when "esc"
       forceIn()
@@ -88,6 +88,8 @@ documentKeys = (event) ->
     else
 
 refreshAnimation = ->
+  if staggerBool
+    staggerInt = $("#stagger-slider").val()
   $("#bottle div").velocity(animStr, {stagger: staggerInt, drag: dragBool})
   $("#graph svg rect").velocity(animStr, {stagger: staggerInt, drag: dragBool})
 
@@ -173,8 +175,13 @@ $(document).ready =>
   resizeFit "#bottle"
 
   drawRandomChart()
-
+  toggleInfo()
   $(document).on('keyup', documentKeys);
+
+  $("#stagger-slider").change ->
+    $("#stagger-slider-val").text $("#stagger-slider").val()
+    
+
 
   $("#anim").submit (evt) ->
     evt.preventDefault()
@@ -188,6 +195,8 @@ $(document).ready =>
 
   $(".serif-btn").click ->
     $("#bottle").toggleClass('sans-serif')
+    $(".serif-btn").toggleClass('sans-serif')
+
 
   $(".next-btn").click ->
     nextAnimation()
@@ -210,3 +219,5 @@ $(document).ready =>
   $(".toggle-info-btn").click ->
     toggleInfo()
 
+  $(".toggle-graph-btn").click ->
+    toggleGraph()

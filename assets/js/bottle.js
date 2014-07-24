@@ -75,7 +75,7 @@ toggleDrag = function() {
 toggleStagger = function() {
   $(".stagger-btn").toggleClass('is-active');
   staggerBool = !staggerBool;
-  return staggerInt = staggerBool ? 100 : 0;
+  return staggerInt = staggerBool ? $("#stagger-slider").val() : 0;
 };
 
 documentKeys = function(event) {
@@ -87,10 +87,8 @@ documentKeys = function(event) {
     case "enter":
     case "a":
       return refreshAnimation();
-    case "left":
     case "s":
       return toggleStagger();
-    case "right":
     case "d":
       return toggleDrag();
     case "esc":
@@ -109,6 +107,9 @@ documentKeys = function(event) {
 };
 
 refreshAnimation = function() {
+  if (staggerBool) {
+    staggerInt = $("#stagger-slider").val();
+  }
   $("#bottle div").velocity(animStr, {
     stagger: staggerInt,
     drag: dragBool
@@ -230,7 +231,11 @@ $(document).ready((function(_this) {
   return function() {
     resizeFit("#bottle");
     drawRandomChart();
+    toggleInfo();
     $(document).on('keyup', documentKeys);
+    $("#stagger-slider").change(function() {
+      return $("#stagger-slider-val").text($("#stagger-slider").val());
+    });
     $("#anim").submit(function(evt) {
       evt.preventDefault();
       setAnimation($("input.anim-box").val());
@@ -242,7 +247,8 @@ $(document).ready((function(_this) {
       return refreshAnimation();
     });
     $(".serif-btn").click(function() {
-      return $("#bottle").toggleClass('sans-serif');
+      $("#bottle").toggleClass('sans-serif');
+      return $(".serif-btn").toggleClass('sans-serif');
     });
     $(".next-btn").click(function() {
       return nextAnimation();
@@ -262,8 +268,11 @@ $(document).ready((function(_this) {
     $(".new-graph-btn").click(function() {
       return redrawGraph();
     });
-    return $(".toggle-info-btn").click(function() {
+    $(".toggle-info-btn").click(function() {
       return toggleInfo();
+    });
+    return $(".toggle-graph-btn").click(function() {
+      return toggleGraph();
     });
   };
 })(this));

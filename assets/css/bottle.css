@@ -4,11 +4,20 @@ body {
 	font-weight: 700;
 }
 
-#bottle.sans-serif {
+.sans-serif {
 	font-family: 'Oswald', sans-serif;
 	font-weight: 700;
 }
 
+#stagger-slider-val {
+	width: 120px;
+}
+
+#stagger-slider-val {
+	text-align: center;
+	font-size: 10px;
+	text-indent: 15px;
+}
 
 #info {
 	font-family: sans-serif;
@@ -21,6 +30,7 @@ body {
 
 .toggle-info-btn {
 	font-size: 28px;
+	cursor: pointer;
 }
 
 #info p {
@@ -34,8 +44,12 @@ body {
 	top: 15px;
 	right: 15px;
 	font-weight: 400;
+
 }
 
+#control-panel span, .serif-btn {
+	cursor: pointer;
+}
 
  #container {
 	display: inline-block;
