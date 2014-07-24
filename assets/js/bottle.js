@@ -7,7 +7,7 @@ staggerBool = true;
 
 displayInfoBool = true;
 
-staggerInt = 20;
+staggerInt = 50;
 
 event2key = {
   97: "a",
@@ -202,15 +202,16 @@ toggleInfo = function() {
 };
 
 drawRandomChart = function() {
-  var barPadding, dataset, h, maxValue, minValue, num, svg, topMargin, w, _i;
+  var barPadding, chartSize, dataset, h, maxValue, minValue, num, svg, topMargin, w, _i;
   w = 600;
   h = 200;
   topMargin = 100;
+  chartSize = 30;
   barPadding = 5;
   dataset = [];
   maxValue = 20;
   minValue = 2;
-  for (num = _i = 1; _i < 20; num = ++_i) {
+  for (num = _i = 1; 1 <= chartSize ? _i < chartSize : _i > chartSize; num = 1 <= chartSize ? ++_i : --_i) {
     dataset.push(Math.floor(Math.random() * (maxValue - minValue)) + minValue);
   }
   svg = d3.select("#graph").append("svg").attr("width", w).attr("height", h + topMargin);

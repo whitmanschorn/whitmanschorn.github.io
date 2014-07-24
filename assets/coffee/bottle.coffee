@@ -2,7 +2,7 @@
 dragBool = false;
 staggerBool = true;
 displayInfoBool = true;
-staggerInt = 20;
+staggerInt = 50;
 event2key =
   97: "a"
   66: "b"
@@ -138,12 +138,13 @@ drawRandomChart = ->
   w = 600
   h = 200
   topMargin = 100
+  chartSize = 30
 
   barPadding = 5
   dataset = []
   maxValue = 20
   minValue = 2
-  for num in [1...20]
+  for num in [1...chartSize]
     dataset.push( Math.floor(Math.random() * (maxValue - minValue)) + minValue)
 
   #Create SVG element
