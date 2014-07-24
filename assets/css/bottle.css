@@ -10,19 +10,49 @@ body {
 }
 
 
+#info {
+	font-family: sans-serif;
+	font-weight: 300;
+	width: 300px;
+	position: absolute;
+	top: 30px;
+	z-index: 30;
+}
 
+.toggle-info-btn {
+	font-size: 28px;
+}
+
+#info p {
+	font-size: 18px;
+}
 
 #control-panel {
+	font-family: sans-serif;
+	font-weight: 300;
 	position: absolute;
 	top: 15px;
 	right: 15px;
 	font-weight: 400;
 }
 
-#container {
+
+ #container {
 	display: inline-block;
 	width: 80%;
+	position: absolute;
+	top: 25px;
+	left: 25px;
 }
+
+#graph {
+	opacity: 0;
+	width: 500px;
+	position: absolute;
+	top: 200px;
+	left: 25%;
+}
+
 
 #bottle {
 	margin: auto;

@@ -1,6 +1,17 @@
 <!-- Whitman Schorn 2014-->
 <link rel="stylesheet" href="/assets/css/bottle.css">
-<link href='http://fonts.googleapis.com/css?family=Oswald:400,700' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Oswald:300,400,700' rel='stylesheet' type='text/css'>
+
+<div id="graph-container-switch">
+
+<div id="graph">
+</div>
+
+<div id="info">
+<span class="toggle-info-btn">INFO</span>
+<p>This is small demo environment for <a href="http://julian.com/research/velocity/">Velocity.js</a>, a jQuery plugin by <a href="https://twitter.com/shapiro">Julian Shapiro</a>. Velocity is small (9kb zipped), reasonably <a href="http://davidwalsh.name/css-js-animation">performant</a> and works with browsers back to IE8 and Android 2.3. </p>
+</div>
+
 <div id="container">
     <div id="bottle">
         <div>Parker's</div>
@@ -11,6 +22,7 @@
         <div id="location">Eades Hollow, Nelson County</div>
     </div>
     
+</div>
 </div>
 
 <div id="control-panel">
@@ -34,7 +46,8 @@
     <span class="prev-btn">prev (up)</span>
     <br/>
     <span class="serif-btn">serif</span>
-
+    <br/>
+    <span class="new-graph-btn">new graph(r)</span>
 </div>
 
 
@@ -44,4 +57,4 @@
 <script src="/assets/js/bottle.js"></script>
 <script src="/assets/js/jquery.velocity.min.js"></script>
 <script src="/assets/js/velocity.ui.js"></script>
-
+<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script>
