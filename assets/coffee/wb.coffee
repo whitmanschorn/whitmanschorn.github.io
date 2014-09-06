@@ -2,6 +2,31 @@
 # You should add the Facebook App ID and the channel url (optional), in the #fb-root element, as a data- attribute:
 #   <div id="fb-root" data-app-id="<%= ENV['FACEBOOK_APP_ID'] %>" data-channel-url="<%= url_no_scheme('/channel.html') %>"></div>
 #
+window.startLogin = =>
+	console.log 'loggin'
+	FB.api "/me/accounts?fields=name,access_token,link", (response) ->
+	  console.log response
+	  list = document.getElementById("pagesList")
+	  i = 0
+
+	  while i < response.data.length
+	    li = document.createElement("li")
+	    li.innerHTML = response.data[i].name
+	    li.dataset.token = response.data[i].access_token
+	    li.dataset.link = response.data[i].link
+	    li.className = "btn btn-mini"
+	    li.onclick = ->
+	      document.getElementById("pageName").innerHTML = @innerHTML
+	      document.getElementById("pageToken").innerHTML = @dataset.token
+	      document.getElementById("pageLink").setAttribute "href", @dataset.link
+	      return
+
+	    list.appendChild li
+	    i++
+	  console.log "done"
+	  return
+
+
 window.fbAsyncInit = ->
   FB.init
     appId: document.getElementById("fb-root").getAttribute("data-app-id")
