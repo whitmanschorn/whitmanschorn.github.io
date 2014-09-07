@@ -23,54 +23,86 @@ window.pageLogin = (function(_this) {
       var i, li, list;
       console.log(response);
       list = document.getElementById("pagesList");
-      i = 0;
-      while (i < response.data.length) {
-        li = document.createElement("li");
-        li.innerHTML = response.data[i].name;
-        li.dataset.token = response.data[i].access_token;
-        li.dataset.link = response.data[i].link;
-        li.className = "btn btn-mini";
-        li.onclick = function() {
-          document.getElementById("pageName").innerHTML = this.innerHTML;
-          document.getElementById("pageToken").innerHTML = this.dataset.token;
-          document.getElementById("pageLink").setAttribute("href", this.dataset.link);
-        };
-        list.appendChild(li);
-        i++;
+      if (response.error != null) {
+        console.log('plese check that you have logged in and have authorized this app :)');
+      } else if (response.data != null) {
+        i = 0;
+        while (i < response.data.length) {
+          li = document.createElement("li");
+          li.innerHTML = response.data[i].name;
+          li.dataset.token = response.data[i].access_token;
+          li.dataset.link = response.data[i].link;
+          li.className = "btn btn-mini";
+          li.onclick = function() {
+            document.getElementById("pageName").innerHTML = this.innerHTML;
+            document.getElementById("pageToken").innerHTML = this.dataset.token;
+            document.getElementById("pageLink").setAttribute("href", this.dataset.link);
+          };
+          list.appendChild(li);
+          i++;
+        }
       }
       console.log("done");
     });
   };
 })(this);
 
-window.fbAsyncInit = function() {
-  FB.init({
-    appId: document.getElementById("fb-root").getAttribute("data-app-id"),
-    status: true,
-    cookie: true,
-    xfbml: true
-  });
-  FB.Event.subscribe('auth.login', function(response) {
-    return window.location = window.location;
-  });
-  FB.Canvas.setAutoGrow();
-  return FB.getLoginStatus(function(data) {
-    var accessToken, uid;
-    if (data.status === "connected") {
-      uid = data.authResponse.userID;
-      accessToken = data.authResponse.accessToken;
-      return FB.api("/me", function(data) {
-        return console.log("Hello " + data.name);
-      });
-    } else {
-      if (response.status === "not_authorized") {
-
-      } else {
-
-      }
-    }
-  });
+window.requestPermission = function() {
+  $('#pageName').text('');
+  return $('#pageError').text('Please give this app requested permissions to use it :)');
 };
+
+window.requestLogin = function() {
+  $('#pageName').text('');
+  return $('#pageError').text('Please login to this app to use it :)');
+};
+
+window.setPageMask = (function(_this) {
+  return function(maskSelector) {
+    var am, nm;
+    am = $('.activeMask');
+    nm = $(maskSelector + "");
+    console.log($(maskSelector));
+    if ($(am)[0] === $(nm)[0]) {
+      return console.log("no change");
+    } else {
+      am.velocity("transition.flipXOut");
+      am.removeClass('activeMask');
+      nm.velocity("transition.flipXIn");
+      return nm.addClass('activeMask');
+    }
+  };
+})(this);
+
+window.fbAsyncInit = (function(_this) {
+  return function() {
+    FB.init({
+      appId: document.getElementById("fb-root").getAttribute("data-app-id"),
+      status: true,
+      cookie: true,
+      xfbml: true
+    });
+    FB.Event.subscribe('auth.login', function(response) {
+      return window.location = window.location;
+    });
+    FB.Canvas.setAutoGrow();
+    return FB.getLoginStatus(function(data) {
+      var accessToken, uid;
+      if (data.status === "connected") {
+        uid = data.authResponse.userID;
+        accessToken = data.authResponse.accessToken;
+        return FB.api("/me", function(data) {
+          setPageMask('.content');
+          return pageLogin();
+        });
+      } else if (data.status === "not_authorized") {
+        return setPageMask('.loadingPermission');
+      } else {
+        return setPageMask('.loadingLogin');
+      }
+    });
+  };
+})(this);
 
 PageScript = document.getElementsByTagName("script")[0];
 

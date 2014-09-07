@@ -11,20 +11,38 @@
 }
 
 body {
-	background: #FFF;
+	background: #3B5998;
+     color: #f7f7f7;
       font-family: 'Source Sans Pro', sans-serif;
+      font-weight: 300;
 
 
+}
+
+ul {
+     list-style-type: none;
+}
+
+.mask {
+     display: none;
+}
+
+.loadingLogin {
+     text-align: center;
 }
 
 .btn {
      cursor: pointer;
      padding: 10px 5px;
-     background: #61b3d3;
-     color: #fff;
+     margin: 10px;
+     border: 1px solid #f7f7f7;
+     color: #f7f7f7;
      width: 150px;
      text-align: center;
      text-transform: capitalize;
+     -webkit-border-radius: 1px;
+     -moz-border-radius: 1px;
+     border-radius: 1px;
 
 }
 
@@ -37,6 +55,31 @@ body {
      text-overflow: ellipsis;
 }
 
+.truncate {
+  width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .margin-top {
      margin-top: 45px;
+}
+
+
+#app-left {
+     width: 40%;
+     height: 100%;
+     display: fixed;     
+     float: left;
+     padding: 10px;
+
+}
+
+
+#app-right {
+     width: 40%;
+     height: 100%;
+     display: fixed;
+     float: right;
 }
