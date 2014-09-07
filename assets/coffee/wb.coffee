@@ -2,7 +2,12 @@
 # You should add the Facebook App ID and the channel url (optional), in the #fb-root element, as a data- attribute:
 #   <div id="fb-root" data-app-id="<%= ENV['FACEBOOK_APP_ID'] %>" data-channel-url="<%= url_no_scheme('/channel.html') %>"></div>
 #
-window.clickToPublish = =>
+
+
+
+
+
+window.publishHelloWorld = =>
 	pageToken = document.getElementById("pageToken").innerHTML
 	FB.api "/me/feed", "post",
 		message: "Hello, world! #{Math.random(1000)}"
@@ -13,7 +18,7 @@ window.clickToPublish = =>
 			document.getElementById("publishBtn").innerHTML = "API response is " + response.id
 
 
-window.startLogin = =>
+window.pageLogin = =>
 	console.log 'loggin'
 	FB.api "/me/accounts?fields=name,access_token,link", (response) ->
 	  console.log response
