@@ -23,11 +23,33 @@ ul {
      list-style-type: none;
 }
 
+
+.post-bar {
+padding: 5px;
+     -webkit-border-radius: 2px;
+     -moz-border-radius: 2px;
+     border-radius: 2px;
+     border: 1px solid #3B5998;
+
+
+
+}
+
+.post-bar:hover {
+     border-color: #8b9dc3;
+}
+
+.post-bar.selected {
+     background-color: #3b5998;
+     border-color: #fff;
+     color: #fff;
+}
+
 .mask {
      display: none;
      padding: 10px;
      border: 1px solid #f7f7f7;
-     width: 60%;
+     width: 40%;
      text-align: center;
      margin: center;
 
@@ -35,6 +57,11 @@ ul {
 
 .loadingLogin {
      text-align: center;
+}
+
+.post-list {
+     padding: 20px;
+     line-height: 36px;
 }
 
 .btn {
