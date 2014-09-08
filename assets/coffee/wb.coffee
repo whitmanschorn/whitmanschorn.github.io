@@ -4,7 +4,7 @@
 #
 
 
-
+App = {}
 
 
 window.publishHelloWorld = =>
@@ -19,31 +19,42 @@ window.publishHelloWorld = =>
 
 
 window.pageLogin = =>
-    console.log 'loggin'
     FB.api "/me/accounts?fields=name,access_token,link", (response) ->
         console.log response
         list = document.getElementById("pagesList")
         
         if response.error?
             #call attention to the error
-            console.log 'plese check that you have logged in and have authorized this app :)'
+            setPageMask('.loadingLogin')
         else if response.data?
             i = 0
-            while i < response.data.length
-                li = document.createElement("li")
-                li.innerHTML = response.data[i].name
-                li.dataset.token = response.data[i].access_token
-                li.dataset.link = response.data[i].link
-                li.className = "btn btn-mini"
-                li.onclick = ->
-                  document.getElementById("pageName").innerHTML = @innerHTML
-                  document.getElementById("pageToken").innerHTML = @dataset.token
-                  document.getElementById("pageLink").setAttribute "href", @dataset.link
-                  return
 
-                list.appendChild li
-                i++
-        console.log "done"
+            #only page? auto-pick
+            if response.data.length == 1
+                autoSelected = response.data[0]
+                document.getElementById("pageName").innerHTML = autoSelected.name
+                document.getElementById("pageToken").innerHTML = autoSelected.access_token
+                document.getElementById("pageLink").setAttribute "href", autoSelected.link
+                initApp(autoSelected.access_token, autoSelected.id)
+            else
+                while i < response.data.length
+                    li = document.createElement("li")
+                    li.innerHTML = response.data[i].name
+                    li.dataset.token = response.data[i].access_token
+                    li.dataset.link = response.data[i].link
+                    li.dataset.id = esponse.data[i].id
+                    li.className = "btn btn-mini"
+                    li.onclick = ->
+                      document.getElementById("pageName").innerHTML = @innerHTML
+                      document.getElementById("pageToken").innerHTML = @dataset.token
+                      document.getElementById("pageLink").setAttribute "href", @dataset.link
+                      initApp(@dataset.token, @dataset.id)
+                      return
+
+                    list.appendChild li
+                    i++
+        
+
         return
 
 
@@ -72,6 +83,18 @@ window.setPageMask = (maskSelector) =>
             .velocity("transition.flipXIn")    
         #add activeMas
         nm.addClass 'activeMask'
+
+
+
+window.initApp = (token, page_id) ->
+    posts = []
+    FB.api("/#{page_id}/feed", (data) ->
+                # TODO: THESE ARE OUT POSTS
+                if data.data?
+                    @feed = new App.FeedCollectionView({collection: new App.FeedCollection( _.map(data.data, (s) -> new App.PostModel(s) ) )})
+                    @feed.render()
+                
+            )
 
 
 

@@ -25,6 +25,12 @@ ul {
 
 .mask {
      display: none;
+     padding: 10px;
+     border: 1px solid #f7f7f7;
+     width: 60%;
+     text-align: center;
+     margin: center;
+
 }
 
 .loadingLogin {
@@ -68,18 +74,18 @@ ul {
 
 
 #app-left {
-     width: 40%;
+
      height: 100%;
-     display: fixed;     
-     float: left;
      padding: 10px;
+     margin: auto;
 
 }
 
 
 #app-right {
-     width: 40%;
+     position: absolute;
+     top: 10px;
+     right: 20px;
      height: 100%;
-     display: fixed;
-     float: right;
+     margin: auto;
 }
