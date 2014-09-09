@@ -32,21 +32,20 @@ window.pageLogin = =>
             #only page? auto-pick
             if response.data.length == 1
                 autoSelected = response.data[0]
-                document.getElementById("pageName").innerHTML =  "<a href=\"" + autoSelected.link + "\">" + autoSelected.name + "</a>"
+                document.getElementById("pageName").innerHTML =  autoSelected.name + "<a href=\"" + autoSelected.link + "\">" + "(fb)" + "</a>"
                 document.getElementById("pageToken").innerHTML = autoSelected.access_token
-                initApp(autoSelected.access_token, autoSelected.id)
+                initApp(autoSelected.id)
             else
                 while i < response.data.length
                     li = document.createElement("li")
-                    li.innerHTML = "<a href=\"" + response.data[i].link + "\">" + response.data[i].name + "</a>"
+                    li.innerHTML = response.data[i].name + "<a href=\"" + response.data[i].link + "\">" + "(fb)" + "</a>"
                     li.dataset.token = response.data[i].access_token
                     li.dataset.link = response.data[i].link
-                    li.dataset.id = esponse.data[i].id
+                    li.dataset.id = response.data[i].id
                     li.className = "btn btn-mini"
                     li.onclick = ->
                       document.getElementById("pageName").innerHTML = @innerHTML
-                      document.getElementById("pageToken").innerHTML = @dataset.token
-                      initApp(@dataset.token, @dataset.id)
+                      initApp(@dataset.id)
                       return
 
                     list.appendChild li
@@ -84,7 +83,7 @@ window.setPageMask = (maskSelector) =>
 
 
 
-window.initApp = (token, page_id) ->
+window.initApp = (page_id) ->
     FB.api("/#{page_id}/feed", (data) ->
                 # TODO: THESE ARE OUT POSTS
                 if data.data?
@@ -98,7 +97,7 @@ window.fetchInsightData = (page_id) ->
                 # TODO: THESE ARE OUT POSTS
                 console.log "insight"
                 console.log data
-                if data.data.length is 0 then data.data = 'No data for this time period'
+                if data.data.length is 0 then data.data = 'No data for this time period :('
                 if data.data?
                     @insight = new App.PostInsightView({model: new Backbone.Model({ insight: data.data})})
                     @insight.render()

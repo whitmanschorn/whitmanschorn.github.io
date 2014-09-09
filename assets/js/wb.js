@@ -30,21 +30,20 @@ window.pageLogin = (function(_this) {
         i = 0;
         if (response.data.length === 1) {
           autoSelected = response.data[0];
-          document.getElementById("pageName").innerHTML = "<a href=\"" + autoSelected.link + "\">" + autoSelected.name + "</a>";
+          document.getElementById("pageName").innerHTML = autoSelected.name + "<a href=\"" + autoSelected.link + "\">" + "(fb)" + "</a>";
           document.getElementById("pageToken").innerHTML = autoSelected.access_token;
-          initApp(autoSelected.access_token, autoSelected.id);
+          initApp(autoSelected.id);
         } else {
           while (i < response.data.length) {
             li = document.createElement("li");
-            li.innerHTML = "<a href=\"" + response.data[i].link + "\">" + response.data[i].name + "</a>";
+            li.innerHTML = response.data[i].name + "<a href=\"" + response.data[i].link + "\">" + "(fb)" + "</a>";
             li.dataset.token = response.data[i].access_token;
             li.dataset.link = response.data[i].link;
-            li.dataset.id = esponse.data[i].id;
+            li.dataset.id = response.data[i].id;
             li.className = "btn btn-mini";
             li.onclick = function() {
               document.getElementById("pageName").innerHTML = this.innerHTML;
-              document.getElementById("pageToken").innerHTML = this.dataset.token;
-              initApp(this.dataset.token, this.dataset.id);
+              initApp(this.dataset.id);
             };
             list.appendChild(li);
             i++;
@@ -82,7 +81,7 @@ window.setPageMask = (function(_this) {
   };
 })(this);
 
-window.initApp = function(token, page_id) {
+window.initApp = function(page_id) {
   return FB.api("/" + page_id + "/feed", function(data) {
     if (data.data != null) {
       this.feed = new App.FeedCollectionView({
@@ -100,7 +99,7 @@ window.fetchInsightData = function(page_id) {
     console.log("insight");
     console.log(data);
     if (data.data.length === 0) {
-      data.data = 'No data for this time period';
+      data.data = 'No data for this time period :(';
     }
     if (data.data != null) {
       this.insight = new App.PostInsightView({
