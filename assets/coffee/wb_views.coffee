@@ -96,7 +96,9 @@ class App.FeedCollection extends Backbone.Collection
 class App.FeedCollectionView extends Backbone.View
 
 	render: ->
+		
 		$('.post-list').empty()
+
 		@collection.each (post) =>
 			postR = switch
 				when post.get('type') is 'status' then new App.PostStatusView({model: post})
@@ -105,6 +107,8 @@ class App.FeedCollectionView extends Backbone.View
 				else null
 			$('.post-list').append postR.render()
 
+		$('.post-list li').velocity("transition.flipYIn", {stagger: 100})
+	
 
 
 

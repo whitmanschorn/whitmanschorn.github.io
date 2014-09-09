@@ -80,6 +80,10 @@ ul {
      line-height: 36px;
 }
 
+.post-list li {
+     display: none;
+}
+
 .btn {
      cursor: pointer;
      padding: 10px 5px;
