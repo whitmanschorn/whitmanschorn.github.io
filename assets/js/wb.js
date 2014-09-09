@@ -37,7 +37,7 @@ window.pageLogin = (function(_this) {
             li.dataset.token = response.data[i].access_token;
             li.dataset.link = response.data[i].link;
             li.dataset.id = response.data[i].id;
-            li.className = "btn btn-mini";
+            li.className = "btn-mini";
             li.onclick = function() {
               document.getElementById("pageName").innerHTML = this.innerHTML;
               initApp(this.dataset.id);

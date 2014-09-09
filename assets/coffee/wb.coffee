@@ -39,7 +39,7 @@ window.pageLogin = =>
                     li.dataset.token = response.data[i].access_token
                     li.dataset.link = response.data[i].link
                     li.dataset.id = response.data[i].id
-                    li.className = "btn btn-mini"
+                    li.className = "btn-mini"
                     li.onclick = ->
                       document.getElementById("pageName").innerHTML = @innerHTML
                       initApp(@dataset.id)

@@ -114,9 +114,8 @@ a:hover {
 
 .important {
      text-align: center;
-     font-size: 36px;
+     font-size: 28px;
      padding: 10px;
-     max-width: 500px;
      display: inline-block;
      text-overflow: ellipsis;
 }
@@ -148,5 +147,8 @@ a:hover {
      right: 20px;
      height: 100%;
      margin: auto;
-     width: 400px;
+     max-width: 400px;
+     height: 100%;
+     overflow-x: hidden;
+     overflow-y: scroll;
 }
