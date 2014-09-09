@@ -13,14 +13,11 @@ window.publishHelloWorld = =>
         message: "Hello, world! #{Math.random(1000)}"
         access_token: pageToken
         , (response) ->
-            console.log "API response"
-            console.log response
             document.getElementById("publishBtn").innerHTML = "API response is " + response.id
 
 
 window.pageLogin = =>
     FB.api "/me/accounts?fields=name,access_token,link", (response) ->
-        console.log response
         list = document.getElementById("pagesList")
         
         if response.error?
@@ -68,9 +65,8 @@ window.requestLogin = ->
 window.setPageMask = (maskSelector) =>
     am = $('.activeMask')
     nm = $( maskSelector + "")
-    console.log $(maskSelector)
     if $(am)[0] == $(nm)[0]
-        console.log "no change"
+        console.error "no change in mask"
     else
         #am transition out, nm transition in
         am
@@ -95,12 +91,12 @@ window.initApp = (page_id) ->
 window.fetchInsightData = (page_id) ->
     FB.api("/#{page_id}/insights/page_impressions", (data) ->
                 # TODO: THESE ARE OUT POSTS
-                console.log "insight"
-                console.log data
                 if data.data.length is 0 then data.data = 'No data for this time period :('
                 if data.data?
-                    @insight = new App.PostInsightView({model: new Backbone.Model({ insight: data.data})})
-                    @insight.render()
+                    console.log 'using data'
+                    console.log data
+                    @insighter = new App.PostInsightView({model: new Backbone.Model({ insight: data.data})})
+                    @insighter.render()
                   
                 
             )

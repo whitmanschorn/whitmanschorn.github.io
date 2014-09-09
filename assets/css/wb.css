@@ -47,6 +47,10 @@ ul {
 
 }
 
+.post-misc {
+     font-size: 11px;
+}
+
 .post-bar:hover {
      border-color: #8b9dc3;
 }

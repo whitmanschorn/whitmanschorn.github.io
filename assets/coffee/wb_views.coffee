@@ -37,7 +37,7 @@ class App.PostView extends Backbone.View
 	renderPostSelection: ->
 		detail = new App.PostDetailView({model: @model})
 		$('#app-right').velocity("transition.slideUpOut", 
-			duration: 100,
+			duration: 150,
 			complete: ->
 				$('#post-detail').empty()
 				$('#post-detail').append detail.render()
@@ -49,7 +49,8 @@ class App.PostView extends Backbone.View
 
 class App.PostInsightView extends Backbone.View
 	postInsightTemplate = Handlebars.compile($('#post-insight-template').html())
-	
+	className: 'insight-view'
+
 	render: =>
 		@$el.html postInsightTemplate({ insight: @model.get('insight') })
 		$('.insight-section').empty()
@@ -97,7 +98,6 @@ class App.FeedCollectionView extends Backbone.View
 	render: ->
 		$('.post-list').empty()
 		@collection.each (post) =>
-			console.log post.get('type')
 			postR = switch
 				when post.get('type') is 'status' then new App.PostStatusView({model: post})
 				when post.get('type') is 'photo' then new App.PostPhotoView({model: post})

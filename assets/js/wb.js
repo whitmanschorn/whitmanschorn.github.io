@@ -11,8 +11,6 @@ window.publishHelloWorld = (function(_this) {
       message: "Hello, world! " + (Math.random(1000)),
       access_token: pageToken
     }, function(response) {
-      console.log("API response");
-      console.log(response);
       return document.getElementById("publishBtn").innerHTML = "API response is " + response.id;
     });
   };
@@ -22,7 +20,6 @@ window.pageLogin = (function(_this) {
   return function() {
     return FB.api("/me/accounts?fields=name,access_token,link", function(response) {
       var autoSelected, i, li, list;
-      console.log(response);
       list = document.getElementById("pagesList");
       if (response.error != null) {
         setPageMask('.loadingLogin');
@@ -69,9 +66,8 @@ window.setPageMask = (function(_this) {
     var am, nm;
     am = $('.activeMask');
     nm = $(maskSelector + "");
-    console.log($(maskSelector));
     if ($(am)[0] === $(nm)[0]) {
-      return console.log("no change");
+      return console.error("no change in mask");
     } else {
       am.velocity("transition.flipXOut");
       am.removeClass('activeMask');
@@ -96,18 +92,18 @@ window.initApp = function(page_id) {
 
 window.fetchInsightData = function(page_id) {
   return FB.api("/" + page_id + "/insights/page_impressions", function(data) {
-    console.log("insight");
-    console.log(data);
     if (data.data.length === 0) {
       data.data = 'No data for this time period :(';
     }
     if (data.data != null) {
-      this.insight = new App.PostInsightView({
+      console.log('using data');
+      console.log(data);
+      this.insighter = new App.PostInsightView({
         model: new Backbone.Model({
           insight: data.data
         })
       });
-      return this.insight.render();
+      return this.insighter.render();
     }
   });
 };
