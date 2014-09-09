@@ -30,14 +30,13 @@ window.pageLogin = (function(_this) {
         i = 0;
         if (response.data.length === 1) {
           autoSelected = response.data[0];
-          document.getElementById("pageName").innerHTML = autoSelected.name;
+          document.getElementById("pageName").innerHTML = "<a href=\"" + autoSelected.link + "\">" + autoSelected.name + "</a>";
           document.getElementById("pageToken").innerHTML = autoSelected.access_token;
-          document.getElementById("pageLink").setAttribute("href", autoSelected.link);
           initApp(autoSelected.access_token, autoSelected.id);
         } else {
           while (i < response.data.length) {
             li = document.createElement("li");
-            li.innerHTML = response.data[i].name;
+            li.innerHTML = "<a href=\"" + response.data[i].link + "\">" + response.data[i].name + "</a>";
             li.dataset.token = response.data[i].access_token;
             li.dataset.link = response.data[i].link;
             li.dataset.id = esponse.data[i].id;
@@ -45,7 +44,6 @@ window.pageLogin = (function(_this) {
             li.onclick = function() {
               document.getElementById("pageName").innerHTML = this.innerHTML;
               document.getElementById("pageToken").innerHTML = this.dataset.token;
-              document.getElementById("pageLink").setAttribute("href", this.dataset.link);
               initApp(this.dataset.token, this.dataset.id);
             };
             list.appendChild(li);
@@ -85,8 +83,6 @@ window.setPageMask = (function(_this) {
 })(this);
 
 window.initApp = function(token, page_id) {
-  var posts;
-  posts = [];
   return FB.api("/" + page_id + "/feed", function(data) {
     if (data.data != null) {
       this.feed = new App.FeedCollectionView({
@@ -95,6 +91,24 @@ window.initApp = function(token, page_id) {
         }))
       });
       return this.feed.render();
+    }
+  });
+};
+
+window.fetchInsightData = function(page_id) {
+  return FB.api("/" + page_id + "/insights/page_impressions", function(data) {
+    console.log("insight");
+    console.log(data);
+    if (data.data.length === 0) {
+      data.data = 'No data for this time period';
+    }
+    if (data.data != null) {
+      this.insight = new App.PostInsightView({
+        model: new Backbone.Model({
+          insight: data.data
+        })
+      });
+      return this.insight.render();
     }
   });
 };

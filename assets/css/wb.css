@@ -24,12 +24,22 @@ ul {
 }
 
 
+.post-list {
+     width: 400px;
+}
+
 .post-bar {
 padding: 5px;
      -webkit-border-radius: 2px;
      -moz-border-radius: 2px;
      border-radius: 2px;
      border: 1px solid #3B5998;
+     -webkit-transition: all 100ms ease-in-out;
+     -moz-transition: all 100ms ease-in-out;
+     -ms-transition: all 100ms ease-in-out;
+     -o-transition: all 100ms ease-in-out;
+     transition: all 100ms ease-in-out;
+
 
 
 
@@ -79,6 +89,23 @@ padding: 5px;
 
 }
 
+a {
+     color: #fff;
+     text-decoration: none;
+     -webkit-transition: all 100ms ease-in-out;
+     -moz-transition: all 100ms ease-in-out;
+     -ms-transition: all 100ms ease-in-out;
+     -o-transition: all 100ms ease-in-out;
+     transition: all 100ms ease-in-out;
+
+
+
+}
+
+a:hover {
+     color: #8b9dc3;
+}
+
 .important {
      text-align: center;
      font-size: 36px;
@@ -110,9 +137,10 @@ padding: 5px;
 
 
 #app-right {
-     position: absolute;
+     position: fixed;
      top: 10px;
      right: 20px;
      height: 100%;
      margin: auto;
+     width: 400px;
 }

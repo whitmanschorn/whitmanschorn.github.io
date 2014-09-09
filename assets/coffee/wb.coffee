@@ -32,14 +32,13 @@ window.pageLogin = =>
             #only page? auto-pick
             if response.data.length == 1
                 autoSelected = response.data[0]
-                document.getElementById("pageName").innerHTML = autoSelected.name
+                document.getElementById("pageName").innerHTML =  "<a href=\"" + autoSelected.link + "\">" + autoSelected.name + "</a>"
                 document.getElementById("pageToken").innerHTML = autoSelected.access_token
-                document.getElementById("pageLink").setAttribute "href", autoSelected.link
                 initApp(autoSelected.access_token, autoSelected.id)
             else
                 while i < response.data.length
                     li = document.createElement("li")
-                    li.innerHTML = response.data[i].name
+                    li.innerHTML = "<a href=\"" + response.data[i].link + "\">" + response.data[i].name + "</a>"
                     li.dataset.token = response.data[i].access_token
                     li.dataset.link = response.data[i].link
                     li.dataset.id = esponse.data[i].id
@@ -47,7 +46,6 @@ window.pageLogin = =>
                     li.onclick = ->
                       document.getElementById("pageName").innerHTML = @innerHTML
                       document.getElementById("pageToken").innerHTML = @dataset.token
-                      document.getElementById("pageLink").setAttribute "href", @dataset.link
                       initApp(@dataset.token, @dataset.id)
                       return
 
@@ -87,12 +85,24 @@ window.setPageMask = (maskSelector) =>
 
 
 window.initApp = (token, page_id) ->
-    posts = []
     FB.api("/#{page_id}/feed", (data) ->
                 # TODO: THESE ARE OUT POSTS
                 if data.data?
                     @feed = new App.FeedCollectionView({collection: new App.FeedCollection( _.map(data.data, (s) -> new App.PostModel(s) ) )})
                     @feed.render()
+                
+            )
+
+window.fetchInsightData = (page_id) ->
+    FB.api("/#{page_id}/insights/page_impressions", (data) ->
+                # TODO: THESE ARE OUT POSTS
+                console.log "insight"
+                console.log data
+                if data.data.length is 0 then data.data = 'No data for this time period'
+                if data.data?
+                    @insight = new App.PostInsightView({model: new Backbone.Model({ insight: data.data})})
+                    @insight.render()
+                  
                 
             )
 
