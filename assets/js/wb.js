@@ -78,7 +78,7 @@ window.setPageMask = (function(_this) {
 })(this);
 
 window.initApp = function(page_id) {
-  return FB.api("/" + page_id + "/feed", function(data) {
+  return FB.api("/" + page_id + "/promotable_posts", function(data) {
     if (data.data != null) {
       this.feed = new App.FeedCollectionView({
         collection: new App.FeedCollection(_.map(data.data, function(s) {
@@ -99,7 +99,7 @@ window.fetchInsightData = function(page_id) {
       console.log('using data');
       console.log(data);
       this.insighter = new App.PostInsightView({
-        model: new Backbone.Model({
+        model: new App.PostModel({
           insight: data.data
         })
       });

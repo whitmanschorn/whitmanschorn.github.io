@@ -80,7 +80,7 @@ window.setPageMask = (maskSelector) =>
 
 
 window.initApp = (page_id) ->
-    FB.api("/#{page_id}/feed", (data) ->
+    FB.api("/#{page_id}/promotable_posts", (data) ->
                 # TODO: THESE ARE OUT POSTS
                 if data.data?
                     @feed = new App.FeedCollectionView({collection: new App.FeedCollection( _.map(data.data, (s) -> new App.PostModel(s) ) )})
@@ -95,7 +95,7 @@ window.fetchInsightData = (page_id) ->
                 if data.data?
                     console.log 'using data'
                     console.log data
-                    @insighter = new App.PostInsightView({model: new Backbone.Model({ insight: data.data})})
+                    @insighter = new App.PostInsightView({model: new App.PostModel({ insight: data.data})})
                     @insighter.render()
                   
                 

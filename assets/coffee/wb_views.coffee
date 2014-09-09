@@ -1,11 +1,5 @@
-
-Handlebars.registerHelper "fullName", (person) ->
-  person.firstName + " " + person.lastName
-
-
 Handlebars.registerHelper "relativeTime", (timeString) ->
   moment(timeString).fromNow()
-
 
 
 window.renderData = =>
@@ -13,6 +7,17 @@ window.renderData = =>
 
 
 class App.PostModel extends Backbone.Model
+
+	initialize: (options) ->
+		#find our useful timestamp
+		if options.is_published? and options.is_published is false
+			@set('timestamp', options.scheduled_publish_time * 1000)
+			console.log 'marty'
+		else
+			@set('timestamp', options.updated_time)
+
+
+
 
 
 
@@ -44,9 +49,6 @@ class App.PostView extends Backbone.View
 				$('#app-right').velocity("transition.slideUpIn", {stagger: 100}))
 			
 
-
-
-
 class App.PostInsightView extends Backbone.View
 	postInsightTemplate = Handlebars.compile($('#post-insight-template').html())
 	className: 'insight-view'
@@ -57,9 +59,6 @@ class App.PostInsightView extends Backbone.View
 		$('.insight-section').append @$el
 		@$el
 		
-
-
-
 
 class App.PostDetailView extends Backbone.View
 	postDetailTemplate = Handlebars.compile($('#post-detail-template').html())
@@ -96,9 +95,7 @@ class App.FeedCollection extends Backbone.Collection
 class App.FeedCollectionView extends Backbone.View
 
 	render: ->
-		
 		$('.post-list').empty()
-
 		@collection.each (post) =>
 			postR = switch
 				when post.get('type') is 'status' then new App.PostStatusView({model: post})
