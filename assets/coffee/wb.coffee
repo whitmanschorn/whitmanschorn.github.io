@@ -26,11 +26,12 @@ window.pageLogin = =>
         else if response.data?
             i = 0
 
+
+            ALWAYS_FIRST_PAGE = true
             #only page? auto-pick
-            if response.data.length == 1
+            if response.data.length == 1 or ALWAYS_FIRST_PAGE
                 autoSelected = response.data[0]
                 document.getElementById("pageName").innerHTML =  autoSelected.name + "<a href=\"" + autoSelected.link + "\">" + "(fb)" + "</a>"
-                document.getElementById("pageToken").innerHTML = autoSelected.access_token
                 initApp(autoSelected.id)
             else
                 while i < response.data.length
@@ -88,14 +89,17 @@ window.initApp = (page_id) ->
                 
             )
 
-window.fetchInsightData = (page_id) ->
-    FB.api("/#{page_id}/insights/page_impressions", (data) ->
+window.fetchInsightData = (page_id) =>
+    console.log 'pid'
+    console.log page_id
+    FB.api("/#{page_id}/insights/post_impressions?since=1410015034&until=1410315034", (data) ->
                 # TODO: THESE ARE OUT POSTS
-                if data.data.length is 0 then data.data = 'No data for this time period :('
-                if data.data?
-                    console.log 'using data'
+                if data.error? 
+                    data.data = data.error
+
+                if data?
                     console.log data
-                    @insighter = new App.PostInsightView({model: new App.PostModel({ insight: data.data})})
+                    @insighter = new App.PostInsightView(model: new Backbone.Model(data))
                     @insighter.render()
                   
                 
@@ -122,11 +126,29 @@ window.fbAsyncInit = =>
     FB.getLoginStatus((data) ->
         if(data.status == "connected")
        #     setPageMask('#content') #means no mask
+            console.log "connected data"
+            console.log data
             uid = data.authResponse.userID
             accessToken = data.authResponse.accessToken;
+
+
+            # FB.api "/me/permissions", (response) ->
+            #     console.log "perms"
+            #     console.log response
+
+
+
+
+            #cry for me i cant get permissions
+            #accessToken = 'CAACEdEose0cBAIVIv3zyEOEJdu6I4h91yBN7OvoGtfSirKQjJ1GMCpKY7ZAa48JAKE7tjyz6Gk1etOQHUWEE17REUiEv3zXPoCZBXRAfZBkZCTi0mZCjtFZBZCpkjFazKsJdwUFqfSHPceZBSO89S1ba3RNj2yV5rYRK9iiI1ZCtBWmlnra8E6Y7vXMfDkWTLgDZBiTUmkdUtGdhtdmMe2E2ar'
             FB.api("/me", (data) ->
                 # TODO: INITIALIZE APP HERE.
                 setPageMask('.content')
+
+
+
+
+
                 pageLogin()
                 
             )

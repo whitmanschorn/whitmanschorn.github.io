@@ -19,16 +19,16 @@ window.publishHelloWorld = (function(_this) {
 window.pageLogin = (function(_this) {
   return function() {
     return FB.api("/me/accounts?fields=name,access_token,link", function(response) {
-      var autoSelected, i, li, list;
+      var ALWAYS_FIRST_PAGE, autoSelected, i, li, list;
       list = document.getElementById("pagesList");
       if (response.error != null) {
         setPageMask('.loadingLogin');
       } else if (response.data != null) {
         i = 0;
-        if (response.data.length === 1) {
+        ALWAYS_FIRST_PAGE = true;
+        if (response.data.length === 1 || ALWAYS_FIRST_PAGE) {
           autoSelected = response.data[0];
           document.getElementById("pageName").innerHTML = autoSelected.name + "<a href=\"" + autoSelected.link + "\">" + "(fb)" + "</a>";
-          document.getElementById("pageToken").innerHTML = autoSelected.access_token;
           initApp(autoSelected.id);
         } else {
           while (i < response.data.length) {
@@ -90,23 +90,24 @@ window.initApp = function(page_id) {
   });
 };
 
-window.fetchInsightData = function(page_id) {
-  return FB.api("/" + page_id + "/insights/page_impressions", function(data) {
-    if (data.data.length === 0) {
-      data.data = 'No data for this time period :(';
-    }
-    if (data.data != null) {
-      console.log('using data');
-      console.log(data);
-      this.insighter = new App.PostInsightView({
-        model: new App.PostModel({
-          insight: data.data
-        })
-      });
-      return this.insighter.render();
-    }
-  });
-};
+window.fetchInsightData = (function(_this) {
+  return function(page_id) {
+    console.log('pid');
+    console.log(page_id);
+    return FB.api("/" + page_id + "/insights/post_impressions?since=1410015034&until=1410315034", function(data) {
+      if (data.error != null) {
+        data.data = data.error;
+      }
+      if (data != null) {
+        console.log(data);
+        this.insighter = new App.PostInsightView({
+          model: new Backbone.Model(data)
+        });
+        return this.insighter.render();
+      }
+    });
+  };
+})(this);
 
 window.fbAsyncInit = (function(_this) {
   return function() {
@@ -123,6 +124,8 @@ window.fbAsyncInit = (function(_this) {
     return FB.getLoginStatus(function(data) {
       var accessToken, uid;
       if (data.status === "connected") {
+        console.log("connected data");
+        console.log(data);
         uid = data.authResponse.userID;
         accessToken = data.authResponse.accessToken;
         return FB.api("/me", function(data) {

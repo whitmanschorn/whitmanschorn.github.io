@@ -12,7 +12,6 @@ class App.PostModel extends Backbone.Model
 		#find our useful timestamp
 		if options.is_published? and options.is_published is false
 			@set('timestamp', options.scheduled_publish_time * 1000)
-			console.log 'marty'
 		else
 			@set('timestamp', options.updated_time)
 
@@ -54,7 +53,8 @@ class App.PostInsightView extends Backbone.View
 	className: 'insight-view'
 
 	render: =>
-		@$el.html postInsightTemplate({ insight: @model.get('insight') })
+		console.log @model.toJSON
+		@$el.html postInsightTemplate(@model.get('data')[0])
 		$('.insight-section').empty()
 		$('.insight-section').append @$el
 		@$el
@@ -65,7 +65,7 @@ class App.PostDetailView extends Backbone.View
 
 
 	render: =>
-		fetchInsightData()
+		fetchInsightData(@model.get('id'))
 		@$el.html postDetailTemplate({ blob: JSON.stringify(@model.toJSON(), null, 4) })
 		@$el
 

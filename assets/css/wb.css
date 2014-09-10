@@ -42,9 +42,28 @@ ul {
      -o-transition: all 100ms ease-in-out;
      transition: all 100ms ease-in-out;
 
+}
 
 
+.period {
+     display: inline;
+     margin-left: 5px;
 
+}
+
+.period .period-hover {
+     display: none;
+     color: #8b9dc3;
+     font-size: 11px;
+}
+
+.period:hover .period-hover {
+     display: block;
+     position: absolute;
+     background-color: #fff;
+     padding: 3px;
+     margin: 3px;
+     text-wrap: unrestricted;
 }
 
 .post-misc {
