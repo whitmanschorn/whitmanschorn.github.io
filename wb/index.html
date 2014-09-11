@@ -6,7 +6,6 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.4/handlebars.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.backbone.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
-
 <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.2/moment.min.js"></script>
 
 <!-- Whitman Schorn -->
@@ -55,6 +54,8 @@ $(document).ready(function() {
 
 </div>
 
+Compose
+<hr/>
 
 
 
@@ -89,7 +90,7 @@ $(document).ready(function() {
 <br/>
 
 <hr/>
-<span class="wrap-words">{{#each values}} {{value}} {{/each}}</span></div>
+<span class="wrap-words">{{#each values}} <span class="important">{{value}}</span> {{/each}}</span></div>
 
 
 </script>
@@ -97,10 +98,18 @@ $(document).ready(function() {
 
 <script id="post-detail-template" type="text/x-handlebars-template">
 <div class="detail">
-Detail View
+<span class="important capitalize">{{name}} <span class="secondary">{{type}}</span></span>
+<span class="detail-time">{{relativeTime timestamp}}</span>
+
 <hr/>
+<span class="important">{{message}}</span>
+{{#if message}}
+<hr/>
+{{/if}}
 <span>{{blob}}</span></div>
 </script>
+
+
 
 
 

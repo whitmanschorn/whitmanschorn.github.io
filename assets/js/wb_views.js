@@ -66,13 +66,16 @@ App.PostView = (function(_super) {
     });
     return $('#app-right').velocity("transition.slideUpOut", {
       duration: 150,
-      complete: function() {
-        $('#post-detail').empty();
-        $('#post-detail').append(detail.render());
-        return $('#app-right').velocity("transition.slideUpIn", {
-          stagger: 100
-        });
-      }
+      complete: (function(_this) {
+        return function() {
+          fetchInsightData(_this.model.get('id'));
+          $('#post-detail').empty();
+          $('#post-detail').append(detail.render());
+          return $('#app-right').velocity("transition.slideUpIn", {
+            stagger: 100
+          });
+        };
+      })(this)
     });
   };
 
@@ -119,10 +122,10 @@ App.PostDetailView = (function(_super) {
   postDetailTemplate = Handlebars.compile($('#post-detail-template').html());
 
   PostDetailView.prototype.render = function() {
-    fetchInsightData(this.model.get('id'));
-    this.$el.html(postDetailTemplate({
-      blob: JSON.stringify(this.model.toJSON(), null, 4)
-    }));
+    var sm;
+    sm = JSON.stringify(this.model.toJSON(), null, 4);
+    this.model.set('blob', sm);
+    this.$el.html(postDetailTemplate(this.model.toJSON()));
     return this.$el;
   };
 

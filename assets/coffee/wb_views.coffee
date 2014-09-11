@@ -40,12 +40,16 @@ class App.PostView extends Backbone.View
 
 	renderPostSelection: ->
 		detail = new App.PostDetailView({model: @model})
+
 		$('#app-right').velocity("transition.slideUpOut", 
 			duration: 150,
-			complete: ->
+			complete: =>
+				fetchInsightData(@model.get('id'))
 				$('#post-detail').empty()
 				$('#post-detail').append detail.render()
 				$('#app-right').velocity("transition.slideUpIn", {stagger: 100}))
+
+
 			
 
 class App.PostInsightView extends Backbone.View
@@ -63,10 +67,10 @@ class App.PostInsightView extends Backbone.View
 class App.PostDetailView extends Backbone.View
 	postDetailTemplate = Handlebars.compile($('#post-detail-template').html())
 
-
 	render: =>
-		fetchInsightData(@model.get('id'))
-		@$el.html postDetailTemplate({ blob: JSON.stringify(@model.toJSON(), null, 4) })
+		sm = JSON.stringify(@model.toJSON(), null, 4)
+		@model.set('blob', sm)
+		@$el.html postDetailTemplate(@model.toJSON())
 		@$el
 
 
