@@ -101,13 +101,22 @@ class App.ComposeView extends Backbone.View
 	postComposeTemplate = Handlebars.compile($('#post-compose-template').html())
 
 
+	initialize: ->
+		$('.post-list li').click @unselect
+
 	events:
 		'click #compose-switch' : 'composeSwitch'
 		'click #compose-post' : 'composePost'
 		'click #compose-schedule' : 'composeSchedule'
+		'click #compose-cancel' : 'composeCancel'
 		
 
+	select: ->
+		$('.post-list li.selected').removeClass 'selected'
+		$('#compose-btn').addClass 'selected'
 
+	unselect: ->
+		$('#compose-btn').removeClass 'selected'
 
 	composeSwitch: ->
 		console.log 'switch fired'	
@@ -118,8 +127,15 @@ class App.ComposeView extends Backbone.View
 	composeSchedule: ->
 		console.log 'schedule fired'	
 
+	composeCancel: ->
+		console.log 'cancel fired'	
+		@unselect()
+		$('#post-detail').empty()
+
+
 
 	render: =>
+		@select()
 		@$el.html postComposeTemplate({})
 		@$el
 

@@ -103,16 +103,15 @@ $(document).ready(function() {
 <script id="post-detail-template" type="text/x-handlebars-template">
 <div class="detail">
 <span class="important capitalize">{{name}} <span class="secondary">{{type}}</span></span>
-
 <hr/>
-<span class="important">{{message}}</span>
 {{#if message}}
+<span class="important">{{message}}</span>
 <hr/>
 {{/if}}
 
 <span class="detail-time">{{#if is_published}}Published{{else}}Publishing{{/if}} {{relativeTime timestamp}}</span>
-<hr/>
-<span>{{blob}}</span></div>
+
+</div>
 </script>
 
 

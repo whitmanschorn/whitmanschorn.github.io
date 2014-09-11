@@ -204,10 +204,24 @@ App.ComposeView = (function(_super) {
 
   postComposeTemplate = Handlebars.compile($('#post-compose-template').html());
 
+  ComposeView.prototype.initialize = function() {
+    return $('.post-list li').click(this.unselect);
+  };
+
   ComposeView.prototype.events = {
     'click #compose-switch': 'composeSwitch',
     'click #compose-post': 'composePost',
-    'click #compose-schedule': 'composeSchedule'
+    'click #compose-schedule': 'composeSchedule',
+    'click #compose-cancel': 'composeCancel'
+  };
+
+  ComposeView.prototype.select = function() {
+    $('.post-list li.selected').removeClass('selected');
+    return $('#compose-btn').addClass('selected');
+  };
+
+  ComposeView.prototype.unselect = function() {
+    return $('#compose-btn').removeClass('selected');
   };
 
   ComposeView.prototype.composeSwitch = function() {
@@ -222,7 +236,14 @@ App.ComposeView = (function(_super) {
     return console.log('schedule fired');
   };
 
+  ComposeView.prototype.composeCancel = function() {
+    console.log('cancel fired');
+    this.unselect();
+    return $('#post-detail').empty();
+  };
+
   ComposeView.prototype.render = function() {
+    this.select();
     this.$el.html(postComposeTemplate({}));
     return this.$el;
   };
