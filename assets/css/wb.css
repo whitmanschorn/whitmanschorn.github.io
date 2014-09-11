@@ -11,7 +11,7 @@
 }
 
 body {
-	background: #3B5998;
+	background: #3b5998;
      color: #f7f7f7;
       font-family: 'Source Sans Pro', sans-serif;
       font-weight: 300;
@@ -28,10 +28,60 @@ ul {
 }
 
 
+#compose-btn {
+     cursor: pointer;
+     margin: 20px 20px 0px;
+     line-height: 36px;
+     width: 400px;
+}
+
+
+.compose {
+     width: 400px;
+     color: #afbdd4;
+
+
+
+}
+
+.compose input, .compose textarea {
+     border: 1px dotted #afbdd4;
+     color: #fff;
+     background-color: #3b5998;
+     outline: 0;
+     font-size: 18px;
+     line-height: 36px;
+     width: 400px;
+     text-indent: 5px;
+
+}
+
+input#compose-name {
+     text-align: center;
+     text-indent: 0px;
+     font-size: 22px;
+}
+
+.compose-action {
+     cursor: pointer;
+     -webkit-transition: all 100ms ease-in-out;
+     -moz-transition: all 100ms ease-in-out;
+     -ms-transition: all 100ms ease-in-out;
+     -o-transition: all 100ms ease-in-out;
+     transition: all 100ms ease-in-out;
+}
+
+.compose-action:hover {
+     color: #d8dfea;
+}
+
 .post-list {
      width: 400px;
      text-align: left;
+     padding: 20px;
+     line-height: 36px;
 }
+
 
 .post-bar {
      padding: 5px;
@@ -39,7 +89,7 @@ ul {
      -moz-border-radius: 2px;
      border-radius: 2px;
      margin: 5px 0px;
-     border: 1px solid #3B5998;
+     border: 1px solid #3b5998;
      -webkit-transition: all 100ms ease-in-out;
      -moz-transition: all 100ms ease-in-out;
      -ms-transition: all 100ms ease-in-out;
@@ -58,6 +108,11 @@ ul {
 .period .period-hover {
      display: none;
      color: #8b9dc3;
+     font-size: 11px;
+}
+
+.small {
+          color: #8b9dc3;
      font-size: 11px;
 }
 
@@ -98,10 +153,7 @@ ul {
      text-align: center;
 }
 
-.post-list {
-     padding: 20px;
-     line-height: 36px;
-}
+
 
 .post-list li {
      display: none;

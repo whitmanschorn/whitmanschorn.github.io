@@ -204,6 +204,24 @@ App.ComposeView = (function(_super) {
 
   postComposeTemplate = Handlebars.compile($('#post-compose-template').html());
 
+  ComposeView.prototype.events = {
+    'click #compose-switch': 'composeSwitch',
+    'click #compose-post': 'composePost',
+    'click #compose-schedule': 'composeSchedule'
+  };
+
+  ComposeView.prototype.composeSwitch = function() {
+    return console.log('switch fired');
+  };
+
+  ComposeView.prototype.composePost = function() {
+    return console.log('post fired');
+  };
+
+  ComposeView.prototype.composeSchedule = function() {
+    return console.log('schedule fired');
+  };
+
   ComposeView.prototype.render = function() {
     this.$el.html(postComposeTemplate({}));
     return this.$el;
@@ -219,6 +237,7 @@ App.ComposeView = (function(_super) {
     postObject.message = $('#compose-message').text;
     if (postObject.message == null) {
       postObject.link = $('#compose-link').text;
+      postObject.picture = $('#compose-picture').text;
       postObject.name = $('#compose-name').text;
       postObject.caption = $('#compose-caption').text;
       postObject.description = $('#compose-description').text;
@@ -234,7 +253,6 @@ App.ComposeView = (function(_super) {
       duration: 150,
       complete: (function(_this) {
         return function() {
-          fetchInsightData(_this.model.get('id'));
           $('#post-detail').empty();
           $('#post-detail').append(_this.render());
           return $('#app-right').velocity("transition.slideUpIn", {

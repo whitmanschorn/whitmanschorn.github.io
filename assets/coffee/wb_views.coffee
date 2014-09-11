@@ -100,6 +100,25 @@ class App.FeedCollection extends Backbone.Collection
 class App.ComposeView extends Backbone.View
 	postComposeTemplate = Handlebars.compile($('#post-compose-template').html())
 
+
+	events:
+		'click #compose-switch' : 'composeSwitch'
+		'click #compose-post' : 'composePost'
+		'click #compose-schedule' : 'composeSchedule'
+		
+
+
+
+	composeSwitch: ->
+		console.log 'switch fired'	
+
+	composePost: ->
+		console.log 'post fired'	
+
+	composeSchedule: ->
+		console.log 'schedule fired'	
+
+
 	render: =>
 		@$el.html postComposeTemplate({})
 		@$el
@@ -110,11 +129,10 @@ class App.ComposeView extends Backbone.View
 		postObject.message = $('#compose-message').text #for a bunch of fields. 
 		if not postObject.message?
 			postObject.link = $('#compose-link').text
+			postObject.picture = $('#compose-picture').text
 			postObject.name = $('#compose-name').text #title in link preview
 			postObject.caption = $('#compose-caption').text
 			postObject.description = $('#compose-description').text
-
-
 
 
 		if ts = 0
@@ -126,7 +144,6 @@ class App.ComposeView extends Backbone.View
 		$('#app-right').velocity("transition.slideUpOut", 
 			duration: 150,
 			complete: =>
-				fetchInsightData(@model.get('id'))
 				$('#post-detail').empty()
 				$('#post-detail').append @render()
 				$('#app-right').velocity("transition.slideUpIn", {stagger: 100}))

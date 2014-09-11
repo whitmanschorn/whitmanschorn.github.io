@@ -43,9 +43,14 @@ $(document).ready(function() {
 			<span id="pageError" class="error label label-success"></span>
 		</div>
 	</div>
+
+
+<div class="post-bar" id="compose-btn">Compose</div>
+
+<ul class="post-list">
+
+</ul>
 </div>
-<div id="compose-btn">Compose</div>
-<ul class="post-list"></div>
 
 
 </div>
@@ -57,9 +62,7 @@ $(document).ready(function() {
 
 </div>
 
-Compose
-<hr/>
-
+</div>
 
 
 <!-- Templates -->
@@ -100,13 +103,15 @@ Compose
 <script id="post-detail-template" type="text/x-handlebars-template">
 <div class="detail">
 <span class="important capitalize">{{name}} <span class="secondary">{{type}}</span></span>
-<span class="detail-time">{{relativeTime timestamp}}</span>
 
 <hr/>
 <span class="important">{{message}}</span>
 {{#if message}}
 <hr/>
 {{/if}}
+
+<span class="detail-time">{{#if is_published}}Published{{else}}Publishing{{/if}} {{relativeTime timestamp}}</span>
+<hr/>
 <span>{{blob}}</span></div>
 </script>
 
@@ -114,13 +119,24 @@ Compose
 
 <script id="post-compose-template" type="text/x-handlebars-template">
 <div class="compose">
-<div class="compose-field">URL: <input type="text" id="compose-link"/></div>
+<div class="compose-field">URL <input type="text" id="compose-link"/></div>
 <hr/>
-<div class="compose-field"><span class="important">title:  <input type="text" id="compose-name"/></span></div>
+<div class="compose-field"><span class="">Title <input type="text" id="compose-name"/></span></div>
 
-<div class="compose-field">caption:  <input type="text" id="compose-caption"/></div>
+<div class="compose-field">Image URL <input type="text" id="compose-picture"/></div>
 
-<div class="compose-field">description:  <input type="text" id="compose-description"/></div>
+
+<div class="compose-field">Caption <input type="text" id="compose-caption"/></div>
+
+<div class="compose-field">Description 
+
+<textarea id="compose-description" rows="4" cols="50">
+Write a few words here
+</textarea>
+</div>
+
+<span id="compose-switch" class="compose-action small">Switch to Text-only</span>
+<span id="compose-post" class="compose-action small">Post</span> <span id="compose-schedule" class="compose-action small">Schedule</span> 
 
 </script>
 
