@@ -4,14 +4,16 @@ var App, FBScript, PageScript;
 App = {};
 
 window.publishHelloWorld = (function(_this) {
-  return function(page_id) {
-    var pageToken;
-    pageToken = document.getElementById("pageToken").innerHTML;
-    return FB.api("/" + page_id + "/feed", "post", {
+  return function(args) {
+    console.log('hello world args:');
+    console.log(args);
+    return FB.api("/" + args.page_id + "/feed", "post", {
       message: "Hello, world! " + (Math.random(1000)),
-      access_token: pageToken
+      access_token: args.access_token
     }, function(response) {
-      return document.getElementById("publishBtn").innerHTML = "API response is " + response.id;
+      console.log('fb publish response');
+      console.log(response);
+      return this.feed.renderResponse(response);
     });
   };
 })(this);
@@ -29,7 +31,7 @@ window.pageLogin = (function(_this) {
         if (response.data.length === 1 || ALWAYS_FIRST_PAGE) {
           autoSelected = response.data[0];
           document.getElementById("pageName").innerHTML = "<a href=\"" + autoSelected.link + "\">" + "<i class=\"fa fa-facebook-square\"></i>" + "</a> " + autoSelected.name;
-          initApp(autoSelected.id);
+          initApp(autoSelected.id, autoSelected.access_token);
         } else {
           while (i < response.data.length) {
             li = document.createElement("li");
@@ -40,7 +42,7 @@ window.pageLogin = (function(_this) {
             li.className = "btn-mini";
             li.onclick = function() {
               document.getElementById("pageName").innerHTML = this.innerHTML;
-              initApp(this.dataset.id);
+              initApp(this.dataset.id, this.dataset.token);
             };
             list.appendChild(li);
             i++;
@@ -78,7 +80,7 @@ window.setPageMask = (function(_this) {
 })(this);
 
 window.initApp = (function(_this) {
-  return function(page_id) {
+  return function(page_id, access_token) {
     return FB.api("/" + page_id + "/promotable_posts", function(data) {
       if (data.data != null) {
         _this.feed = new App.FeedCollectionView({
@@ -90,7 +92,8 @@ window.initApp = (function(_this) {
         return $('#compose-btn').click(function() {
           this.compose = new App.ComposeView({
             model: new Backbone.Model({
-              page_id: page_id
+              page_id: page_id,
+              access_token: access_token
             })
           });
           return this.compose.renderComposeSelection();
@@ -138,6 +141,10 @@ window.fbAsyncInit = (function(_this) {
         console.log(data);
         uid = data.authResponse.userID;
         accessToken = data.authResponse.accessToken;
+        FB.api("/me/permissions", function(response) {
+          console.log("perms");
+          return console.log(response);
+        });
         return FB.api("/me", function(data) {
           setPageMask('.content');
           return pageLogin();

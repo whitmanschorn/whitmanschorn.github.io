@@ -124,6 +124,7 @@ class App.ComposeView extends Backbone.View
 
 	composePost: ->
 		console.log 'post fired'	
+		@submitPost()
 
 	composeSchedule: ->
 		console.log 'schedule fired'	
@@ -142,8 +143,9 @@ class App.ComposeView extends Backbone.View
 		@$el
 
 	submitPost: (ts = 0) ->
-		page_id = @model.get('page_id')
-		postArgs = {}
+		
+		postArgs = {page_id : @model.get('page_id')}
+		postArgs.access_token = @model.get('access_token')
 		postArgs.message = $('#compose-message').text #for a bunch of fields. 
 		if not postArgs.message?
 			postArgs.link = $('#compose-link').text
@@ -151,11 +153,13 @@ class App.ComposeView extends Backbone.View
 			postArgs.name = $('#compose-name').text #title in link preview
 			postArgs.caption = $('#compose-caption').text
 			postArgs.description = $('#compose-description').text
+			postArgs.access_token = @model.get('access_token')
 
 
 		if ts = 0
 			console.log 'defaulting to now'
 			ts = moment() #defaults to now
+		publishHelloWorld postArgs
 		
 
 	renderComposeSelection: ->

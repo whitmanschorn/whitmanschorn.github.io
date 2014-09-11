@@ -7,13 +7,16 @@
 App = {}
 
 
-window.publishHelloWorld = (page_id) =>
-    pageToken = document.getElementById("pageToken").innerHTML
-    FB.api "/#{page_id}/feed", "post",
+window.publishHelloWorld = (args) =>
+    console.log 'hello world args:'
+    console.log args
+    FB.api "/#{args.page_id}/feed", "post",
         message: "Hello, world! #{Math.random(1000)}"
-        access_token: pageToken
+        access_token: args.access_token
         , (response) ->
-            document.getElementById("publishBtn").innerHTML = "API response is " + response.id
+            console.log 'fb publish response'
+            console.log response
+            @feed.renderResponse response
 
 
 window.pageLogin = =>
@@ -26,13 +29,12 @@ window.pageLogin = =>
         else if response.data?
             i = 0
 
-
             ALWAYS_FIRST_PAGE = true
             #only page? auto-pick
             if response.data.length == 1 or ALWAYS_FIRST_PAGE
                 autoSelected = response.data[0]
                 document.getElementById("pageName").innerHTML = "<a href=\"" + autoSelected.link + "\">" + "<i class=\"fa fa-facebook-square\"></i>" + "</a> " + autoSelected.name
-                initApp(autoSelected.id)
+                initApp(autoSelected.id, autoSelected.access_token)
             else
                 while i < response.data.length
                     li = document.createElement("li")
@@ -43,7 +45,7 @@ window.pageLogin = =>
                     li.className = "btn-mini"
                     li.onclick = ->
                       document.getElementById("pageName").innerHTML = @innerHTML
-                      initApp(@dataset.id)
+                      initApp(@dataset.id, @dataset.token)
                       return
 
                     list.appendChild li
@@ -80,14 +82,14 @@ window.setPageMask = (maskSelector) =>
 
 
 
-window.initApp = (page_id) =>
+window.initApp = (page_id, access_token) =>
     FB.api("/#{page_id}/promotable_posts", (data) =>
                 # TODO: THESE ARE OUT POSTS
                 if data.data?
                     @feed = new App.FeedCollectionView({collection: new App.FeedCollection( _.map(data.data, (s) -> new App.PostModel(s) ) )})
                     @feed.render()
                     $('#compose-btn').click ->
-                        @compose = new App.ComposeView({model: new Backbone.Model({page_id: page_id})})
+                        @compose = new App.ComposeView({model: new Backbone.Model({page_id: page_id, access_token: access_token})})
                         @compose.renderComposeSelection()
             )
 
@@ -134,9 +136,9 @@ window.fbAsyncInit = =>
             accessToken = data.authResponse.accessToken;
 
 
-            # FB.api "/me/permissions", (response) ->
-            #     console.log "perms"
-            #     console.log response
+            FB.api "/me/permissions", (response) ->
+                console.log "perms"
+                console.log response
 
 
 

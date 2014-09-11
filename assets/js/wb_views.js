@@ -229,7 +229,8 @@ App.ComposeView = (function(_super) {
   };
 
   ComposeView.prototype.composePost = function() {
-    return console.log('post fired');
+    console.log('post fired');
+    return this.submitPost();
   };
 
   ComposeView.prototype.composeSchedule = function() {
@@ -250,12 +251,14 @@ App.ComposeView = (function(_super) {
   };
 
   ComposeView.prototype.submitPost = function(ts) {
-    var page_id, postArgs;
+    var postArgs;
     if (ts == null) {
       ts = 0;
     }
-    page_id = this.model.get('page_id');
-    postArgs = {};
+    postArgs = {
+      page_id: this.model.get('page_id')
+    };
+    postArgs.access_token = this.model.get('access_token');
     postArgs.message = $('#compose-message').text;
     if (postArgs.message == null) {
       postArgs.link = $('#compose-link').text;
@@ -263,11 +266,13 @@ App.ComposeView = (function(_super) {
       postArgs.name = $('#compose-name').text;
       postArgs.caption = $('#compose-caption').text;
       postArgs.description = $('#compose-description').text;
+      postArgs.access_token = this.model.get('access_token');
     }
     if (ts = 0) {
       console.log('defaulting to now');
-      return ts = moment();
+      ts = moment();
     }
+    return publishHelloWorld(postArgs);
   };
 
   ComposeView.prototype.renderComposeSelection = function() {
