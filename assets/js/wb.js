@@ -28,12 +28,12 @@ window.pageLogin = (function(_this) {
         ALWAYS_FIRST_PAGE = true;
         if (response.data.length === 1 || ALWAYS_FIRST_PAGE) {
           autoSelected = response.data[0];
-          document.getElementById("pageName").innerHTML = autoSelected.name + "<a href=\"" + autoSelected.link + "\">" + "(fb)" + "</a>";
+          document.getElementById("pageName").innerHTML = "<a href=\"" + autoSelected.link + "\">" + "<i class=\"fa fa-facebook-square\"></i>" + "</a> " + autoSelected.name;
           initApp(autoSelected.id);
         } else {
           while (i < response.data.length) {
             li = document.createElement("li");
-            li.innerHTML = response.data[i].name + "<a href=\"" + response.data[i].link + "\">" + "(fb)" + "</a>";
+            li.innerHTML = "<a href=\"" + response.data[i].link + "\">" + "<i class=\"fa fa-facebook-square\"></i>" + "</a> " + response.data[i].name;
             li.dataset.token = response.data[i].access_token;
             li.dataset.link = response.data[i].link;
             li.dataset.id = response.data[i].id;
@@ -77,18 +77,28 @@ window.setPageMask = (function(_this) {
   };
 })(this);
 
-window.initApp = function(page_id) {
-  return FB.api("/" + page_id + "/promotable_posts", function(data) {
-    if (data.data != null) {
-      this.feed = new App.FeedCollectionView({
-        collection: new App.FeedCollection(_.map(data.data, function(s) {
-          return new App.PostModel(s);
-        }))
-      });
-      return this.feed.render();
-    }
-  });
-};
+window.initApp = (function(_this) {
+  return function(page_id) {
+    return FB.api("/" + page_id + "/promotable_posts", function(data) {
+      if (data.data != null) {
+        _this.feed = new App.FeedCollectionView({
+          collection: new App.FeedCollection(_.map(data.data, function(s) {
+            return new App.PostModel(s);
+          }))
+        });
+        _this.feed.render();
+        return $('#compose-btn').click(function() {
+          this.compose = new App.ComposeView({
+            model: new Backbone.Model({
+              page_id: page_id
+            })
+          });
+          return this.compose.renderComposeSelection();
+        });
+      }
+    });
+  };
+})(this);
 
 window.fetchInsightData = (function(_this) {
   return function(page_id) {

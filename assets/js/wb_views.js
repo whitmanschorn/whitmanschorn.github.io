@@ -192,6 +192,63 @@ App.FeedCollection = (function(_super) {
 
 })(Backbone.Collection);
 
+App.ComposeView = (function(_super) {
+  var postComposeTemplate;
+
+  __extends(ComposeView, _super);
+
+  function ComposeView() {
+    this.render = __bind(this.render, this);
+    return ComposeView.__super__.constructor.apply(this, arguments);
+  }
+
+  postComposeTemplate = Handlebars.compile($('#post-compose-template').html());
+
+  ComposeView.prototype.render = function() {
+    this.$el.html(postComposeTemplate({}));
+    return this.$el;
+  };
+
+  ComposeView.prototype.submitPost = function(ts) {
+    var page_id, postObject;
+    if (ts == null) {
+      ts = 0;
+    }
+    page_id = this.model.get('page_id');
+    postObject = {};
+    postObject.message = $('#compose-message').text;
+    if (postObject.message == null) {
+      postObject.link = $('#compose-link').text;
+      postObject.name = $('#compose-name').text;
+      postObject.caption = $('#compose-caption').text;
+      postObject.description = $('#compose-description').text;
+    }
+    if (ts = 0) {
+      console.log('defaulting to now');
+      return ts = moment();
+    }
+  };
+
+  ComposeView.prototype.renderComposeSelection = function() {
+    return $('#app-right').velocity("transition.slideUpOut", {
+      duration: 150,
+      complete: (function(_this) {
+        return function() {
+          fetchInsightData(_this.model.get('id'));
+          $('#post-detail').empty();
+          $('#post-detail').append(_this.render());
+          return $('#app-right').velocity("transition.slideUpIn", {
+            stagger: 100
+          });
+        };
+      })(this)
+    });
+  };
+
+  return ComposeView;
+
+})(Backbone.View);
+
 App.FeedCollectionView = (function(_super) {
   __extends(FeedCollectionView, _super);
 

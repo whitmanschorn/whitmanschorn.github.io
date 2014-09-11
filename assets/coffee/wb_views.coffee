@@ -96,6 +96,46 @@ class App.PostPhotoView extends App.PostView
 class App.FeedCollection extends Backbone.Collection
 
 
+
+class App.ComposeView extends Backbone.View
+	postComposeTemplate = Handlebars.compile($('#post-compose-template').html())
+
+	render: =>
+		@$el.html postComposeTemplate({})
+		@$el
+
+	submitPost: (ts = 0) ->
+		page_id = @model.get('page_id')
+		postObject = {}
+		postObject.message = $('#compose-message').text #for a bunch of fields. 
+		if not postObject.message?
+			postObject.link = $('#compose-link').text
+			postObject.name = $('#compose-name').text #title in link preview
+			postObject.caption = $('#compose-caption').text
+			postObject.description = $('#compose-description').text
+
+
+
+
+		if ts = 0
+			console.log 'defaulting to now'
+			ts = moment() #defaults to now
+		
+
+	renderComposeSelection: ->
+		$('#app-right').velocity("transition.slideUpOut", 
+			duration: 150,
+			complete: =>
+				fetchInsightData(@model.get('id'))
+				$('#post-detail').empty()
+				$('#post-detail').append @render()
+				$('#app-right').velocity("transition.slideUpIn", {stagger: 100}))
+
+
+
+
+
+
 class App.FeedCollectionView extends Backbone.View
 
 	render: ->

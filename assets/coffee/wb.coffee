@@ -31,12 +31,12 @@ window.pageLogin = =>
             #only page? auto-pick
             if response.data.length == 1 or ALWAYS_FIRST_PAGE
                 autoSelected = response.data[0]
-                document.getElementById("pageName").innerHTML =  autoSelected.name + "<a href=\"" + autoSelected.link + "\">" + "(fb)" + "</a>"
+                document.getElementById("pageName").innerHTML = "<a href=\"" + autoSelected.link + "\">" + "<i class=\"fa fa-facebook-square\"></i>" + "</a> " + autoSelected.name
                 initApp(autoSelected.id)
             else
                 while i < response.data.length
                     li = document.createElement("li")
-                    li.innerHTML = response.data[i].name + "<a href=\"" + response.data[i].link + "\">" + "(fb)" + "</a>"
+                    li.innerHTML =  "<a href=\"" + response.data[i].link + "\">" + "<i class=\"fa fa-facebook-square\"></i>" + "</a> " + response.data[i].name
                     li.dataset.token = response.data[i].access_token
                     li.dataset.link = response.data[i].link
                     li.dataset.id = response.data[i].id
@@ -80,13 +80,15 @@ window.setPageMask = (maskSelector) =>
 
 
 
-window.initApp = (page_id) ->
-    FB.api("/#{page_id}/promotable_posts", (data) ->
+window.initApp = (page_id) =>
+    FB.api("/#{page_id}/promotable_posts", (data) =>
                 # TODO: THESE ARE OUT POSTS
                 if data.data?
                     @feed = new App.FeedCollectionView({collection: new App.FeedCollection( _.map(data.data, (s) -> new App.PostModel(s) ) )})
                     @feed.render()
-                
+                    $('#compose-btn').click ->
+                        @compose = new App.ComposeView({model: new Backbone.Model({page_id: page_id})})
+                        @compose.renderComposeSelection()
             )
 
 window.fetchInsightData = (page_id) =>
