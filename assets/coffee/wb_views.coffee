@@ -56,6 +56,7 @@ class App.PostInsightView extends Backbone.View
 	postInsightTemplate = Handlebars.compile($('#post-insight-template').html())
 	className: 'insight-view'
 
+
 	render: =>
 		console.log @model.toJSON
 		@$el.html postInsightTemplate(@model.get('data')[0])
@@ -131,6 +132,7 @@ class App.ComposeView extends Backbone.View
 		console.log 'cancel fired'	
 		@unselect()
 		$('#post-detail').empty()
+		$('.insight-section').empty()
 
 
 
@@ -160,6 +162,7 @@ class App.ComposeView extends Backbone.View
 		$('#app-right').velocity("transition.slideUpOut", 
 			duration: 150,
 			complete: =>
+				$('.insight-section').empty()
 				$('#post-detail').empty()
 				$('#post-detail').append @render()
 				$('#app-right').velocity("transition.slideUpIn", {stagger: 100}))

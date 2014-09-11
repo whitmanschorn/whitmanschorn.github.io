@@ -91,7 +91,7 @@ $(document).ready(function() {
 
 <script id="post-insight-template" type="text/x-handlebars-template">
 <div class="insight margin-top">
-{{title}}<div class="period">(?)<div class="period-hover"> ({{description}})</div>
+{{title}}<div class="period"><i class="fa fa-question-circle"></i><div class="period-hover"> ({{description}})</div>
 </div>
 <br/>
 
@@ -135,7 +135,9 @@ Write a few words here
 </div>
 
 <span id="compose-switch" class="compose-action small">Switch to Text-only</span>
-<span id="compose-post" class="compose-action small">Post</span> <span id="compose-schedule" class="compose-action small">Schedule</span> 
+<span id="compose-post" class="compose-action small">Post</span> 
+<span id="compose-schedule" class="compose-action small">Schedule</span> 
+<span id="compose-cancel" class="compose-action small">Cancel</span> 
 
 </script>
 

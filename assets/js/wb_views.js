@@ -239,7 +239,8 @@ App.ComposeView = (function(_super) {
   ComposeView.prototype.composeCancel = function() {
     console.log('cancel fired');
     this.unselect();
-    return $('#post-detail').empty();
+    $('#post-detail').empty();
+    return $('.insight-section').empty();
   };
 
   ComposeView.prototype.render = function() {
@@ -274,6 +275,7 @@ App.ComposeView = (function(_super) {
       duration: 150,
       complete: (function(_this) {
         return function() {
+          $('.insight-section').empty();
           $('#post-detail').empty();
           $('#post-detail').append(_this.render());
           return $('#app-right').velocity("transition.slideUpIn", {
