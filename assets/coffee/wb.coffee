@@ -7,9 +7,9 @@
 App = {}
 
 
-window.publishHelloWorld = =>
+window.publishHelloWorld = (page_id) =>
     pageToken = document.getElementById("pageToken").innerHTML
-    FB.api "/me/feed", "post",
+    FB.api "/#{page_id}/feed", "post",
         message: "Hello, world! #{Math.random(1000)}"
         access_token: pageToken
         , (response) ->

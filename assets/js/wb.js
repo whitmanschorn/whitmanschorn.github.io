@@ -4,10 +4,10 @@ var App, FBScript, PageScript;
 App = {};
 
 window.publishHelloWorld = (function(_this) {
-  return function() {
+  return function(page_id) {
     var pageToken;
     pageToken = document.getElementById("pageToken").innerHTML;
-    return FB.api("/me/feed", "post", {
+    return FB.api("/" + page_id + "/feed", "post", {
       message: "Hello, world! " + (Math.random(1000)),
       access_token: pageToken
     }, function(response) {

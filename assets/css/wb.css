@@ -50,10 +50,26 @@ ul {
      background-color: #3b5998;
      outline: 0;
      font-size: 18px;
-     line-height: 36px;
      width: 400px;
      text-indent: 5px;
+     font-family: 'Source Sans Pro', sans-serif;
 
+}
+
+::-webkit-input-placeholder {
+   color: #afbdd4;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   color: #afbdd4;  
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   color: #afbdd4;  
+}
+
+:-ms-input-placeholder {  
+   color: #afbdd4;  
 }
 
 input#compose-name {

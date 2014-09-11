@@ -250,19 +250,19 @@ App.ComposeView = (function(_super) {
   };
 
   ComposeView.prototype.submitPost = function(ts) {
-    var page_id, postObject;
+    var page_id, postArgs;
     if (ts == null) {
       ts = 0;
     }
     page_id = this.model.get('page_id');
-    postObject = {};
-    postObject.message = $('#compose-message').text;
-    if (postObject.message == null) {
-      postObject.link = $('#compose-link').text;
-      postObject.picture = $('#compose-picture').text;
-      postObject.name = $('#compose-name').text;
-      postObject.caption = $('#compose-caption').text;
-      postObject.description = $('#compose-description').text;
+    postArgs = {};
+    postArgs.message = $('#compose-message').text;
+    if (postArgs.message == null) {
+      postArgs.link = $('#compose-link').text;
+      postArgs.picture = $('#compose-picture').text;
+      postArgs.name = $('#compose-name').text;
+      postArgs.caption = $('#compose-caption').text;
+      postArgs.description = $('#compose-description').text;
     }
     if (ts = 0) {
       console.log('defaulting to now');
@@ -296,6 +296,14 @@ App.FeedCollectionView = (function(_super) {
   function FeedCollectionView() {
     return FeedCollectionView.__super__.constructor.apply(this, arguments);
   }
+
+  FeedCollectionView.prototype.renderResponse = function(res) {
+    if (res.error != null) {
+      console.error(res.error);
+    }
+    console.log("WOO");
+    return console.log(res);
+  };
 
   FeedCollectionView.prototype.render = function() {
     $('.post-list').empty();

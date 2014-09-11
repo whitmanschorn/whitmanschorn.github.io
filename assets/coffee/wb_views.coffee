@@ -143,14 +143,14 @@ class App.ComposeView extends Backbone.View
 
 	submitPost: (ts = 0) ->
 		page_id = @model.get('page_id')
-		postObject = {}
-		postObject.message = $('#compose-message').text #for a bunch of fields. 
-		if not postObject.message?
-			postObject.link = $('#compose-link').text
-			postObject.picture = $('#compose-picture').text
-			postObject.name = $('#compose-name').text #title in link preview
-			postObject.caption = $('#compose-caption').text
-			postObject.description = $('#compose-description').text
+		postArgs = {}
+		postArgs.message = $('#compose-message').text #for a bunch of fields. 
+		if not postArgs.message?
+			postArgs.link = $('#compose-link').text
+			postArgs.picture = $('#compose-picture').text
+			postArgs.name = $('#compose-name').text #title in link preview
+			postArgs.caption = $('#compose-caption').text
+			postArgs.description = $('#compose-description').text
 
 
 		if ts = 0
@@ -173,6 +173,14 @@ class App.ComposeView extends Backbone.View
 
 
 class App.FeedCollectionView extends Backbone.View
+
+	renderResponse: (res) ->
+		if res.error?
+			console.error res.error
+
+		console.log "WOO"
+		console.log res
+		#create new view + model + add to collection here
 
 	render: ->
 		$('.post-list').empty()
