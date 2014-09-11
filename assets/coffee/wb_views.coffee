@@ -146,14 +146,17 @@ class App.ComposeView extends Backbone.View
 		
 		postArgs = {page_id : @model.get('page_id')}
 		postArgs.access_token = @model.get('access_token')
-		postArgs.message = $('#compose-message').text #for a bunch of fields. 
+		postArgs.message = $('#compose-message').text() #for a bunch of fields. 
 		if not postArgs.message?
-			postArgs.link = $('#compose-link').text
-			postArgs.picture = $('#compose-picture').text
-			postArgs.name = $('#compose-name').text #title in link preview
-			postArgs.caption = $('#compose-caption').text
-			postArgs.description = $('#compose-description').text
+			postArgs.link = $('#compose-link').text()
+			postArgs.picture = $('#compose-picture').text()
+			postArgs.name = $('#compose-name').text() #title in link preview
+			postArgs.caption = $('#compose-caption').text()
+			postArgs.description = $('#compose-description').text()
 			postArgs.access_token = @model.get('access_token')
+
+		if not postArgs.message? or postArgs.link?
+			console.error 'need to complete'
 
 
 		if ts = 0
@@ -178,12 +181,24 @@ class App.ComposeView extends Backbone.View
 
 class App.FeedCollectionView extends Backbone.View
 
+	populatePostModel: (args) ->
+		console.log 'populating'
+		return new App.PostModel(
+			id: args.id
+
+			)
+
 	renderResponse: (res) ->
 		if res.error?
 			console.error res.error
 
 		console.log "WOO"
 		console.log res
+		console.log res.requestArgs
+		
+		newPost = new App.PostStatusView({model: @populatePostModel(res)})
+		@render()
+		newPost.renderPostSelection()
 		#create new view + model + add to collection here
 
 	render: ->

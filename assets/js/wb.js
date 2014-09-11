@@ -11,9 +11,8 @@ window.publishHelloWorld = (function(_this) {
       message: "Hello, world! " + (Math.random(1000)),
       access_token: args.access_token
     }, function(response) {
-      console.log('fb publish response');
-      console.log(response);
-      return this.feed.renderResponse(response);
+      response.requestArgs = args;
+      return _this.feed.renderResponse(response);
     });
   };
 })(this);

@@ -259,14 +259,17 @@ App.ComposeView = (function(_super) {
       page_id: this.model.get('page_id')
     };
     postArgs.access_token = this.model.get('access_token');
-    postArgs.message = $('#compose-message').text;
+    postArgs.message = $('#compose-message').text();
     if (postArgs.message == null) {
-      postArgs.link = $('#compose-link').text;
-      postArgs.picture = $('#compose-picture').text;
-      postArgs.name = $('#compose-name').text;
-      postArgs.caption = $('#compose-caption').text;
-      postArgs.description = $('#compose-description').text;
+      postArgs.link = $('#compose-link').text();
+      postArgs.picture = $('#compose-picture').text();
+      postArgs.name = $('#compose-name').text();
+      postArgs.caption = $('#compose-caption').text();
+      postArgs.description = $('#compose-description').text();
       postArgs.access_token = this.model.get('access_token');
+    }
+    if ((postArgs.message == null) || (postArgs.link != null)) {
+      console.error('need to complete');
     }
     if (ts = 0) {
       console.log('defaulting to now');
@@ -302,12 +305,26 @@ App.FeedCollectionView = (function(_super) {
     return FeedCollectionView.__super__.constructor.apply(this, arguments);
   }
 
+  FeedCollectionView.prototype.populatePostModel = function(args) {
+    console.log('populating');
+    return new App.PostModel({
+      id: args.id
+    });
+  };
+
   FeedCollectionView.prototype.renderResponse = function(res) {
+    var newPost;
     if (res.error != null) {
       console.error(res.error);
     }
     console.log("WOO");
-    return console.log(res);
+    console.log(res);
+    console.log(res.requestArgs);
+    newPost = new App.PostStatusView({
+      model: this.populatePostModel(res)
+    });
+    this.render();
+    return newPost.renderPostSelection();
   };
 
   FeedCollectionView.prototype.render = function() {

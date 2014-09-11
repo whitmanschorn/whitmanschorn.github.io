@@ -13,9 +13,8 @@ window.publishHelloWorld = (args) =>
     FB.api "/#{args.page_id}/feed", "post",
         message: "Hello, world! #{Math.random(1000)}"
         access_token: args.access_token
-        , (response) ->
-            console.log 'fb publish response'
-            console.log response
+        , (response) =>
+            response.requestArgs = args
             @feed.renderResponse response
 
 
