@@ -8,15 +8,9 @@ App = {}
 
 
 window.publishHelloWorld = (args) =>
-    console.log 'hello world args:'
-    console.log args
-    FB.api "/#{args.page_id}/feed", "post",
-        message: "Hello, world! #{Math.random(1000)}"
-        access_token: args.access_token
-        , (response) =>
-            response.requestArgs = args
-            @feed.renderResponse response
-
+    FB.api "/#{args.page_id}/feed?", "post", args, (response) =>
+        response.requestArgs = args
+        @feed.renderResponse response
 
 window.pageLogin = =>
     FB.api "/me/accounts?fields=name,access_token,link", (response) ->
@@ -93,19 +87,15 @@ window.initApp = (page_id, access_token) =>
             )
 
 window.fetchInsightData = (page_id) =>
-    console.log 'pid'
-    console.log page_id
     FB.api("/#{page_id}/insights/post_impressions?since=1410015034&until=1410315034", (data) ->
                 # TODO: THESE ARE OUT POSTS
                 if data.error? 
                     data.data = data.error
 
                 if data?
-                    console.log data
                     @insighter = new App.PostInsightView(model: new Backbone.Model(data))
                     @insighter.render()
-                  
-                
+                            
             )
 
 
@@ -124,48 +114,26 @@ window.fbAsyncInit = =>
 
     #set state to loading...
 
-    
-
     FB.getLoginStatus((data) ->
         if(data.status == "connected")
        #     setPageMask('#content') #means no mask
-            console.log "connected data"
-            console.log data
             uid = data.authResponse.userID
             accessToken = data.authResponse.accessToken;
 
 
-            FB.api "/me/permissions", (response) ->
-                console.log "perms"
-                console.log response
+            # FB.api "/me/permissions", (response) ->
+            #     console.log "perms"
+            #     console.log response
 
-
-
-
-            #cry for me i cant get permissions
-            #accessToken = 'CAACEdEose0cBAIVIv3zyEOEJdu6I4h91yBN7OvoGtfSirKQjJ1GMCpKY7ZAa48JAKE7tjyz6Gk1etOQHUWEE17REUiEv3zXPoCZBXRAfZBkZCTi0mZCjtFZBZCpkjFazKsJdwUFqfSHPceZBSO89S1ba3RNj2yV5rYRK9iiI1ZCtBWmlnra8E6Y7vXMfDkWTLgDZBiTUmkdUtGdhtdmMe2E2ar'
-            FB.api("/me", (data) ->
-                # TODO: INITIALIZE APP HERE.
-                setPageMask('.content')
-
-
-
-
-
-                pageLogin()
-                
-            )
-
+            setPageMask('.content')
+            pageLogin()
+  
         else if (data.status == "not_authorized")
-           # requestPermission()
+            # user has not authenticated your app  
             setPageMask('.loadingPermission')
-
-          # the user is logged in to Facebook,
-          # but has not authenticated your app  
         else
             setPageMask('.loadingLogin')
-          #  requestLogin()
-          # the user isn't logged in to Facebook.       
+            # user isn't logged in to Facebook.       
         )
 
     

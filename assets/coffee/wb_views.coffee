@@ -58,7 +58,6 @@ class App.PostInsightView extends Backbone.View
 
 
 	render: =>
-		console.log @model.toJSON
 		@$el.html postInsightTemplate(@model.get('data')[0])
 		$('.insight-section').empty()
 		$('.insight-section').append @$el
@@ -135,14 +134,12 @@ class App.ComposeView extends Backbone.View
 
 
 	composePost: ->
-		console.log 'post fired'	
 		@submitPost()
 
 	composeSchedule: ->
 		console.log 'schedule fired'	
 
 	composeCancel: ->
-		console.log 'cancel fired'	
 		@unselect()
 		$('#post-detail').empty()
 		$('.insight-section').empty()
@@ -154,21 +151,21 @@ class App.ComposeView extends Backbone.View
 		@$el.html postComposeTemplate({isURL: @isURL})
 		@$el
 
-	submitPost: (ts = 0) ->
-		
+	submitPost: (ts = 0) =>
 		postArgs = {page_id : @model.get('page_id')}
 		postArgs.access_token = @model.get('access_token')
-		postArgs.message = $('#compose-message').text() #for a bunch of fields. 
-		if not postArgs.message?
-			postArgs.link = $('#compose-link').text()
-			postArgs.picture = $('#compose-picture').text()
-			postArgs.name = $('#compose-name').text() #title in link preview
-			postArgs.caption = $('#compose-caption').text()
-			postArgs.description = $('#compose-description').text()
-			postArgs.access_token = @model.get('access_token')
+		if @isURL
+			postArgs.link = $('#compose-link').val()
+			postArgs.picture = $('#compose-picture').val()
+			postArgs.name = $('#compose-name').val() #title in link preview
+			postArgs.caption = $('#compose-caption').val()
+			postArgs.description = $('#compose-description').val()
+		else
+			postArgs.message = $('#compose-message').val() #for a bunch of fields. 
 
-		if not postArgs.message? or postArgs.link?
-			console.error 'need to complete'
+
+		if not (postArgs.message? or postArgs.link?)
+			console.error 'need to complete post before submitting'
 
 
 		if ts = 0
@@ -182,9 +179,8 @@ class App.ComposeView extends Backbone.View
 			duration: 150,
 			complete: =>
 				$('.insight-section').empty()
-				$('#post-detail').empty()
-				$('#post-detail').append @render({isURL: @isURL})
-				$('#app-right').velocity("transition.slideUpIn", {stagger: 100}))
+				$('#post-detail').html @render({isURL: @isURL})
+				$('#app-right').velocity("transition.slideUpIn", {stagger: 100, duration: 100}))
 
 
 
@@ -194,33 +190,46 @@ class App.ComposeView extends Backbone.View
 class App.FeedCollectionView extends Backbone.View
 
 	populatePostModel: (args) ->
-		console.log 'populating'
+
+		
 		return new App.PostModel(
 			id: args.id
-
 			)
 
 	renderResponse: (res) ->
 		if res.error?
 			console.error res.error
+			alert 'Publishing failed!'
 
-		console.log "WOO"
-		console.log res
-		console.log res.requestArgs
-		
-		newPost = new App.PostStatusView({model: @populatePostModel(res)})
+		# console.log "response from post:"
+		# console.log res
+		# console.log res.requestArgs
+		if res.requestArgs.message? 
+			postType = 'status'
+			story = res.requestArgs.message
+
+		else
+			postType = 'link'
+			story = res.requestArgs.title
+
+		console.log 'post type: '
+		console.log postType
+		newModel = new App.PostModel({id: res.id, type: postType, story: story, ts: moment().unix()})
+		@collection.unshift newModel
 		@render()
-		newPost.renderPostSelection()
+		#newPost.renderPostSelection()
 		#create new view + model + add to collection here
 
 	render: ->
 		$('.post-list').empty()
 		@collection.each (post) =>
+			console.log post.get('type')
 			postR = switch
 				when post.get('type') is 'status' then new App.PostStatusView({model: post})
+				when post.get('type') is 'link' then new App.PostStatusView({model: post})
 				when post.get('type') is 'photo' then new App.PostPhotoView({model: post})
 				when post.get('type') is 'video' then new App.PostPhotoView({model: post})
-				else null
+				else new App.PostStatusView({model: post})
 			$('.post-list').append postR.render()
 
 		$('.post-list li').velocity("transition.flipYIn", {stagger: 100})

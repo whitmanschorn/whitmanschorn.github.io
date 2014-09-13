@@ -5,12 +5,7 @@ App = {};
 
 window.publishHelloWorld = (function(_this) {
   return function(args) {
-    console.log('hello world args:');
-    console.log(args);
-    return FB.api("/" + args.page_id + "/feed", "post", {
-      message: "Hello, world! " + (Math.random(1000)),
-      access_token: args.access_token
-    }, function(response) {
+    return FB.api("/" + args.page_id + "/feed?", "post", args, function(response) {
       response.requestArgs = args;
       return _this.feed.renderResponse(response);
     });
@@ -104,14 +99,11 @@ window.initApp = (function(_this) {
 
 window.fetchInsightData = (function(_this) {
   return function(page_id) {
-    console.log('pid');
-    console.log(page_id);
     return FB.api("/" + page_id + "/insights/post_impressions?since=1410015034&until=1410315034", function(data) {
       if (data.error != null) {
         data.data = data.error;
       }
       if (data != null) {
-        console.log(data);
         this.insighter = new App.PostInsightView({
           model: new Backbone.Model(data)
         });
@@ -136,18 +128,10 @@ window.fbAsyncInit = (function(_this) {
     return FB.getLoginStatus(function(data) {
       var accessToken, uid;
       if (data.status === "connected") {
-        console.log("connected data");
-        console.log(data);
         uid = data.authResponse.userID;
         accessToken = data.authResponse.accessToken;
-        FB.api("/me/permissions", function(response) {
-          console.log("perms");
-          return console.log(response);
-        });
-        return FB.api("/me", function(data) {
-          setPageMask('.content');
-          return pageLogin();
-        });
+        setPageMask('.content');
+        return pageLogin();
       } else if (data.status === "not_authorized") {
         return setPageMask('.loadingPermission');
       } else {

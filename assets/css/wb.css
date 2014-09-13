@@ -91,6 +91,10 @@ input#compose-name {
      color: #d8dfea;
 }
 
+.compose-action {
+     font-size: 22px;
+}
+
 .post-list {
      width: 400px;
      text-align: left;

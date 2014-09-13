@@ -98,7 +98,6 @@ App.PostInsightView = (function(_super) {
   PostInsightView.prototype.className = 'insight-view';
 
   PostInsightView.prototype.render = function() {
-    console.log(this.model.toJSON);
     this.$el.html(postInsightTemplate(this.model.get('data')[0]));
     $('.insight-section').empty();
     $('.insight-section').append(this.$el);
@@ -198,6 +197,7 @@ App.ComposeView = (function(_super) {
   __extends(ComposeView, _super);
 
   function ComposeView() {
+    this.submitPost = __bind(this.submitPost, this);
     this.render = __bind(this.render, this);
     this.composeSwitch = __bind(this.composeSwitch, this);
     this.initialize = __bind(this.initialize, this);
@@ -245,7 +245,6 @@ App.ComposeView = (function(_super) {
   };
 
   ComposeView.prototype.composePost = function() {
-    console.log('post fired');
     return this.submitPost();
   };
 
@@ -254,7 +253,6 @@ App.ComposeView = (function(_super) {
   };
 
   ComposeView.prototype.composeCancel = function() {
-    console.log('cancel fired');
     this.unselect();
     $('#post-detail').empty();
     return $('.insight-section').empty();
@@ -277,17 +275,17 @@ App.ComposeView = (function(_super) {
       page_id: this.model.get('page_id')
     };
     postArgs.access_token = this.model.get('access_token');
-    postArgs.message = $('#compose-message').text();
-    if (postArgs.message == null) {
-      postArgs.link = $('#compose-link').text();
-      postArgs.picture = $('#compose-picture').text();
-      postArgs.name = $('#compose-name').text();
-      postArgs.caption = $('#compose-caption').text();
-      postArgs.description = $('#compose-description').text();
-      postArgs.access_token = this.model.get('access_token');
+    if (this.isURL) {
+      postArgs.link = $('#compose-link').val();
+      postArgs.picture = $('#compose-picture').val();
+      postArgs.name = $('#compose-name').val();
+      postArgs.caption = $('#compose-caption').val();
+      postArgs.description = $('#compose-description').val();
+    } else {
+      postArgs.message = $('#compose-message').val();
     }
-    if ((postArgs.message == null) || (postArgs.link != null)) {
-      console.error('need to complete');
+    if (!((postArgs.message != null) || (postArgs.link != null))) {
+      console.error('need to complete post before submitting');
     }
     if (ts = 0) {
       console.log('defaulting to now');
@@ -302,12 +300,12 @@ App.ComposeView = (function(_super) {
       complete: (function(_this) {
         return function() {
           $('.insight-section').empty();
-          $('#post-detail').empty();
-          $('#post-detail').append(_this.render({
+          $('#post-detail').html(_this.render({
             isURL: _this.isURL
           }));
           return $('#app-right').velocity("transition.slideUpIn", {
-            stagger: 100
+            stagger: 100,
+            duration: 100
           });
         };
       })(this)
@@ -326,25 +324,34 @@ App.FeedCollectionView = (function(_super) {
   }
 
   FeedCollectionView.prototype.populatePostModel = function(args) {
-    console.log('populating');
     return new App.PostModel({
       id: args.id
     });
   };
 
   FeedCollectionView.prototype.renderResponse = function(res) {
-    var newPost;
+    var newModel, postType, story;
     if (res.error != null) {
       console.error(res.error);
+      alert('Publishing failed!');
     }
-    console.log("WOO");
-    console.log(res);
-    console.log(res.requestArgs);
-    newPost = new App.PostStatusView({
-      model: this.populatePostModel(res)
+    if (res.requestArgs.message != null) {
+      postType = 'status';
+      story = res.requestArgs.message;
+    } else {
+      postType = 'link';
+      story = res.requestArgs.title;
+    }
+    console.log('post type: ');
+    console.log(postType);
+    newModel = new App.PostModel({
+      id: res.id,
+      type: postType,
+      story: story,
+      ts: moment().unix()
     });
-    this.render();
-    return newPost.renderPostSelection();
+    this.collection.unshift(newModel);
+    return this.render();
   };
 
   FeedCollectionView.prototype.render = function() {
@@ -352,9 +359,14 @@ App.FeedCollectionView = (function(_super) {
     this.collection.each((function(_this) {
       return function(post) {
         var postR;
+        console.log(post.get('type'));
         postR = (function() {
           switch (false) {
             case post.get('type') !== 'status':
+              return new App.PostStatusView({
+                model: post
+              });
+            case post.get('type') !== 'link':
               return new App.PostStatusView({
                 model: post
               });
@@ -367,7 +379,9 @@ App.FeedCollectionView = (function(_super) {
                 model: post
               });
             default:
-              return null;
+              return new App.PostStatusView({
+                model: post
+              });
           }
         })();
         return $('.post-list').append(postR.render());
