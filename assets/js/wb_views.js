@@ -199,20 +199,25 @@ App.ComposeView = (function(_super) {
 
   function ComposeView() {
     this.render = __bind(this.render, this);
+    this.composeSwitch = __bind(this.composeSwitch, this);
+    this.initialize = __bind(this.initialize, this);
     return ComposeView.__super__.constructor.apply(this, arguments);
   }
 
   postComposeTemplate = Handlebars.compile($('#post-compose-template').html());
 
   ComposeView.prototype.initialize = function() {
-    return $('.post-list li').click(this.unselect);
+    $('.post-list li').click(this.unselect);
+    return this.isURL = true;
   };
 
-  ComposeView.prototype.events = {
-    'click #compose-switch': 'composeSwitch',
-    'click #compose-post': 'composePost',
-    'click #compose-schedule': 'composeSchedule',
-    'click #compose-cancel': 'composeCancel'
+  ComposeView.prototype.events = function() {
+    return {
+      'click .compose-switch': 'composeSwitch',
+      'click .compose-post': 'composePost',
+      'click .compose-schedule': 'composeSchedule',
+      'click .compose-cancel': 'composeCancel'
+    };
   };
 
   ComposeView.prototype.select = function() {
@@ -225,7 +230,18 @@ App.ComposeView = (function(_super) {
   };
 
   ComposeView.prototype.composeSwitch = function() {
-    return console.log('switch fired');
+    this.isURL = !this.isURL;
+    return $('#post-detail').velocity("transition.slideUpOut", {
+      duration: 150,
+      complete: (function(_this) {
+        return function() {
+          $('#post-detail').append(_this.render());
+          return $('#post-detail').velocity("transition.slideUpIn", {
+            duration: 100
+          });
+        };
+      })(this)
+    });
   };
 
   ComposeView.prototype.composePost = function() {
@@ -246,7 +262,9 @@ App.ComposeView = (function(_super) {
 
   ComposeView.prototype.render = function() {
     this.select();
-    this.$el.html(postComposeTemplate({}));
+    this.$el.html(postComposeTemplate({
+      isURL: this.isURL
+    }));
     return this.$el;
   };
 
@@ -285,7 +303,9 @@ App.ComposeView = (function(_super) {
         return function() {
           $('.insight-section').empty();
           $('#post-detail').empty();
-          $('#post-detail').append(_this.render());
+          $('#post-detail').append(_this.render({
+            isURL: _this.isURL
+          }));
           return $('#app-right').velocity("transition.slideUpIn", {
             stagger: 100
           });

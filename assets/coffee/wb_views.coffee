@@ -102,14 +102,16 @@ class App.ComposeView extends Backbone.View
 	postComposeTemplate = Handlebars.compile($('#post-compose-template').html())
 
 
-	initialize: ->
+	initialize: =>
 		$('.post-list li').click @unselect
+		@isURL = true
 
-	events:
-		'click #compose-switch' : 'composeSwitch'
-		'click #compose-post' : 'composePost'
-		'click #compose-schedule' : 'composeSchedule'
-		'click #compose-cancel' : 'composeCancel'
+	events: ->
+		'click .compose-switch' : 'composeSwitch'
+		'click .compose-post' : 'composePost'
+		'click .compose-schedule' : 'composeSchedule'
+		'click .compose-cancel' : 'composeCancel'
+
 		
 
 	select: ->
@@ -119,8 +121,18 @@ class App.ComposeView extends Backbone.View
 	unselect: ->
 		$('#compose-btn').removeClass 'selected'
 
-	composeSwitch: ->
-		console.log 'switch fired'	
+	composeSwitch: =>
+		@isURL = not @isURL
+
+		$('#post-detail').velocity("transition.slideUpOut", 
+			duration: 150,
+			complete: =>
+				$('#post-detail').append @render()
+				$('#post-detail').velocity("transition.slideUpIn", duration: 100)
+
+				)
+
+
 
 	composePost: ->
 		console.log 'post fired'	
@@ -139,7 +151,7 @@ class App.ComposeView extends Backbone.View
 
 	render: =>
 		@select()
-		@$el.html postComposeTemplate({})
+		@$el.html postComposeTemplate({isURL: @isURL})
 		@$el
 
 	submitPost: (ts = 0) ->
@@ -171,7 +183,7 @@ class App.ComposeView extends Backbone.View
 			complete: =>
 				$('.insight-section').empty()
 				$('#post-detail').empty()
-				$('#post-detail').append @render()
+				$('#post-detail').append @render({isURL: @isURL})
 				$('#app-right').velocity("transition.slideUpIn", {stagger: 100}))
 
 

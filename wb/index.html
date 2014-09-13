@@ -118,25 +118,32 @@ $(document).ready(function() {
 
 <script id="post-compose-template" type="text/x-handlebars-template">
 <div class="compose">
-<div class="compose-field">URL <input type="text" id="compose-link"/></div>
-<hr/>
-<div class="compose-field"><span class="">Title <input type="text" id="compose-name"/></span></div>
 
-<div class="compose-field">Image URL <input type="text" id="compose-picture"/></div>
+	{{#if isURL}}
 
+		<div class="compose-field">URL <input type="text" id="compose-link"/></div>
+		<hr/>
+		<div class="compose-field"><span class="">Title <input type="text" id="compose-name"/></span></div>
+		<div class="compose-field">Image URL <input type="text" id="compose-picture"/></div>
+		<div class="compose-field">Caption <input type="text" id="compose-caption"/></div>
+		<div class="compose-field">Description 
+			<textarea id="compose-description" placeholder="Write a few words here" rows="4"></textarea>
+		</div>
 
-<div class="compose-field">Caption <input type="text" id="compose-caption"/></div>
+	{{else}}
 
-<div class="compose-field">Description 
+		<div class="compose-field">Message 
+			<textarea id="compose-message" placeholder="Write a few words here" rows="4"></textarea>
+		</div>
 
-<textarea id="compose-description" placeholder="Write a few words here" rows="4"></textarea>
+	{{/if}}
+
+	<span class="compose-action compose-switch" class="compose-action small">Switch to URL post</span>
+	<span class="compose-action  compose-post" class="compose-action small">Post</span> 
+	<span class="compose-action  compose-schedule" class="compose-action small">Schedule</span> 
+	<span class="compose-action  compose-cancel">Cancel</span> 
+
 </div>
-
-<span id="compose-switch" class="compose-action small">Switch to Text-only</span>
-<span id="compose-post" class="compose-action small">Post</span> 
-<span id="compose-schedule" class="compose-action small">Schedule</span> 
-<span id="compose-cancel" class="compose-action small">Cancel</span> 
-
 </script>
 
 
