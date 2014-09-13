@@ -109,7 +109,9 @@ App.PostInsightView = (function(_super) {
   PostInsightView.prototype.className = 'insight-view';
 
   PostInsightView.prototype.render = function() {
-    this.$el.html(postInsightTemplate(this.model.get('data')[0]));
+    this.$el.html(postInsightTemplate({
+      dataset: this.model.get('data')
+    }));
     $('.insight-section').empty();
     $('.insight-section').append(this.$el);
     return this.$el;

@@ -62,7 +62,7 @@ class App.PostInsightView extends Backbone.View
 	className: 'insight-view'
 
 	render: =>
-		@$el.html postInsightTemplate(@model.get('data')[0])
+		@$el.html postInsightTemplate(dataset: @model.get('data'))
 		$('.insight-section').empty()
 		$('.insight-section').append @$el
 		@$el

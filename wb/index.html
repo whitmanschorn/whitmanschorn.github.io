@@ -71,7 +71,7 @@ $(document).ready(function() {
 
 <div id="app-right">
 	<div id="post-detail"></div>
-	<div class="insight-section truncate"></div>
+	<div class="insight-section"></div>
 </div>
 
 </div>
@@ -82,35 +82,40 @@ $(document).ready(function() {
 <!-- Templates -->
 <script id="photo-post-template" type="text/x-handlebars-template"> 
 <div class="photo">
-<img src={{icon}}/> 
-<span>{{story}}</span>
-<hr/>
-<span class="post-misc">
-<span class="time f-right">{{relativeTime timestamp}}</span>
-<span class="actions">{{#each actions}}<a href="{{link}}">{{name}}</a> {{/each}}</span>
-</span>
+	<img src={{icon}}/> 
+	<span>{{story}}</span>
+	<hr/>
+	<span class="post-misc">
+	<span class="time f-right">{{relativeTime timestamp}}</span>
+	<span class="actions">{{#each actions}}<a href="{{link}}">{{name}}</a> {{/each}}</span>
+	</span>
 </div>
 </script>
 
 <script id="status-post-template" type="text/x-handlebars-template"> 
 <div class="status">
-<span>{{message}}</span></div>
-<hr/>
-<span class="post-misc">
-<span class="time f-right">{{relativeTime timestamp}}</span>
-<span class="actions">{{#each actions}}<a href="{{link}}">{{name}}</a> {{/each}}</span>
-</span>
+	{{#if icon}}
+		<img src={{icon}}/> 
+	{{/if}}
+	<span>{{message}}</span></div>
+	<hr/>
+	<span class="post-misc">
+	<span class="time f-right">{{relativeTime timestamp}}</span>
+	<span class="actions">{{#each actions}}<a href="{{link}}">{{name}}</a> {{/each}}</span>
+	</span>
 </div>
 </script>
 
 <script id="post-insight-template" type="text/x-handlebars-template">
-<div class="insight margin-top">
-{{title}}<div class="period"><i class="fa fa-question-circle"></i><div class="period-hover"> ({{description}})</div>
-</div>
-<br/>
-
-<hr/>
-<span class="wrap-words">{{#each values}} <span class="important">{{value}}</span> {{/each}}</span></div>
+{{#each dataset}}
+	<div class="insight margin-top">
+		{{title}}
+		<div class="period"><i class="fa fa-question-circle"></i><div class="period-hover"> ({{description}})</div>
+	</div>
+	<hr/>
+	<span class="wrap-words">{{#each values}} <span class="important">{{value}}</span> {{/each}}</span></div>
+	</div>
+	{{/each}}
 </script>
 
 
