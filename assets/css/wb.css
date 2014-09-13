@@ -16,12 +16,13 @@ body {
       font-family: 'Source Sans Pro', sans-serif;
       font-weight: 300;
 
-
 }
 
 ul {
      list-style-type: none;
 }
+
+
 
 .capitalize {
      text-transform: capitalize;
@@ -39,9 +40,15 @@ ul {
 .compose {
      width: 400px;
      color: #afbdd4;
+}
 
 
+.picker__list {
+     background-color: #3b5998;
+}
 
+.picker__day {
+     cursor: pointer;
 }
 
 .compose input, .compose textarea {
@@ -78,8 +85,9 @@ input#compose-name {
      font-size: 22px;
 }
 
-.compose-action {
+.post-action, .compose-action {
      cursor: pointer;
+     color: #afbdd4;
      -webkit-transition: all 100ms ease-in-out;
      -moz-transition: all 100ms ease-in-out;
      -ms-transition: all 100ms ease-in-out;
@@ -87,8 +95,17 @@ input#compose-name {
      transition: all 100ms ease-in-out;
 }
 
-.compose-action:hover {
+.post-action:hover, .compose-action:hover {
      color: #d8dfea;
+}
+
+.compose-schedule {
+     margin-top: 20px;
+     display: inline-block;
+}
+
+.compose-schedule.is-active {
+     border: 1px solid #afbdd4;
 }
 
 .compose-action {
@@ -104,7 +121,23 @@ input#compose-name {
 
 
 .post-bar {
+     min-height: 80px;
      padding: 5px;
+     -webkit-border-radius: 2px;
+     -moz-border-radius: 2px;
+     border-radius: 2px;
+     margin: 5px 0px;
+     border: 1px solid #3b5998;
+     -webkit-transition: all 100ms ease-in-out;
+     -moz-transition: all 100ms ease-in-out;
+     -ms-transition: all 100ms ease-in-out;
+     -o-transition: all 100ms ease-in-out;
+     transition: all 100ms ease-in-out;
+
+}
+
+.bar {
+          padding: 5px;
      -webkit-border-radius: 2px;
      -moz-border-radius: 2px;
      border-radius: 2px;
@@ -149,14 +182,25 @@ input#compose-name {
      font-size: 11px;
 }
 
-.post-bar:hover {
+.bar:hover {
      border-color: #8b9dc3;
 }
 
-.post-bar.selected {
+.bar.selected {
      background-color: #3b5998;
      border-color: #fff;
      color: #fff;
+}
+
+.img-preview img {
+     display: block;
+    margin-left: auto;
+    margin-right: auto
+}
+
+.page-btn {
+     cursor: pointer;
+
 }
 
 .mask {
@@ -165,7 +209,6 @@ input#compose-name {
      border: 1px solid #f7f7f7;
      width: 450px;
      text-align: center;
-     margin: center;
 
 }
 
@@ -173,6 +216,10 @@ input#compose-name {
      text-align: center;
 }
 
+
+.picker__holder {
+     overflow: scroll;
+}
 
 
 .post-list li {
@@ -203,23 +250,46 @@ a {
      -o-transition: all 100ms ease-in-out;
      transition: all 100ms ease-in-out;
 
-
-
 }
 
 a:hover {
      color: #8b9dc3;
 }
 
+.schedule-controls {
+     border: none;
+}
+
+.hcolor {
+     color: #8b9dc3;
+     text-decoration: none;
+     -webkit-transition: all 100ms ease-in-out;
+     -moz-transition: all 100ms ease-in-out;
+     -ms-transition: all 100ms ease-in-out;
+     -o-transition: all 100ms ease-in-out;
+     transition: all 100ms ease-in-out;
+}
+
+.hcolor:hover {
+     color: #fff;
+}
+
 .secondary {
      color: #8b9dc3;
+}
+
+.f-right {
+     float: right;
+}
+
+.f-left {
+     float: left;
 }
 
 .detail-time {
      float: right;
      font-size: 14px;
      line-height: 14px;
-     margin-top: 26px;
 }
 
 .important {
@@ -242,8 +312,13 @@ a:hover {
 }
 
 
-#app-left {
+.page-container {
+     max-width: 1080px;
 
+}
+
+
+#app-left {
      height: 100%;
      padding: 10px;
      margin: auto;
@@ -254,7 +329,7 @@ a:hover {
 #app-right {
      position: fixed;
      top: 10px;
-     right: 20px;
+     left: 550px;
      height: 100%;
      margin: auto;
      width: 400px;

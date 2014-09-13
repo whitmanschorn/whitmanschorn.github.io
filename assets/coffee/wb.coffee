@@ -6,11 +6,15 @@
 
 App = {}
 
+window.deletePost = (post_id, page_access_token) =>
+    FB.api "/#{post_id}", "delete", (response) =>
+        response.post_id = post_id
+        @controls.feed.finishPostDelete response
 
 window.publishHelloWorld = (args) =>
     FB.api "/#{args.page_id}/feed?", "post", args, (response) =>
         response.requestArgs = args
-        @feed.renderResponse response
+        @controls.feed.renderPostResponse response
 
 window.pageLogin = =>
     FB.api "/me/accounts?fields=name,access_token,link", (response) ->
@@ -27,7 +31,11 @@ window.pageLogin = =>
             if response.data.length == 1 or ALWAYS_FIRST_PAGE
                 autoSelected = response.data[0]
                 document.getElementById("pageName").innerHTML = "<a href=\"" + autoSelected.link + "\">" + "<i class=\"fa fa-facebook-square\"></i>" + "</a> " + autoSelected.name
+                #$(window).on('refreshFeed', initApp(autoSelected.id, autoSelected.access_token))
                 initApp(autoSelected.id, autoSelected.access_token)
+
+                #bind refresh
+
             else
                 while i < response.data.length
                     li = document.createElement("li")
@@ -64,13 +72,9 @@ window.setPageMask = (maskSelector) =>
     if $(am)[0] == $(nm)[0]
         console.error "no change in mask"
     else
-        #am transition out, nm transition in
-        am
-            .velocity("transition.flipXOut")
+        am.velocity("transition.flipXOut")
         am.removeClass 'activeMask'
-        nm
-            .velocity("transition.flipXIn")    
-        #add activeMas
+        nm.velocity("transition.flipXIn")    
         nm.addClass 'activeMask'
 
 
@@ -79,23 +83,28 @@ window.initApp = (page_id, access_token) =>
     FB.api("/#{page_id}/promotable_posts", (data) =>
                 # TODO: THESE ARE OUT POSTS
                 if data.data?
-                    @feed = new App.FeedCollectionView({collection: new App.FeedCollection( _.map(data.data, (s) -> new App.PostModel(s) ) )})
-                    @feed.render()
-                    $('#compose-btn').click ->
-                        @compose = new App.ComposeView({model: new Backbone.Model({page_id: page_id, access_token: access_token})})
-                        @compose.renderComposeSelection()
+                    @controls = new App.PageController data, access_token, page_id
+
+            )
+window.paginateFeed = (pagination_string) =>
+    pagination_strings = pagination_string.split('/')
+    pagination_string = pagination_strings[4] + "/" + pagination_strings[5]
+    FB.api("#{pagination_string}", (data) =>
+                if data.data?
+                    @controls.paginate data
             )
 
+
 window.fetchInsightData = (page_id) =>
-    FB.api("/#{page_id}/insights/post_impressions?since=1410015034&until=1410315034", (data) ->
-                # TODO: THESE ARE OUT POSTS
+    FB.api("/#{page_id}/insights/post_impressions", (data) ->
+                # TODO: More error handling?
                 if data.error? 
                     data.data = data.error
 
                 if data?
                     @insighter = new App.PostInsightView(model: new Backbone.Model(data))
                     @insighter.render()
-                            
+              
             )
 
 

@@ -7,6 +7,14 @@ Handlebars.registerHelper("relativeTime", function(timeString) {
   return moment(timeString).fromNow();
 });
 
+Handlebars.registerHelper("prettifyURL", function(link) {
+  var ans, url;
+  url = link.split('/');
+  ans = url[2];
+  ans = ans.replace('www.', '');
+  return ans;
+});
+
 window.renderData = (function(_this) {
   return function() {
     return $('body').append(template(data));
@@ -21,10 +29,13 @@ App.PostModel = (function(_super) {
   }
 
   PostModel.prototype.initialize = function(options) {
-    if ((options.is_published != null) && options.is_published === false) {
-      return this.set('timestamp', options.scheduled_publish_time * 1000);
-    } else {
-      return this.set('timestamp', options.updated_time);
+    if (this.get('timestamp') == null) {
+      console.log('override ts');
+      if ((options.is_published != null) && options.is_published === false) {
+        return this.set('timestamp', options.scheduled_publish_time * 1000);
+      } else {
+        return this.set('timestamp', options.updated_time);
+      }
     }
   };
 
@@ -39,7 +50,7 @@ App.PostView = (function(_super) {
     return PostView.__super__.constructor.apply(this, arguments);
   }
 
-  PostView.prototype.className = 'post-bar';
+  PostView.prototype.className = 'post-bar bar';
 
   PostView.prototype.tagName = 'li';
 
@@ -120,9 +131,26 @@ App.PostDetailView = (function(_super) {
 
   postDetailTemplate = Handlebars.compile($('#post-detail-template').html());
 
+  PostDetailView.prototype.events = {
+    'click .detail-delete': 'postDelete'
+  };
+
+  PostDetailView.prototype.postDelete = function() {
+    console.log('hitting delete');
+    console.log(this.model.get('page_access_token'));
+    deletePost(this.model.get('id'), this.model.get('page_access_token'));
+    return this.emptyDetailView();
+  };
+
+  PostDetailView.prototype.emptyDetailView = function() {
+    $('#post-detail').empty();
+    return $('.insight-section').empty();
+  };
+
   PostDetailView.prototype.render = function() {
     var sm;
     sm = JSON.stringify(this.model.toJSON(), null, 4);
+    this.model.set('is_image', this.model.get('type') === 'image');
     this.model.set('blob', sm);
     this.$el.html(postDetailTemplate(this.model.toJSON()));
     return this.$el;
@@ -191,6 +219,68 @@ App.FeedCollection = (function(_super) {
 
 })(Backbone.Collection);
 
+App.PageController = (function(_super) {
+  __extends(PageController, _super);
+
+  function PageController() {
+    this.paginate = __bind(this.paginate, this);
+    return PageController.__super__.constructor.apply(this, arguments);
+  }
+
+  PageController.prototype.initialize = function(data, access_token, page_id) {
+    this.pageNumber = 1;
+    this.pageNumberEl = $('.page-number');
+    this.paginate(data, access_token);
+    return $('#compose-btn').click(function() {
+      this.compose = new App.ComposeView({
+        model: new Backbone.Model({
+          page_id: page_id,
+          access_token: access_token
+        })
+      });
+      return this.compose.renderComposeSelection();
+    });
+  };
+
+  PageController.prototype.assignPagination = function(paging) {
+    $('#next-btn').unbind('click');
+    $('#prev-btn').unbind('click');
+    $('#next-btn').click((function(_this) {
+      return function() {
+        _this.pageNumber++;
+        return paginateFeed(paging.next);
+      };
+    })(this));
+    return $('#prev-btn').click((function(_this) {
+      return function() {
+        _this.pageNumber--;
+        return paginateFeed(paging.previous);
+      };
+    })(this));
+  };
+
+  PageController.prototype.paginate = function(data, access_token) {
+    this.pageNumberEl.text(this.pageNumber);
+    this.feed = new App.FeedCollectionView({
+      collection: new App.FeedCollection(_.map(data.data, (function(_this) {
+        return function(s) {
+          var tempModel;
+          tempModel = new App.PostModel(s);
+          tempModel.set('page_access_token', access_token);
+          return tempModel;
+        };
+      })(this)))
+    });
+    if (data.paging != null) {
+      this.assignPagination(data.paging);
+    }
+    return this.feed.render();
+  };
+
+  return PageController;
+
+})(Backbone.View);
+
 App.ComposeView = (function(_super) {
   var postComposeTemplate;
 
@@ -199,6 +289,8 @@ App.ComposeView = (function(_super) {
   function ComposeView() {
     this.submitPost = __bind(this.submitPost, this);
     this.render = __bind(this.render, this);
+    this.readPostArgs = __bind(this.readPostArgs, this);
+    this.composeCancel = __bind(this.composeCancel, this);
     this.composeSwitch = __bind(this.composeSwitch, this);
     this.initialize = __bind(this.initialize, this);
     return ComposeView.__super__.constructor.apply(this, arguments);
@@ -208,7 +300,9 @@ App.ComposeView = (function(_super) {
 
   ComposeView.prototype.initialize = function() {
     $('.post-list li').click(this.unselect);
-    return this.isURL = true;
+    this.isURL = false;
+    this.isScheduling = false;
+    return $(window).on('sucessfulPost', this.composeCancel);
   };
 
   ComposeView.prototype.events = function() {
@@ -244,12 +338,22 @@ App.ComposeView = (function(_super) {
     });
   };
 
-  ComposeView.prototype.composePost = function() {
-    return this.submitPost();
+  ComposeView.prototype.composeSchedule = function() {
+    this.isScheduling = !this.isScheduling;
+    $('.compose-schedule').toggleClass('is-active');
+    $('#post-detail').append(this.render());
+    if (this.isScheduling) {
+      this.dpi = $('.datepicker').pickadate({
+        container: '#schedule-root'
+      });
+      return this.tpi = $('.timepicker').pickatime({
+        container: '#schedule-root'
+      });
+    }
   };
 
-  ComposeView.prototype.composeSchedule = function() {
-    return console.log('schedule fired');
+  ComposeView.prototype.composePost = function() {
+    return this.submitPost();
   };
 
   ComposeView.prototype.composeCancel = function() {
@@ -258,23 +362,25 @@ App.ComposeView = (function(_super) {
     return $('.insight-section').empty();
   };
 
-  ComposeView.prototype.render = function() {
-    this.select();
-    this.$el.html(postComposeTemplate({
-      isURL: this.isURL
-    }));
-    return this.$el;
-  };
-
-  ComposeView.prototype.submitPost = function(ts) {
-    var postArgs;
-    if (ts == null) {
-      ts = 0;
-    }
+  ComposeView.prototype.readPostArgs = function() {
+    var diffAmount, nowMoment, postArgs, schedMoment, schedString, schedTimestamp;
     postArgs = {
       page_id: this.model.get('page_id')
     };
     postArgs.access_token = this.model.get('access_token');
+    if (this.isScheduling) {
+      schedString = $('.datepicker').val() + " " + $('.timepicker').val();
+      schedMoment = moment(schedString, 'DD MMM, YYYY h:mma');
+      schedTimestamp = schedMoment.unix();
+      nowMoment = moment();
+      diffAmount = nowMoment.diff(schedMoment, 'minutes');
+      if (diffAmount < -10) {
+        postArgs.scheduled_publish_time = schedTimestamp;
+        postArgs.published = false;
+      } else if (diffAmount > 1) {
+        postArgs.backdated_time = schedTimestamp;
+      }
+    }
     if (this.isURL) {
       postArgs.link = $('#compose-link').val();
       postArgs.picture = $('#compose-picture').val();
@@ -284,6 +390,24 @@ App.ComposeView = (function(_super) {
     } else {
       postArgs.message = $('#compose-message').val();
     }
+    return postArgs;
+  };
+
+  ComposeView.prototype.render = function() {
+    this.select();
+    this.$el.html(postComposeTemplate({
+      isURL: this.isURL,
+      isScheduling: this.isScheduling
+    }));
+    return this.$el;
+  };
+
+  ComposeView.prototype.submitPost = function(ts) {
+    var postArgs;
+    if (ts == null) {
+      ts = 0;
+    }
+    postArgs = this.readPostArgs();
     if (!((postArgs.message != null) || (postArgs.link != null))) {
       console.error('need to complete post before submitting');
     }
@@ -323,33 +447,51 @@ App.FeedCollectionView = (function(_super) {
     return FeedCollectionView.__super__.constructor.apply(this, arguments);
   }
 
-  FeedCollectionView.prototype.populatePostModel = function(args) {
-    return new App.PostModel({
-      id: args.id
-    });
+  FeedCollectionView.prototype.finishPostDelete = function(res) {
+    console.log('post deletion result');
+    console.log(res);
+    if (!res.success) {
+      return alert('Post deletion failed.');
+    } else {
+      this.collection.remove(this.collection.get(res.post_id));
+      return this.render();
+    }
   };
 
-  FeedCollectionView.prototype.renderResponse = function(res) {
-    var newModel, postType, story;
+  FeedCollectionView.prototype.renderPostResponse = function(res) {
+    var message, newModel, postType, story, ts;
     if (res.error != null) {
       console.error(res.error);
-      alert('Publishing failed!');
+      alert(res.error.error_user_msg);
+      return;
     }
+    ts = res.requestArgs.scheduled_publish_time;
+    console.log('res args now');
+    console.log(res.requestArgs);
+    if (ts == null) {
+      ts = res.requestArgs.backdated_time;
+    }
+    if (ts == null) {
+      ts = moment().unix();
+    }
+    console.log('ts now');
+    ts = ts * 1000;
     if (res.requestArgs.message != null) {
       postType = 'status';
       story = res.requestArgs.message;
     } else {
       postType = 'link';
-      story = res.requestArgs.title;
+      story = res.requestArgs.name;
+      message = res.requestArgs.name;
     }
-    console.log('post type: ');
-    console.log(postType);
     newModel = new App.PostModel({
       id: res.id,
       type: postType,
       story: story,
-      ts: moment().unix()
+      message: message,
+      timestamp: ts
     });
+    $(window).trigger("sucessfulPost", newModel);
     this.collection.unshift(newModel);
     return this.render();
   };
@@ -359,7 +501,6 @@ App.FeedCollectionView = (function(_super) {
     this.collection.each((function(_this) {
       return function(post) {
         var postR;
-        console.log(post.get('type'));
         postR = (function() {
           switch (false) {
             case post.get('type') !== 'status':

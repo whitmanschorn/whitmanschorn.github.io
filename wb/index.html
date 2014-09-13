@@ -9,6 +9,15 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.backbone.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.2/moment.min.js"></script>
+<script src="/lib/pickadate/picker.js"></script>
+<script src="/lib/pickadate/picker.date.js"></script>
+<script src="/lib/pickadate/picker.time.js"></script>
+<link rel="stylesheet" href="/lib/pickadate/themes/base.css">
+<link rel="stylesheet" href="/lib/pickadate/themes/base.date.css">
+<link rel="stylesheet" href="/lib/pickadate/themes/base.time.css">
+<link rel="stylesheet" href="/lib/pickadate/themes/default.css">
+<link rel="stylesheet" href="/lib/pickadate/themes/default.date.css">
+<link rel="stylesheet" href="/lib/pickadate/themes/default.time.css">
 
 
 <!-- Whitman Schorn -->
@@ -18,51 +27,56 @@ $(document).ready(function() {
 });
 </script>
 <div class="fb-login-button" data-scope="manage_pages,read_insights,read_stream,publish_actions" data-max-rows="1" data-size="medium"></div>
-<div id="app-left">
-	<div id="fb-root" data-app-id="443134245827248"></div>
-
-	<div class="mask loadingLogin">
-		<div class="important">Facebook Page Management</div>
-		<hr />
-		<div class="fb-login-button" data-scope="manage_pages,read_insights,read_stream,publish_actions" data-max-rows="1" data-size="medium"></div>
-	</div>
-
-	<div class="mask loadingPermission">
-		<div class="important">Facebook Page Management</div>
-		<hr />
-		<div id="pageBtn" class="margin-top btn btn-success clearfix">List my Pages</div>
-	</div>
+<div id="schedule-root"></div>
 
 
-	<div class="mask content">
-		<div id="pickPageSection" class="section">
-			<ul id="pagesList" class="btn-group btn-group-vertical clearfix"></ul>
+
+
+<div class="page-container">
+	<div id="app-left">
+		<div id="fb-root" data-app-id="443134245827248"></div>
+
+		<div class="mask loadingLogin">
+			<div class="important">Facebook Page Management</div>
+			<hr />
+			<div class="fb-login-button" data-scope="manage_pages,read_insights,read_stream,publish_actions" data-max-rows="1" data-size="medium"></div>
 		</div>
-		<div id="publishSection" class="section">
-			Publishing to <div class=""><span id="pageName" class="label label-success">No page selected</span>
-			<span id="pageError" class="error label label-success"></span>
+
+		<div class="mask loadingPermission">
+			<div class="important">Facebook Page Management</div>
+			<hr />
+			<div id="pageBtn" class="margin-top btn btn-success clearfix">List my Pages</div>
 		</div>
+
+
+		<div class="mask content">
+			<div id="pickPageSection" class="section">
+				<ul id="pagesList" class="btn-group btn-group-vertical clearfix"></ul>
+			</div>
+			<div id="publishSection" class="section">
+				Publishing to <div class=""><span id="pageName" class="label label-success">No page selected</span>
+				<span id="pageError" class="error label label-success"></span>
+			</div>
+		</div>
+		<div class="page-btn hcolor f-left" id="next-btn">Earlier</div>
+		<div class="page-btn hcolor f-right" id="prev-btn">Later</div>
+		<div class="small">Page <span class="page-number"></span></div>
+
+		<div class="bar" id="compose-btn">Compose</div>
+
+		<ul class="post-list"></ul>
+
 	</div>
-
-
-<div class="post-bar" id="compose-btn">Compose</div>
-
-<ul class="post-list">
-
-</ul>
 </div>
-
-
-</div>
-
 
 <div id="app-right">
 	<div id="post-detail"></div>
 	<div class="insight-section truncate"></div>
-
 </div>
 
 </div>
+
+
 
 
 <!-- Templates -->
@@ -72,7 +86,7 @@ $(document).ready(function() {
 <span>{{story}}</span>
 <hr/>
 <span class="post-misc">
-<span class="time">{{relativeTime timestamp}}</span>
+<span class="time f-right">{{relativeTime timestamp}}</span>
 <span class="actions">{{#each actions}}<a href="{{link}}">{{name}}</a> {{/each}}</span>
 </span>
 </div>
@@ -83,7 +97,7 @@ $(document).ready(function() {
 <span>{{message}}</span></div>
 <hr/>
 <span class="post-misc">
-<span class="time">{{relativeTime timestamp}}</span>
+<span class="time f-right">{{relativeTime timestamp}}</span>
 <span class="actions">{{#each actions}}<a href="{{link}}">{{name}}</a> {{/each}}</span>
 </span>
 </div>
@@ -104,12 +118,29 @@ $(document).ready(function() {
 <div class="detail">
 <span class="important capitalize">{{name}} <span class="secondary">{{type}}</span></span>
 <hr/>
-{{#if message}}
-<span class="important">{{message}}</span>
+{{#if link}}
+<a href="{{link}}" class="important">{{prettifyURL link}}</a>
 <hr/>
 {{/if}}
 
+{{#if picture}}
+<div class="img-preview margin-top"><img src={{picture}}></img></div>
+<br/>
+{{/if}}
+
+{{#if message}}
+<span class="important">{{message}}</span>
+<hr/>
+
+{{/if}}
+
+
+
 <span class="detail-time">{{#if is_published}}Published{{else}}Publishing{{/if}} {{relativeTime timestamp}}</span>
+
+<span class="post-action detail-delete" data-pid="{{id}}">Delete</span>
+
+
 
 </div>
 </script>
@@ -119,31 +150,40 @@ $(document).ready(function() {
 <script id="post-compose-template" type="text/x-handlebars-template">
 <div class="compose">
 
-	{{#if isURL}}
+{{#if isURL}}
 
-		<div class="compose-field">URL <input type="text" id="compose-link"/></div>
-		<hr/>
-		<div class="compose-field"><span class="">Title <input type="text" id="compose-name"/></span></div>
-		<div class="compose-field">Image URL <input type="text" id="compose-picture"/></div>
-		<div class="compose-field">Caption <input type="text" id="compose-caption"/></div>
-		<div class="compose-field">Description 
-			<textarea id="compose-description" placeholder="Write a few words here" rows="4"></textarea>
-		</div>
+<div class="compose-field">URL <input type="text" id="compose-link"/></div>
+<hr/>
+<div class="compose-field"><span class="">Title <input type="text" id="compose-name"/></span></div>
+<div class="compose-field">Image URL <input type="text" id="compose-picture"/></div>
+<div class="compose-field">Caption <input type="text" id="compose-caption"/></div>
+<div class="compose-field">Description 
+<textarea id="compose-description" placeholder="Write a few words here" rows="4"></textarea>
+</div>
 
-	{{else}}
+{{else}}
 
-		<div class="compose-field">Message 
-			<textarea id="compose-message" placeholder="Write a few words here" rows="4"></textarea>
-		</div>
+<div class="compose-field">Message 
+<textarea id="compose-message" placeholder="Write a few words here" rows="4"></textarea>
+</div>
 
-	{{/if}}
+{{/if}}
 
-	<span class="compose-action compose-switch" class="compose-action small">Switch Post Type</span>
-	<hr/>
-	<span class="compose-action  compose-post" class="compose-action small">Post</span> 
-	<span class="compose-action  compose-schedule" class="compose-action small">Schedule</span> 
-	<span class="compose-action  compose-cancel">Cancel</span> 
+<span class="compose-action compose-switch" class="compose-action small">Switch Post Type</span>
+<hr/>
+<span class="compose-action  compose-post" class="compose-action small">Post</span> 
 
+<span class="compose-action f-right compose-cancel">Cancel</span> 
+<br/>
+<span class="compose-action  compose-schedule" class="compose-action small"><i class="fa fa-clock-o"></i></span> 
+
+{{#if isScheduling}}
+<div class="schedule-controls">
+<span class="small">Using local timezone</span>
+<input class="datepicker"/>
+<input class="timepicker"/>
+</div>
+{{/if}}
 </div>
 </script>
 

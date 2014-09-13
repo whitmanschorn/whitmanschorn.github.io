@@ -3,11 +3,20 @@ var App, FBScript, PageScript;
 
 App = {};
 
+window.deletePost = (function(_this) {
+  return function(post_id, page_access_token) {
+    return FB.api("/" + post_id, "delete", function(response) {
+      response.post_id = post_id;
+      return _this.controls.feed.finishPostDelete(response);
+    });
+  };
+})(this);
+
 window.publishHelloWorld = (function(_this) {
   return function(args) {
     return FB.api("/" + args.page_id + "/feed?", "post", args, function(response) {
       response.requestArgs = args;
-      return _this.feed.renderResponse(response);
+      return _this.controls.feed.renderPostResponse(response);
     });
   };
 })(this);
@@ -77,21 +86,20 @@ window.initApp = (function(_this) {
   return function(page_id, access_token) {
     return FB.api("/" + page_id + "/promotable_posts", function(data) {
       if (data.data != null) {
-        _this.feed = new App.FeedCollectionView({
-          collection: new App.FeedCollection(_.map(data.data, function(s) {
-            return new App.PostModel(s);
-          }))
-        });
-        _this.feed.render();
-        return $('#compose-btn').click(function() {
-          this.compose = new App.ComposeView({
-            model: new Backbone.Model({
-              page_id: page_id,
-              access_token: access_token
-            })
-          });
-          return this.compose.renderComposeSelection();
-        });
+        return _this.controls = new App.PageController(data, access_token, page_id);
+      }
+    });
+  };
+})(this);
+
+window.paginateFeed = (function(_this) {
+  return function(pagination_string) {
+    var pagination_strings;
+    pagination_strings = pagination_string.split('/');
+    pagination_string = pagination_strings[4] + "/" + pagination_strings[5];
+    return FB.api("" + pagination_string, function(data) {
+      if (data.data != null) {
+        return _this.controls.paginate(data);
       }
     });
   };
@@ -99,7 +107,7 @@ window.initApp = (function(_this) {
 
 window.fetchInsightData = (function(_this) {
   return function(page_id) {
-    return FB.api("/" + page_id + "/insights/post_impressions?since=1410015034&until=1410315034", function(data) {
+    return FB.api("/" + page_id + "/insights/post_impressions", function(data) {
       if (data.error != null) {
         data.data = data.error;
       }

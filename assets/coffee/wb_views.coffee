@@ -1,6 +1,12 @@
 Handlebars.registerHelper "relativeTime", (timeString) ->
   moment(timeString).fromNow()
 
+Handlebars.registerHelper "prettifyURL", (link) ->
+	url = link.split('/')
+	ans = url[2]
+	ans = ans.replace('www.', '')
+	ans
+
 
 window.renderData = =>
 	$('body').append(template(data));
@@ -10,18 +16,17 @@ class App.PostModel extends Backbone.Model
 
 	initialize: (options) ->
 		#find our useful timestamp
-		if options.is_published? and options.is_published is false
-			@set('timestamp', options.scheduled_publish_time * 1000)
-		else
-			@set('timestamp', options.updated_time)
-
-
-
+		if not @get('timestamp')?
+			console.log 'override ts'
+			if options.is_published? and options.is_published is false
+				@set('timestamp', options.scheduled_publish_time * 1000)
+			else
+				@set('timestamp', options.updated_time)
 
 
 
 class App.PostView extends Backbone.View
-	className: 'post-bar'
+	className: 'post-bar bar'
 	tagName: 'li'
 
 	initialize: ->
@@ -56,7 +61,6 @@ class App.PostInsightView extends Backbone.View
 	postInsightTemplate = Handlebars.compile($('#post-insight-template').html())
 	className: 'insight-view'
 
-
 	render: =>
 		@$el.html postInsightTemplate(@model.get('data')[0])
 		$('.insight-section').empty()
@@ -67,8 +71,25 @@ class App.PostInsightView extends Backbone.View
 class App.PostDetailView extends Backbone.View
 	postDetailTemplate = Handlebars.compile($('#post-detail-template').html())
 
+
+	events:
+		'click .detail-delete' : 'postDelete'
+
+
+	postDelete: ->
+		console.log 'hitting delete'
+		console.log @model.get('page_access_token')
+		deletePost(@model.get('id'), @model.get('page_access_token'))
+		@emptyDetailView()
+
+	emptyDetailView: ->
+		$('#post-detail').empty()
+		$('.insight-section').empty()
+
+
 	render: =>
 		sm = JSON.stringify(@model.toJSON(), null, 4)
+		@model.set('is_image', @model.get('type') is 'image')
 		@model.set('blob', sm)
 		@$el.html postDetailTemplate(@model.toJSON())
 		@$el
@@ -97,13 +118,49 @@ class App.FeedCollection extends Backbone.Collection
 
 
 
+class App.PageController extends Backbone.View
+
+	initialize: (data, access_token, page_id) ->
+		@pageNumber = 1
+		@pageNumberEl = $('.page-number')
+		@paginate(data, access_token)
+		$('#compose-btn').click ->
+			@compose = new App.ComposeView({model: new Backbone.Model({page_id: page_id, access_token: access_token})})
+			@compose.renderComposeSelection()
+		
+
+	assignPagination: (paging) ->
+		$('#next-btn').unbind 'click'
+		$('#prev-btn').unbind 'click'
+
+		$('#next-btn').click =>
+			@pageNumber++
+			paginateFeed paging.next
+		$('#prev-btn').click =>
+			@pageNumber--
+			paginateFeed paging.previous
+
+
+	paginate: (data, access_token) =>
+		@pageNumberEl.text @pageNumber
+		@feed = new App.FeedCollectionView({collection: new App.FeedCollection( _.map(data.data, (s) => 
+			tempModel = new App.PostModel(s)
+			tempModel.set('page_access_token', access_token)
+			tempModel ) )})
+		if data.paging?
+			@assignPagination data.paging
+
+		@feed.render()
+
 class App.ComposeView extends Backbone.View
 	postComposeTemplate = Handlebars.compile($('#post-compose-template').html())
 
 
 	initialize: =>
 		$('.post-list li').click @unselect
-		@isURL = true
+		@isURL = false
+		@isScheduling = false
+		$(window).on('sucessfulPost', @composeCancel)
 
 	events: ->
 		'click .compose-switch' : 'composeSwitch'
@@ -122,7 +179,6 @@ class App.ComposeView extends Backbone.View
 
 	composeSwitch: =>
 		@isURL = not @isURL
-
 		$('#post-detail').velocity("transition.slideUpOut", 
 			duration: 150,
 			complete: =>
@@ -132,28 +188,48 @@ class App.ComposeView extends Backbone.View
 				)
 
 
+	composeSchedule: ->
+		@isScheduling = not @isScheduling
+		$('.compose-schedule').toggleClass 'is-active'
+		$('#post-detail').append @render()
+		if @isScheduling
+			@dpi = $('.datepicker').pickadate({
+				container: '#schedule-root'
+				})
+			@tpi = $('.timepicker').pickatime({
+				container: '#schedule-root'
+				})
+
+		# picker = input.pickadate('picker')
+		# picker.open()
+		# console.log 'woah done'
 
 	composePost: ->
 		@submitPost()
 
-	composeSchedule: ->
-		console.log 'schedule fired'	
 
-	composeCancel: ->
+	composeCancel: =>
 		@unselect()
 		$('#post-detail').empty()
 		$('.insight-section').empty()
 
 
-
-	render: =>
-		@select()
-		@$el.html postComposeTemplate({isURL: @isURL})
-		@$el
-
-	submitPost: (ts = 0) =>
+	readPostArgs: =>
 		postArgs = {page_id : @model.get('page_id')}
 		postArgs.access_token = @model.get('access_token')
+		#determine timing
+		if @isScheduling
+			schedString = $('.datepicker').val() + " " + $('.timepicker').val()
+			schedMoment = moment(schedString, 'DD MMM, YYYY h:mma')
+			schedTimestamp = schedMoment.unix()
+			nowMoment = moment()
+			diffAmount = nowMoment.diff(schedMoment, 'minutes')
+			if diffAmount < -10
+				postArgs.scheduled_publish_time = schedTimestamp
+				postArgs.published = false
+			else if diffAmount > 1
+				postArgs.backdated_time = schedTimestamp
+		#determine post
 		if @isURL
 			postArgs.link = $('#compose-link').val()
 			postArgs.picture = $('#compose-picture').val()
@@ -163,6 +239,17 @@ class App.ComposeView extends Backbone.View
 		else
 			postArgs.message = $('#compose-message').val() #for a bunch of fields. 
 
+		postArgs
+
+
+	render: =>
+		@select()
+		@$el.html postComposeTemplate({isURL: @isURL, isScheduling: @isScheduling})
+		@$el
+
+	submitPost: (ts = 0) =>
+
+		postArgs = @readPostArgs()
 
 		if not (postArgs.message? or postArgs.link?)
 			console.error 'need to complete post before submitting'
@@ -184,37 +271,48 @@ class App.ComposeView extends Backbone.View
 
 
 
-
-
-
 class App.FeedCollectionView extends Backbone.View
 
-	populatePostModel: (args) ->
+	finishPostDelete: (res) ->
+		console.log 'post deletion result'
+		console.log res
+		if not res.success
+			alert 'Post deletion failed.'
+		else
+			@collection.remove @collection.get(res.post_id)
+			@render()
 
-		
-		return new App.PostModel(
-			id: args.id
-			)
 
-	renderResponse: (res) ->
+	renderPostResponse: (res) ->
 		if res.error?
 			console.error res.error
-			alert 'Publishing failed!'
+			alert res.error.error_user_msg
+			return
 
-		# console.log "response from post:"
-		# console.log res
-		# console.log res.requestArgs
+		ts = res.requestArgs.scheduled_publish_time
+		console.log 'res args now'
+		console.log res.requestArgs
+
+
+		if not ts?
+			ts = res.requestArgs.backdated_time
+		if not ts? 
+			ts = moment().unix()
+		console.log 'ts now'
+		ts = ts * 1000
+
 		if res.requestArgs.message? 
 			postType = 'status'
 			story = res.requestArgs.message
 
 		else
 			postType = 'link'
-			story = res.requestArgs.title
+			story = res.requestArgs.name
+			message = res.requestArgs.name
 
-		console.log 'post type: '
-		console.log postType
-		newModel = new App.PostModel({id: res.id, type: postType, story: story, ts: moment().unix()})
+
+		newModel = new App.PostModel({id: res.id, type: postType, story: story, message: message, timestamp: ts})
+		$(window).trigger("sucessfulPost", newModel);
 		@collection.unshift newModel
 		@render()
 		#newPost.renderPostSelection()
@@ -223,7 +321,6 @@ class App.FeedCollectionView extends Backbone.View
 	render: ->
 		$('.post-list').empty()
 		@collection.each (post) =>
-			console.log post.get('type')
 			postR = switch
 				when post.get('type') is 'status' then new App.PostStatusView({model: post})
 				when post.get('type') is 'link' then new App.PostStatusView({model: post})
