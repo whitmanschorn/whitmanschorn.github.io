@@ -17,7 +17,6 @@ class App.PostModel extends Backbone.Model
 	initialize: (options) ->
 		#find our useful timestamp
 		if not @get('timestamp')?
-			console.log 'override ts'
 			if options.is_published? and options.is_published is false
 				@set('timestamp', options.scheduled_publish_time * 1000)
 			else
@@ -123,7 +122,8 @@ class App.PageController extends Backbone.View
 	initialize: (data, access_token, page_id) ->
 		@pageNumber = 1
 		@pageNumberEl = $('.page-number')
-		@paginate(data, access_token)
+		if data.paging?
+			@paginate(data, access_token)
 		$('#compose-btn').click ->
 			@compose = new App.ComposeView({model: new Backbone.Model({page_id: page_id, access_token: access_token})})
 			@compose.renderComposeSelection()
@@ -134,21 +134,22 @@ class App.PageController extends Backbone.View
 		$('#prev-btn').unbind 'click'
 
 		$('#next-btn').click =>
-			@pageNumber++
 			paginateFeed paging.next
 		$('#prev-btn').click =>
-			@pageNumber--
 			paginateFeed paging.previous
 
 
 	paginate: (data, access_token) =>
-		@pageNumberEl.text @pageNumber
-		@feed = new App.FeedCollectionView({collection: new App.FeedCollection( _.map(data.data, (s) => 
-			tempModel = new App.PostModel(s)
-			tempModel.set('page_access_token', access_token)
-			tempModel ) )})
+		if data.data.length
+			@feed = new App.FeedCollectionView({collection: new App.FeedCollection( _.map(data.data, (s) => 
+				tempModel = new App.PostModel(s)
+				tempModel.set('page_access_token', access_token)
+				tempModel ) )})
+			@pageNumberEl.text moment(@feed.collection.at(0).get('timestamp')).format('ha, MMM DD YYYY')
+
 		if data.paging?
 			@assignPagination data.paging
+
 
 		@feed.render()
 
@@ -190,8 +191,8 @@ class App.ComposeView extends Backbone.View
 
 	composeSchedule: ->
 		@isScheduling = not @isScheduling
-		$('.compose-schedule').toggleClass 'is-active'
-		$('#post-detail').append @render()
+		$('.schedule-controls').toggleClass 'visible'
+		# $('#post-detail').append @render()
 		if @isScheduling
 			@dpi = $('.datepicker').pickadate({
 				container: '#schedule-root'
@@ -218,7 +219,7 @@ class App.ComposeView extends Backbone.View
 		postArgs = {page_id : @model.get('page_id')}
 		postArgs.access_token = @model.get('access_token')
 		#determine timing
-		if @isScheduling
+		if @isScheduling and $('.datepicker').val() 
 			schedString = $('.datepicker').val() + " " + $('.timepicker').val()
 			schedMoment = moment(schedString, 'DD MMM, YYYY h:mma')
 			schedTimestamp = schedMoment.unix()

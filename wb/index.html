@@ -60,7 +60,7 @@ $(document).ready(function() {
 		</div>
 		<div class="page-btn hcolor f-left" id="next-btn">Earlier</div>
 		<div class="page-btn hcolor f-right" id="prev-btn">Later</div>
-		<div class="small">Page <span class="page-number"></span></div>
+		<div class="small">From <span class="page-number"></span></div>
 
 		<div class="bar" id="compose-btn">Compose</div>
 
@@ -182,13 +182,15 @@ $(document).ready(function() {
 <br/>
 <span class="compose-action  compose-schedule" class="compose-action small"><i class="fa fa-clock-o"></i></span> 
 
-{{#if isScheduling}}
-<div class="schedule-controls">
+
+
+<div class="schedule-controls {{#if isScheduling}}visible{{/if}}">
 <span class="small">Using local timezone</span>
 <input class="datepicker"/>
 <input class="timepicker"/>
 </div>
-{{/if}}
+
+
 </div>
 </script>
 

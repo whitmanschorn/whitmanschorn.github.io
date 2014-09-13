@@ -258,6 +258,11 @@ a:hover {
 
 .schedule-controls {
      border: none;
+     display: none;
+}
+
+.schedule-controls.visible {
+     display: inline-block;
 }
 
 .hcolor {

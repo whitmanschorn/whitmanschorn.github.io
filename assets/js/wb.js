@@ -107,7 +107,7 @@ window.paginateFeed = (function(_this) {
 
 window.fetchInsightData = (function(_this) {
   return function(page_id) {
-    return FB.api("/" + page_id + "/insights/post_impressions,post_impressions_unique,post_impressions_fan,post_impressions_fan_unique,", function(data) {
+    return FB.api("/" + page_id + "/insights/post_impressions,post_impressions_unique,post_impressions_fan,post_impressions_fan_unique", function(data) {
       if (data.error != null) {
         data.data = data.error;
       }

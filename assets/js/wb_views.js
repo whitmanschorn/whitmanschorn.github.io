@@ -30,7 +30,6 @@ App.PostModel = (function(_super) {
 
   PostModel.prototype.initialize = function(options) {
     if (this.get('timestamp') == null) {
-      console.log('override ts');
       if ((options.is_published != null) && options.is_published === false) {
         return this.set('timestamp', options.scheduled_publish_time * 1000);
       } else {
@@ -232,7 +231,9 @@ App.PageController = (function(_super) {
   PageController.prototype.initialize = function(data, access_token, page_id) {
     this.pageNumber = 1;
     this.pageNumberEl = $('.page-number');
-    this.paginate(data, access_token);
+    if (data.paging != null) {
+      this.paginate(data, access_token);
+    }
     return $('#compose-btn').click(function() {
       this.compose = new App.ComposeView({
         model: new Backbone.Model({
@@ -249,30 +250,30 @@ App.PageController = (function(_super) {
     $('#prev-btn').unbind('click');
     $('#next-btn').click((function(_this) {
       return function() {
-        _this.pageNumber++;
         return paginateFeed(paging.next);
       };
     })(this));
     return $('#prev-btn').click((function(_this) {
       return function() {
-        _this.pageNumber--;
         return paginateFeed(paging.previous);
       };
     })(this));
   };
 
   PageController.prototype.paginate = function(data, access_token) {
-    this.pageNumberEl.text(this.pageNumber);
-    this.feed = new App.FeedCollectionView({
-      collection: new App.FeedCollection(_.map(data.data, (function(_this) {
-        return function(s) {
-          var tempModel;
-          tempModel = new App.PostModel(s);
-          tempModel.set('page_access_token', access_token);
-          return tempModel;
-        };
-      })(this)))
-    });
+    if (data.data.length) {
+      this.feed = new App.FeedCollectionView({
+        collection: new App.FeedCollection(_.map(data.data, (function(_this) {
+          return function(s) {
+            var tempModel;
+            tempModel = new App.PostModel(s);
+            tempModel.set('page_access_token', access_token);
+            return tempModel;
+          };
+        })(this)))
+      });
+      this.pageNumberEl.text(moment(this.feed.collection.at(0).get('timestamp')).format('ha, MMM DD YYYY'));
+    }
     if (data.paging != null) {
       this.assignPagination(data.paging);
     }
@@ -342,8 +343,7 @@ App.ComposeView = (function(_super) {
 
   ComposeView.prototype.composeSchedule = function() {
     this.isScheduling = !this.isScheduling;
-    $('.compose-schedule').toggleClass('is-active');
-    $('#post-detail').append(this.render());
+    $('.schedule-controls').toggleClass('visible');
     if (this.isScheduling) {
       this.dpi = $('.datepicker').pickadate({
         container: '#schedule-root'
@@ -370,7 +370,7 @@ App.ComposeView = (function(_super) {
       page_id: this.model.get('page_id')
     };
     postArgs.access_token = this.model.get('access_token');
-    if (this.isScheduling) {
+    if (this.isScheduling && $('.datepicker').val()) {
       schedString = $('.datepicker').val() + " " + $('.timepicker').val();
       schedMoment = moment(schedString, 'DD MMM, YYYY h:mma');
       schedTimestamp = schedMoment.unix();

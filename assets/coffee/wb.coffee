@@ -96,7 +96,7 @@ window.paginateFeed = (pagination_string) =>
 
 
 window.fetchInsightData = (page_id) =>
-    FB.api("/#{page_id}/insights/post_impressions,post_impressions_unique,post_impressions_fan,post_impressions_fan_unique,", (data) ->
+    FB.api("/#{page_id}/insights/post_impressions,post_impressions_unique,post_impressions_fan,post_impressions_fan_unique", (data) ->
                 # TODO: More error handling?
                 if data.error? 
                     data.data = data.error
