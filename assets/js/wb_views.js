@@ -110,6 +110,7 @@ App.PostInsightView = (function(_super) {
   PostInsightView.prototype.initialize = function() {
     var all_impressions, all_reach, dataset, fan_impressions, fan_reach, nonfan_impressions, nonfan_reach;
     dataset = this.model.get('data');
+    console.log(dataset);
     all_impressions = dataset[0].values[0].value;
     all_reach = dataset[1].values[0].value;
     fan_impressions = dataset[2].values[0].value;

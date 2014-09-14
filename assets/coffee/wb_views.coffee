@@ -62,7 +62,7 @@ class App.PostInsightView extends Backbone.View
 
 	initialize: ->
 		dataset = @model.get('data') 
-
+		console.log dataset
 		all_impressions = dataset[0].values[0].value
 		all_reach = dataset[1].values[0].value
 		fan_impressions = dataset[2].values[0].value
