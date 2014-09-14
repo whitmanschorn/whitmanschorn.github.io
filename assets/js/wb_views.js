@@ -107,9 +107,36 @@ App.PostInsightView = (function(_super) {
 
   PostInsightView.prototype.className = 'insight-view';
 
+  PostInsightView.prototype.initialize = function() {
+    var all_impressions, all_reach, dataset, fan_impressions, fan_reach, nonfan_impressions, nonfan_reach;
+    dataset = this.model.get('data');
+    all_impressions = dataset[0].values[0].value;
+    all_reach = dataset[1].values[0].value;
+    fan_impressions = dataset[2].values[0].value;
+    fan_reach = dataset[3].values[0].value;
+    nonfan_reach = all_reach - fan_reach;
+    nonfan_impressions = all_impressions - fan_impressions;
+    this.x1 = this.percentify(fan_reach / all_reach);
+    this.x2 = this.percentify(fan_impressions / all_impressions);
+    this.x3 = this.percentify(1 - ((fan_impressions / fan_reach) / (nonfan_impressions / nonfan_reach)));
+    if (all_reach * all_impressions === 0) {
+      this.x1 = this.x2 = "";
+    }
+    if (fan_reach * nonfan_reach === 0) {
+      return this.x3 = "";
+    }
+  };
+
+  PostInsightView.prototype.percentify = function(num) {
+    return (num.toPrecision(4) * 100) + "%";
+  };
+
   PostInsightView.prototype.render = function() {
     this.$el.html(postInsightTemplate({
-      dataset: this.model.get('data')
+      dataset: this.model.get('data'),
+      x1: this.x1,
+      x2: this.x2,
+      x3: this.x3
     }));
     $('.insight-section').empty();
     $('.insight-section').append(this.$el);

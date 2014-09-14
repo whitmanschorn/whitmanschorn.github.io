@@ -56,11 +56,32 @@ class App.PostView extends Backbone.View
 			
 
 class App.PostInsightView extends Backbone.View
+
 	postInsightTemplate = Handlebars.compile($('#post-insight-template').html())
 	className: 'insight-view'
 
+	initialize: ->
+		dataset = @model.get('data') 
+
+		all_impressions = dataset[0].values[0].value
+		all_reach = dataset[1].values[0].value
+		fan_impressions = dataset[2].values[0].value
+		fan_reach = dataset[3].values[0].value
+		nonfan_reach = all_reach - fan_reach
+		nonfan_impressions= all_impressions - fan_impressions
+
+		@x1 = @percentify fan_reach/all_reach
+		@x2 = @percentify fan_impressions/all_impressions
+		@x3 = @percentify (1 - ( (fan_impressions / fan_reach)   /  (nonfan_impressions / nonfan_reach) ))
+		if all_reach * all_impressions == 0
+			@x1 = @x2 = ""
+		if fan_reach * nonfan_reach== 0
+			@x3 = ""
+	percentify: (num) ->
+		(num.toPrecision(4) * 100) + "%"	
+		
 	render: =>
-		@$el.html postInsightTemplate(dataset: @model.get('data'))
+		@$el.html postInsightTemplate(dataset: @model.get('data'), x1: @x1, x2: @x2, x3: @x3)
 		$('.insight-section').empty()
 		$('.insight-section').append @$el
 		@$el
