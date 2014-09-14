@@ -95,11 +95,19 @@ window.initApp = (function(_this) {
 window.paginateFeed = (function(_this) {
   return function(pagination_string) {
     var pagination_strings;
+    $('.page-btn').addClass('is-disabled');
     pagination_strings = pagination_string.split('/');
     pagination_string = pagination_strings[4] + "/" + pagination_strings[5];
-    return FB.api("" + pagination_string, function(data) {
-      if (data.data != null) {
-        return _this.controls.paginate(data);
+    return $('.page-btn').velocity('transition.slideUpOut', {
+      duration: 100,
+      complete: function() {
+        return FB.api("" + pagination_string, function(data) {
+          if (data.data != null) {
+            _this.controls.paginate(data);
+          }
+          $('.page-btn').removeClass('is-disabled');
+          return $('.page-btn').velocity('transition.slideUpIn');
+        });
       }
     });
   };

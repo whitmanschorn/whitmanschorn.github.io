@@ -207,6 +207,11 @@ input#compose-name {
 
 }
 
+.page-btn.is-disabled {
+     cursor: none;
+     color: #8b9dc3;
+}
+
 .mask {
      display: none;
      padding: 10px;
@@ -279,7 +284,7 @@ a:hover {
      transition: all 100ms ease-in-out;
 }
 
-.hcolor:hover {
+.hcolor:hover:not(.is-disabled) {
      color: #fff;
 }
 

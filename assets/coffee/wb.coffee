@@ -87,12 +87,23 @@ window.initApp = (page_id, access_token) =>
 
             )
 window.paginateFeed = (pagination_string) =>
+
+    $('.page-btn').addClass 'is-disabled'
+
     pagination_strings = pagination_string.split('/')
     pagination_string = pagination_strings[4] + "/" + pagination_strings[5]
-    FB.api("#{pagination_string}", (data) =>
-                if data.data?
-                    @controls.paginate data
+    $('.page-btn').velocity('transition.slideUpOut',
+        duration: 100
+        complete: =>
+            FB.api("#{pagination_string}", (data) =>
+                        if data.data?
+                            @controls.paginate data
+                        $('.page-btn').removeClass 'is-disabled'
+                        $('.page-btn').velocity('transition.slideUpIn')
+
+                    )            
             )
+
 
 
 window.fetchInsightData = (page_id) =>

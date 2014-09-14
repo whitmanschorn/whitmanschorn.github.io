@@ -165,6 +165,7 @@ class App.PageController extends Backbone.View
 				tempModel ) )})
 			@pageNumberEl.text moment(@feed.collection.at(0).get('timestamp')).format('ha, MMM DD YYYY')
 			$('#pagination-label').velocity("callout.pulse", duration: 100)
+			
 		
 		if data.paging?
 			@assignPagination data.paging
