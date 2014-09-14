@@ -117,8 +117,8 @@ App.PostInsightView = (function(_super) {
     fan_reach = dataset[3].values[0].value;
     nonfan_reach = all_reach - fan_reach;
     nonfan_impressions = all_impressions - fan_impressions;
-    this.x1 = this.percentify(fan_reach / all_reach);
-    this.x2 = this.percentify(fan_impressions / all_impressions);
+    this.x1 = this.percentify(fan_impressions / all_impressions);
+    this.x2 = this.percentify(fan_reach / all_reach);
     this.x3 = this.percentify(1 - ((fan_impressions / fan_reach) / (nonfan_impressions / nonfan_reach)));
     if (all_reach * all_impressions === 0) {
       this.x1 = this.x2 = "";

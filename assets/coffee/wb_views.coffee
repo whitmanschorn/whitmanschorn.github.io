@@ -70,8 +70,8 @@ class App.PostInsightView extends Backbone.View
 		nonfan_reach = all_reach - fan_reach
 		nonfan_impressions= all_impressions - fan_impressions
 
-		@x1 = @percentify fan_reach/all_reach
-		@x2 = @percentify fan_impressions/all_impressions
+		@x1 = @percentify fan_impressions/all_impressions
+		@x2 = @percentify fan_reach/all_reach
 		@x3 = @percentify (1 - ( (fan_impressions / fan_reach)   /  (nonfan_impressions / nonfan_reach) ))
 		if all_reach * all_impressions == 0
 			@x1 = @x2 = ""
