@@ -75,8 +75,9 @@ class App.PostInsightView extends Backbone.View
 		@x3 = @percentify (1 - ( (fan_impressions / fan_reach)   /  (nonfan_impressions / nonfan_reach) ))
 		if all_reach * all_impressions == 0
 			@x1 = @x2 = ""
-		if fan_reach * nonfan_reach== 0
+		if fan_reach * nonfan_reach == 0
 			@x3 = ""
+
 	percentify: (num) ->
 		(num.toPrecision(4) * 100) + "%"	
 		
@@ -95,7 +96,7 @@ class App.PostDetailView extends Backbone.View
 		'click .detail-delete' : 'postDelete'
 
 
-	postDelete: ->
+	postDelete: =>
 		console.log 'hitting delete'
 		console.log @model.get('page_access_token')
 		deletePost(@model.get('id'), @model.get('page_access_token'))

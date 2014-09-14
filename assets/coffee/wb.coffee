@@ -7,7 +7,7 @@
 App = {}
 
 window.deletePost = (post_id, page_access_token) =>
-    FB.api "/#{post_id}", "delete", (response) =>
+    FB.api "/#{post_id}?access_token=#{page_access_token}", "delete", (response) =>
         response.post_id = post_id
         @controls.feed.finishPostDelete response
 

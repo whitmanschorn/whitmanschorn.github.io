@@ -154,6 +154,7 @@ App.PostDetailView = (function(_super) {
 
   function PostDetailView() {
     this.render = __bind(this.render, this);
+    this.postDelete = __bind(this.postDelete, this);
     return PostDetailView.__super__.constructor.apply(this, arguments);
   }
 

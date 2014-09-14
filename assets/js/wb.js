@@ -5,7 +5,7 @@ App = {};
 
 window.deletePost = (function(_this) {
   return function(post_id, page_access_token) {
-    return FB.api("/" + post_id, "delete", function(response) {
+    return FB.api("/" + post_id + "?access_token=" + page_access_token, "delete", function(response) {
       response.post_id = post_id;
       return _this.controls.feed.finishPostDelete(response);
     });
