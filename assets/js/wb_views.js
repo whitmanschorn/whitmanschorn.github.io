@@ -110,21 +110,20 @@ App.PostInsightView = (function(_super) {
   PostInsightView.prototype.initialize = function() {
     var all_impressions, all_reach, dataset, fan_impressions, fan_reach, nonfan_impressions, nonfan_reach;
     dataset = this.model.get('data');
-    console.log(dataset);
     all_impressions = dataset[0].values[0].value;
     all_reach = dataset[1].values[0].value;
     fan_impressions = dataset[2].values[0].value;
     fan_reach = dataset[3].values[0].value;
     nonfan_reach = all_reach - fan_reach;
     nonfan_impressions = all_impressions - fan_impressions;
-    this.x1 = this.percentify(fan_impressions / all_impressions);
-    this.x2 = this.percentify(fan_reach / all_reach);
-    this.x3 = this.percentify(1 - ((fan_impressions / fan_reach) / (nonfan_impressions / nonfan_reach)));
+    this.fan_engagement = this.percentify(fan_impressions / all_impressions);
+    this.fan_saturation = this.percentify(fan_reach / all_reach);
+    this.fan_affinity = this.percentify((fan_impressions / fan_reach) / (nonfan_impressions / nonfan_reach));
     if (all_reach * all_impressions === 0) {
-      this.x1 = this.x2 = "";
+      this.fan_engagement = this.fan_saturation = "";
     }
     if (fan_reach * nonfan_reach === 0) {
-      return this.x3 = "";
+      return this.fan_affinity = "";
     }
   };
 
@@ -135,9 +134,9 @@ App.PostInsightView = (function(_super) {
   PostInsightView.prototype.render = function() {
     this.$el.html(postInsightTemplate({
       dataset: this.model.get('data'),
-      x1: this.x1,
-      x2: this.x2,
-      x3: this.x3
+      fan_engagement: this.fan_engagement,
+      fan_saturation: this.fan_saturation,
+      fan_affinity: this.fan_affinity
     }));
     $('.insight-section').empty();
     $('.insight-section').append(this.$el);
@@ -166,8 +165,6 @@ App.PostDetailView = (function(_super) {
   };
 
   PostDetailView.prototype.postDelete = function() {
-    console.log('hitting delete');
-    console.log(this.model.get('page_access_token'));
     deletePost(this.model.get('id'), this.model.get('page_access_token'));
     return this.emptyDetailView();
   };
@@ -482,8 +479,6 @@ App.FeedCollectionView = (function(_super) {
   }
 
   FeedCollectionView.prototype.finishPostDelete = function(res) {
-    console.log('post deletion result');
-    console.log(res);
     if (!res.success) {
       return alert('Post deletion failed.');
     } else {

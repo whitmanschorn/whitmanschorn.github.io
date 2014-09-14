@@ -62,7 +62,6 @@ class App.PostInsightView extends Backbone.View
 
 	initialize: ->
 		dataset = @model.get('data') 
-		console.log dataset
 		all_impressions = dataset[0].values[0].value
 		all_reach = dataset[1].values[0].value
 		fan_impressions = dataset[2].values[0].value
@@ -70,19 +69,19 @@ class App.PostInsightView extends Backbone.View
 		nonfan_reach = all_reach - fan_reach
 		nonfan_impressions= all_impressions - fan_impressions
 
-		@x1 = @percentify fan_impressions/all_impressions
-		@x2 = @percentify fan_reach/all_reach
-		@x3 = @percentify (1 - ( (fan_impressions / fan_reach)   /  (nonfan_impressions / nonfan_reach) ))
+		@fan_engagement = @percentify fan_impressions/all_impressions
+		@fan_saturation = @percentify fan_reach/all_reach
+		@fan_affinity = @percentify (( (fan_impressions / fan_reach)   /  (nonfan_impressions / nonfan_reach) ))
 		if all_reach * all_impressions == 0
-			@x1 = @x2 = ""
+			@fan_engagement = @fan_saturation = ""
 		if fan_reach * nonfan_reach == 0
-			@x3 = ""
+			@fan_affinity = ""
 
 	percentify: (num) ->
 		(num * 100).toPrecision(4) + "%"	
 		
 	render: =>
-		@$el.html postInsightTemplate(dataset: @model.get('data'), x1: @x1, x2: @x2, x3: @x3)
+		@$el.html postInsightTemplate(dataset: @model.get('data'), fan_engagement: @fan_engagement, fan_saturation: @fan_saturation, fan_affinity: @fan_affinity)
 		$('.insight-section').empty()
 		$('.insight-section').append @$el
 		@$el
@@ -97,8 +96,6 @@ class App.PostDetailView extends Backbone.View
 
 
 	postDelete: =>
-		console.log 'hitting delete'
-		console.log @model.get('page_access_token')
 		deletePost(@model.get('id'), @model.get('page_access_token'))
 		@emptyDetailView()
 
@@ -293,8 +290,6 @@ class App.ComposeView extends Backbone.View
 class App.FeedCollectionView extends Backbone.View
 
 	finishPostDelete: (res) ->
-		console.log 'post deletion result'
-		console.log res
 		if not res.success
 			alert 'Post deletion failed.'
 		else
@@ -304,9 +299,6 @@ class App.FeedCollectionView extends Backbone.View
 					$("[data-pid=\"#{res.post_id}\"]").parent().remove()
 					)
 			
-			# @render()
-
-
 	renderPostResponse: (res) ->
 		if res.error?
 			console.error res.error

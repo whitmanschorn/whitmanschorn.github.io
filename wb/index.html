@@ -34,9 +34,9 @@ $(document).ready(function() {
 
 <div class="page-container">
 	<div id="app-left">
-		<div id="fb-root" data-app-id="443134245827248"></div> 
-<!-- 		<div id="fb-root" data-app-id="610472332399020"></div>
- -->
+<!-- 		<div id="fb-root" data-app-id="443134245827248"></div>  -->
+		<div id="fb-root" data-app-id="610472332399020"></div>
+
 		<div class="mask loadingLogin">
 			<div class="important">Facebook Page Management</div>
 			<hr />
@@ -108,8 +108,8 @@ $(document).ready(function() {
 </script>
 
 <script id="post-insight-template" type="text/x-handlebars-template">
-{{#if x1}}
-<div class="insight-blurb margin-top">Your fans make up {{x1}} of post impressions and {{x2}} of reach. {{#if x3}}They are on average {{x3}} more engaged than non-fans. </div>
+{{#if fan_engagement}}
+<div class="insight-blurb margin-top">Your fans make up {{fan_engagement}} of post impressions and {{fan_saturation}} of reach. {{#if fan_affinity}}They are on average {{fan_affinity}} as engaged as non-fans. </div>
 {{/if}}
 {{/if}}
 {{#each dataset}}
