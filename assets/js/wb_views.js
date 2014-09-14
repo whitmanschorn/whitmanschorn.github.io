@@ -482,7 +482,7 @@ App.FeedCollectionView = (function(_super) {
 
   FeedCollectionView.prototype.finishPostDelete = function(res) {
     if (!res.success) {
-      return alert('Post deletion failed.');
+      return alert('Post deletion failed. Please refresh the page and try again.');
     } else {
       this.collection.remove(this.collection.get(res.post_id));
       return $("[data-pid=\"" + res.post_id + "\"]").parent().velocity('transition.slideUpOut', {
@@ -500,16 +500,7 @@ App.FeedCollectionView = (function(_super) {
       alert(res.error.error_user_msg);
       return;
     }
-    ts = res.requestArgs.scheduled_publish_time;
-    console.log('res args now');
-    console.log(res.requestArgs);
-    if (ts == null) {
-      ts = res.requestArgs.backdated_time;
-    }
-    if (ts == null) {
-      ts = moment().unix();
-    }
-    console.log('ts now');
+    ts = res.requestArgs.scheduled_publish_time != null ? res.requestArgs.scheduled_publish_time : res.requestArgs.backdated_time != null ? res.requestArgs.backdated_time : moment().unix();
     ts = ts * 1000;
     if (res.requestArgs.message != null) {
       postType = 'status';

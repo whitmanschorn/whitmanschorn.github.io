@@ -293,7 +293,7 @@ class App.FeedCollectionView extends Backbone.View
 
 	finishPostDelete: (res) ->
 		if not res.success
-			alert 'Post deletion failed.'
+			alert 'Post deletion failed. Please refresh the page and try again.'
 		else
 			@collection.remove @collection.get(res.post_id)
 			$("[data-pid=\"#{res.post_id}\"]").parent().velocity('transition.slideUpOut',
@@ -307,16 +307,7 @@ class App.FeedCollectionView extends Backbone.View
 			alert res.error.error_user_msg
 			return
 
-		ts = res.requestArgs.scheduled_publish_time
-		console.log 'res args now'
-		console.log res.requestArgs
-
-
-		if not ts?
-			ts = res.requestArgs.backdated_time
-		if not ts? 
-			ts = moment().unix()
-		console.log 'ts now'
+		ts = if res.requestArgs.scheduled_publish_time? then res.requestArgs.scheduled_publish_time else if res.requestArgs.backdated_time? then res.requestArgs.backdated_time else moment().unix()
 		ts = ts * 1000
 
 		if res.requestArgs.message? 

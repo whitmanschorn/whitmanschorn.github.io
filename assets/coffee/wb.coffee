@@ -107,8 +107,6 @@ window.fetchInsightData = (page_id) =>
               
             )
 
-
-
 window.fbAsyncInit = =>
     FB.init
         appId: document.getElementById("fb-root").getAttribute("data-app-id")
