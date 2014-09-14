@@ -34,9 +34,9 @@ $(document).ready(function() {
 
 <div class="page-container">
 	<div id="app-left">
-	<!--	<div id="fb-root" data-app-id="443134245827248"></div> -->
-		<div id="fb-root" data-app-id="610472332399020"></div>
-
+		<div id="fb-root" data-app-id="443134245827248"></div> 
+<!-- 		<div id="fb-root" data-app-id="610472332399020"></div>
+ -->
 		<div class="mask loadingLogin">
 			<div class="important">Facebook Page Management</div>
 			<hr />
@@ -94,7 +94,7 @@ $(document).ready(function() {
 </script>
 
 <script id="status-post-template" type="text/x-handlebars-template"> 
-<div class="status">
+<div class="status" data-pid="{{id}}">
 	{{#if icon}}
 		<img src={{icon}}/> 
 	{{/if}}
@@ -190,9 +190,9 @@ $(document).ready(function() {
 
 
 <div class="schedule-controls {{#if isScheduling}}visible{{/if}}">
+Date <input class="datepicker"/>
+Time <input class="timepicker"/>
 <span class="small">Using local timezone</span>
-<input class="datepicker"/>
-<input class="timepicker"/>
 </div>
 
 

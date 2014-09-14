@@ -129,7 +129,7 @@ App.PostInsightView = (function(_super) {
   };
 
   PostInsightView.prototype.percentify = function(num) {
-    return (num.toPrecision(4) * 100) + "%";
+    return (num * 100).toPrecision(4) + "%";
   };
 
   PostInsightView.prototype.render = function() {
@@ -488,7 +488,11 @@ App.FeedCollectionView = (function(_super) {
       return alert('Post deletion failed.');
     } else {
       this.collection.remove(this.collection.get(res.post_id));
-      return this.render();
+      return $("[data-pid=\"" + res.post_id + "\"]").parent().velocity('transition.slideUpOut', {
+        complete: function() {
+          return $("[data-pid=\"" + res.post_id + "\"]").parent().remove();
+        }
+      });
     }
   };
 

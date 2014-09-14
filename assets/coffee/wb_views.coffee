@@ -79,7 +79,7 @@ class App.PostInsightView extends Backbone.View
 			@x3 = ""
 
 	percentify: (num) ->
-		(num.toPrecision(4) * 100) + "%"	
+		(num * 100).toPrecision(4) + "%"	
 		
 	render: =>
 		@$el.html postInsightTemplate(dataset: @model.get('data'), x1: @x1, x2: @x2, x3: @x3)
@@ -299,7 +299,12 @@ class App.FeedCollectionView extends Backbone.View
 			alert 'Post deletion failed.'
 		else
 			@collection.remove @collection.get(res.post_id)
-			@render()
+			$("[data-pid=\"#{res.post_id}\"]").parent().velocity('transition.slideUpOut',
+				complete: ->
+					$("[data-pid=\"#{res.post_id}\"]").parent().remove()
+					)
+			
+			# @render()
 
 
 	renderPostResponse: (res) ->
