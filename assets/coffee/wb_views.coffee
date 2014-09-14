@@ -23,7 +23,6 @@ class App.PostModel extends Backbone.Model
 				@set('timestamp', options.updated_time)
 
 
-
 class App.PostView extends Backbone.View
 	className: 'post-bar bar'
 	tagName: 'li'
@@ -146,7 +145,8 @@ class App.PageController extends Backbone.View
 				tempModel.set('page_access_token', access_token)
 				tempModel ) )})
 			@pageNumberEl.text moment(@feed.collection.at(0).get('timestamp')).format('ha, MMM DD YYYY')
-
+			$('#pagination-label').velocity("callout.pulse", duration: 100)
+		
 		if data.paging?
 			@assignPagination data.paging
 
@@ -192,7 +192,6 @@ class App.ComposeView extends Backbone.View
 	composeSchedule: ->
 		@isScheduling = not @isScheduling
 		$('.schedule-controls').toggleClass 'visible'
-		# $('#post-detail').append @render()
 		if @isScheduling
 			@dpi = $('.datepicker').pickadate({
 				container: '#schedule-root'
@@ -201,9 +200,6 @@ class App.ComposeView extends Backbone.View
 				container: '#schedule-root'
 				})
 
-		# picker = input.pickadate('picker')
-		# picker.open()
-		# console.log 'woah done'
 
 	composePost: ->
 		@submitPost()
@@ -316,8 +312,6 @@ class App.FeedCollectionView extends Backbone.View
 		$(window).trigger("sucessfulPost", newModel);
 		@collection.unshift newModel
 		@render()
-		#newPost.renderPostSelection()
-		#create new view + model + add to collection here
 
 	render: ->
 		$('.post-list').empty()

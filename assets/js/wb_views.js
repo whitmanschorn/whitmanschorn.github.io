@@ -273,6 +273,9 @@ App.PageController = (function(_super) {
         })(this)))
       });
       this.pageNumberEl.text(moment(this.feed.collection.at(0).get('timestamp')).format('ha, MMM DD YYYY'));
+      $('#pagination-label').velocity("callout.pulse", {
+        duration: 100
+      });
     }
     if (data.paging != null) {
       this.assignPagination(data.paging);

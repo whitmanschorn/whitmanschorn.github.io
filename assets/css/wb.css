@@ -40,8 +40,12 @@ ul {
 .compose {
      width: 400px;
      color: #afbdd4;
+     margin: 30px 0px;
 }
 
+.insight-view {
+     margin: 0px 0px 100px;
+}
 
 .picker__list {
      background-color: #3b5998;
@@ -109,7 +113,7 @@ input#compose-name {
 }
 
 .compose-action {
-     font-size: 22px;
+     font-size: 18px;
 }
 
 .post-list {
@@ -297,10 +301,23 @@ a:hover {
      line-height: 14px;
 }
 
+.detail {
+     margin-top: 15px;
+}
+
 .important {
      text-align: center;
      font-size: 28px;
      padding: 10px 0;
+     display: inline-block;
+     text-overflow: ellipsis;
+}
+
+
+.semi-important {
+     text-align: center;
+     font-size: 24px;
+     padding: 5px 0;
      display: inline-block;
      text-overflow: ellipsis;
 }
@@ -315,7 +332,9 @@ a:hover {
 .margin-top {
      margin-top: 45px;
 }
-
+.margin-top-small {
+     margin-top: 15px;
+}
 
 .page-container {
      max-width: 1080px;
@@ -327,16 +346,17 @@ a:hover {
      height: 100%;
      padding: 10px;
      margin: auto;
+     float: left;
 
 }
 
 
 #app-right {
      position: fixed;
+     float: right;
      top: 10px;
-     left: 550px;
-     height: 100%;
-     margin: auto;
+     left: 520px;
+     padding-right: 20px;
      width: 400px;
      height: 100%;
      overflow-x: hidden;

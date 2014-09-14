@@ -60,7 +60,7 @@ $(document).ready(function() {
 		</div>
 		<div class="page-btn hcolor f-left" id="next-btn">Earlier</div>
 		<div class="page-btn hcolor f-right" id="prev-btn">Later</div>
-		<div class="small">From <span class="page-number"></span></div>
+		<div id="pagination-label" class="small">From <span class="page-number"></span></div>
 
 		<div class="bar" id="compose-btn">Compose</div>
 
@@ -108,12 +108,12 @@ $(document).ready(function() {
 
 <script id="post-insight-template" type="text/x-handlebars-template">
 {{#each dataset}}
-	<div class="insight margin-top">
+	<div class="insight margin-top-small">
 		{{title}}
 		<div class="period"><i class="fa fa-question-circle"></i><div class="period-hover"> ({{description}})</div>
 	</div>
 	<hr/>
-	<span class="wrap-words">{{#each values}} <span class="important">{{value}}</span> {{/each}}</span></div>
+	<span class="wrap-words">{{#each values}} <span class="semi-important">{{value}}</span> {{/each}}</span></div>
 	</div>
 	{{/each}}
 </script>
@@ -174,13 +174,13 @@ $(document).ready(function() {
 
 {{/if}}
 
-<span class="compose-action compose-switch" class="compose-action small">Switch Post Type</span>
+<span class="compose-action compose-switch margin-top" class="compose-action small">Switch Post Type</span>
 <hr/>
 <span class="compose-action  compose-post" class="compose-action small">Post</span> 
 
 <span class="compose-action f-right compose-cancel">Cancel</span> 
 <br/>
-<span class="compose-action  compose-schedule" class="compose-action small"><i class="fa fa-clock-o"></i></span> 
+<span class="compose-action  compose-schedule" class="compose-action small"><i class="fa fa-lg fa-clock-o"></i></span> 
 
 
 
