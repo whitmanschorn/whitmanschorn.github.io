@@ -394,13 +394,15 @@ App.ComposeView = (function(_super) {
   };
 
   ComposeView.prototype.readPostArgs = function() {
-    var diffAmount, nowMoment, postArgs, schedMoment, schedString, schedTimestamp;
+    var dateString, diffAmount, inputDate, nowMoment, postArgs, schedMoment, schedString, schedTimestamp;
     postArgs = {
       page_id: this.model.get('page_id')
     };
     postArgs.access_token = this.model.get('access_token');
-    if (this.isScheduling && $('.datepicker').val()) {
-      schedString = $('.datepicker').val() + " " + $('.timepicker').val();
+    if (this.isScheduling) {
+      inputDate = $('.datepicker').val();
+      dateString = inputDate === '' ? moment().format('DD MMM, YYYY') : inputDate;
+      schedString = dateString + " " + $('.timepicker').val();
       schedMoment = moment(schedString, 'DD MMM, YYYY h:mma');
       schedTimestamp = schedMoment.unix();
       nowMoment = moment();

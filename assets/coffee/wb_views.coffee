@@ -234,8 +234,10 @@ class App.ComposeView extends Backbone.View
 		postArgs = {page_id : @model.get('page_id')}
 		postArgs.access_token = @model.get('access_token')
 		#determine timing
-		if @isScheduling and $('.datepicker').val() 
-			schedString = $('.datepicker').val() + " " + $('.timepicker').val()
+		if @isScheduling
+			inputDate = $('.datepicker').val()
+			dateString = if inputDate is '' then moment().format('DD MMM, YYYY') else inputDate
+			schedString = dateString + " " + $('.timepicker').val()
 			schedMoment = moment(schedString, 'DD MMM, YYYY h:mma')
 			schedTimestamp = schedMoment.unix()
 			nowMoment = moment()
