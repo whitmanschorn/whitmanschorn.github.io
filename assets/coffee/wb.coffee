@@ -26,7 +26,7 @@ window.pageLogin = =>
         else if response.data?
             i = 0
 
-            ALWAYS_FIRST_PAGE = true
+            ALWAYS_FIRST_PAGE = false
             #only page? auto-pick
             if response.data.length == 1 or ALWAYS_FIRST_PAGE
                 autoSelected = response.data[0]

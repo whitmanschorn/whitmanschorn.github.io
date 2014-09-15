@@ -30,7 +30,7 @@ window.pageLogin = (function(_this) {
         setPageMask('.loadingLogin');
       } else if (response.data != null) {
         i = 0;
-        ALWAYS_FIRST_PAGE = true;
+        ALWAYS_FIRST_PAGE = false;
         if (response.data.length === 1 || ALWAYS_FIRST_PAGE) {
           autoSelected = response.data[0];
           document.getElementById("pageName").innerHTML = "<a href=\"" + autoSelected.link + "\">" + "<i class=\"fa fa-facebook-square\"></i>" + "</a> " + autoSelected.name;
