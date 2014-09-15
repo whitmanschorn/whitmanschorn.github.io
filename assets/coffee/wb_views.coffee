@@ -90,13 +90,14 @@ class App.PostInsightView extends Backbone.View
 class App.PostDetailView extends Backbone.View
 	postDetailTemplate = Handlebars.compile($('#post-detail-template').html())
 
-
 	events:
 		'click .detail-delete' : 'postDelete'
 
-
 	postDelete: =>
-		deletePost(@model.get('id'), @model.get('page_access_token'))
+		if @model.get('type') is 'status'
+			deletePostToken(@model.get('id'))
+		else			
+			deletePost(@model.get('id'))
 		@emptyDetailView()
 
 	emptyDetailView: ->
@@ -140,12 +141,16 @@ class App.PageController extends Backbone.View
 	initialize: (data, access_token, page_id) ->
 		@pageNumber = 1
 		@pageNumberEl = $('.page-number')
+		@model = new Backbone.Model({access_token : access_token, page_id: page_id})
 		if data.paging?
 			@paginate(data, access_token)
 		$('#compose-btn').click ->
 			@compose = new App.ComposeView({model: new Backbone.Model({page_id: page_id, access_token: access_token})})
 			@compose.renderComposeSelection()
 		
+
+
+	deletePostToken
 
 	assignPagination: (paging) ->
 		$('#next-btn').unbind 'click'
@@ -301,11 +306,25 @@ class App.FeedCollectionView extends Backbone.View
 				complete: ->
 					$("[data-pid=\"#{res.post_id}\"]").parent().remove()
 					)
-			
+	
+
+	renderPostLoadResponse: (res)=>
+		#we just need to get the id 
+		res.post_id = res.id
+		console.log 'setting with res'
+		console.log res
+		@collection.unshift( new App.PostModel(res))
+
+		@render()
+
+
 	renderPostResponse: (res) ->
 		if res.error?
 			console.error res.error
-			alert res.error.error_user_msg
+			if res.error.error_user_msg?
+				alert res.error.error_user_msg
+			else if res.error.message?
+				alert res.error.message
 			return
 
 		ts = if res.requestArgs.scheduled_publish_time? then res.requestArgs.scheduled_publish_time else if res.requestArgs.backdated_time? then res.requestArgs.backdated_time else moment().unix()
@@ -320,12 +339,11 @@ class App.FeedCollectionView extends Backbone.View
 			story = res.requestArgs.name
 			message = res.requestArgs.name
 
+		$(window).trigger("sucessfulPost");
+		loadPost(res.id, res.requestArgs.page_access_token)
 
-		newModel = new App.PostModel({id: res.id, type: postType, story: story, message: message, timestamp: ts})
-		$(window).trigger("sucessfulPost", newModel);
-		@collection.unshift newModel
-		@render()
 
+		
 	render: ->
 		$('.post-list').empty()
 		@collection.each (post) =>

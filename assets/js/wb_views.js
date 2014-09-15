@@ -165,7 +165,11 @@ App.PostDetailView = (function(_super) {
   };
 
   PostDetailView.prototype.postDelete = function() {
-    deletePost(this.model.get('id'), this.model.get('page_access_token'));
+    if (this.model.get('type') === 'status') {
+      deletePostToken(this.model.get('id'));
+    } else {
+      deletePost(this.model.get('id'));
+    }
     return this.emptyDetailView();
   };
 
@@ -257,6 +261,10 @@ App.PageController = (function(_super) {
   PageController.prototype.initialize = function(data, access_token, page_id) {
     this.pageNumber = 1;
     this.pageNumberEl = $('.page-number');
+    this.model = new Backbone.Model({
+      access_token: access_token,
+      page_id: page_id
+    });
     if (data.paging != null) {
       this.paginate(data, access_token);
     }
@@ -270,6 +278,8 @@ App.PageController = (function(_super) {
       return this.compose.renderComposeSelection();
     });
   };
+
+  deletePostToken;
 
   PageController.prototype.assignPagination = function(paging) {
     $('#next-btn').unbind('click');
@@ -477,6 +487,7 @@ App.FeedCollectionView = (function(_super) {
   __extends(FeedCollectionView, _super);
 
   function FeedCollectionView() {
+    this.renderPostLoadResponse = __bind(this.renderPostLoadResponse, this);
     return FeedCollectionView.__super__.constructor.apply(this, arguments);
   }
 
@@ -493,11 +504,23 @@ App.FeedCollectionView = (function(_super) {
     }
   };
 
+  FeedCollectionView.prototype.renderPostLoadResponse = function(res) {
+    res.post_id = res.id;
+    console.log('setting with res');
+    console.log(res);
+    this.collection.unshift(new App.PostModel(res));
+    return this.render();
+  };
+
   FeedCollectionView.prototype.renderPostResponse = function(res) {
-    var message, newModel, postType, story, ts;
+    var message, postType, story, ts;
     if (res.error != null) {
       console.error(res.error);
-      alert(res.error.error_user_msg);
+      if (res.error.error_user_msg != null) {
+        alert(res.error.error_user_msg);
+      } else if (res.error.message != null) {
+        alert(res.error.message);
+      }
       return;
     }
     ts = res.requestArgs.scheduled_publish_time != null ? res.requestArgs.scheduled_publish_time : res.requestArgs.backdated_time != null ? res.requestArgs.backdated_time : moment().unix();
@@ -510,16 +533,8 @@ App.FeedCollectionView = (function(_super) {
       story = res.requestArgs.name;
       message = res.requestArgs.name;
     }
-    newModel = new App.PostModel({
-      id: res.id,
-      type: postType,
-      story: story,
-      message: message,
-      timestamp: ts
-    });
-    $(window).trigger("sucessfulPost", newModel);
-    this.collection.unshift(newModel);
-    return this.render();
+    $(window).trigger("sucessfulPost");
+    return loadPost(res.id, res.requestArgs.page_access_token);
   };
 
   FeedCollectionView.prototype.render = function() {

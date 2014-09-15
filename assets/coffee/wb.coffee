@@ -6,15 +6,29 @@
 
 App = {}
 
-window.deletePost = (post_id, page_access_token) =>
-    FB.api "/#{post_id}?access_token=#{page_access_token}", "delete", (response) =>
+window.deletePostToken = (post_id) =>
+    token = @controls.model.get('access_token')
+    FB.api "/#{post_id}?access_token=#{token}", "delete", (response) =>
         response.post_id = post_id
         @controls.feed.finishPostDelete response
+
+window.deletePost = (post_id) =>
+    FB.api "/#{post_id}", "delete", (response) =>
+        response.post_id = post_id
+        @controls.feed.finishPostDelete response
+
 
 window.publishHelloWorld = (args) =>
     FB.api "/#{args.page_id}/feed?", "post", args, (response) =>
         response.requestArgs = args
         @controls.feed.renderPostResponse response
+
+
+window.loadPost = (post_id) =>
+    FB.api "/#{post_id}", (response) =>
+        @controls.feed.renderPostLoadResponse response
+
+
 
 window.pageLogin = =>
     FB.api "/me/accounts?fields=name,access_token,link", (response) ->
@@ -26,7 +40,7 @@ window.pageLogin = =>
         else if response.data?
             i = 0
 
-            ALWAYS_FIRST_PAGE = false
+            ALWAYS_FIRST_PAGE = true
             #only page? auto-pick
             if response.data.length == 1 or ALWAYS_FIRST_PAGE
                 autoSelected = response.data[0]
@@ -105,7 +119,6 @@ window.paginateFeed = (pagination_string) =>
             )
 
 
-
 window.fetchInsightData = (page_id) =>
     FB.api("/#{page_id}/insights/post_impressions,post_impressions_unique,post_impressions_fan,post_impressions_fan_unique", (data) ->
                 # TODO: More error handling?
@@ -134,11 +147,10 @@ window.fbAsyncInit = =>
 
     FB.getLoginStatus((data) ->
         if(data.status == "connected")
-       #     setPageMask('#content') #means no mask
             uid = data.authResponse.userID
             accessToken = data.authResponse.accessToken;
 
-
+            # If idebugging for permissions...
             # FB.api "/me/permissions", (response) ->
             #     console.log "perms"
             #     console.log response

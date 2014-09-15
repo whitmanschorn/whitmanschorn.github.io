@@ -3,9 +3,20 @@ var App, FBScript, PageScript;
 
 App = {};
 
+window.deletePostToken = (function(_this) {
+  return function(post_id) {
+    var token;
+    token = _this.controls.model.get('access_token');
+    return FB.api("/" + post_id + "?access_token=" + token, "delete", function(response) {
+      response.post_id = post_id;
+      return _this.controls.feed.finishPostDelete(response);
+    });
+  };
+})(this);
+
 window.deletePost = (function(_this) {
-  return function(post_id, page_access_token) {
-    return FB.api("/" + post_id + "?access_token=" + page_access_token, "delete", function(response) {
+  return function(post_id) {
+    return FB.api("/" + post_id, "delete", function(response) {
       response.post_id = post_id;
       return _this.controls.feed.finishPostDelete(response);
     });
@@ -21,6 +32,14 @@ window.publishHelloWorld = (function(_this) {
   };
 })(this);
 
+window.loadPost = (function(_this) {
+  return function(post_id) {
+    return FB.api("/" + post_id, function(response) {
+      return _this.controls.feed.renderPostLoadResponse(response);
+    });
+  };
+})(this);
+
 window.pageLogin = (function(_this) {
   return function() {
     return FB.api("/me/accounts?fields=name,access_token,link", function(response) {
@@ -30,7 +49,7 @@ window.pageLogin = (function(_this) {
         setPageMask('.loadingLogin');
       } else if (response.data != null) {
         i = 0;
-        ALWAYS_FIRST_PAGE = false;
+        ALWAYS_FIRST_PAGE = true;
         if (response.data.length === 1 || ALWAYS_FIRST_PAGE) {
           autoSelected = response.data[0];
           document.getElementById("pageName").innerHTML = "<a href=\"" + autoSelected.link + "\">" + "<i class=\"fa fa-facebook-square\"></i>" + "</a> " + autoSelected.name;
