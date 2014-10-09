@@ -186,6 +186,7 @@ class App.ComposeView extends Backbone.View
 		$('.post-list li').click @unselect
 		@isURL = false
 		@isScheduling = false
+		@isScheduling = false
 		$(window).on('sucessfulPost', @composeCancel)
 
 	events: ->
@@ -193,6 +194,11 @@ class App.ComposeView extends Backbone.View
 		'click .compose-post' : 'composePost'
 		'click .compose-schedule' : 'composeSchedule'
 		'click .compose-cancel' : 'composeCancel'
+		'change .compose-published' : 'composePublish'
+
+
+	composePublish: =>
+		@isPub = not @isPub
 
 		
 
@@ -239,6 +245,7 @@ class App.ComposeView extends Backbone.View
 	readPostArgs: =>
 		postArgs = {page_id : @model.get('page_id')}
 		postArgs.access_token = @model.get('access_token')
+		postArgs.published = @isPub
 		#determine timing
 		if @isScheduling
 			inputDate = $('.datepicker').val()
@@ -268,7 +275,7 @@ class App.ComposeView extends Backbone.View
 
 	render: =>
 		@select()
-		@$el.html postComposeTemplate({isURL: @isURL, isScheduling: @isScheduling})
+		@$el.html postComposeTemplate({isURL: @isURL, isScheduling: @isScheduling, @isPub, @isPub})
 		@$el
 
 	submitPost: (ts = 0) =>

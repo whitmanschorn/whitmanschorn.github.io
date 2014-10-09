@@ -26,6 +26,7 @@ window.publishHelloWorld = (args) =>
 
 window.loadPost = (post_id) =>
     FB.api "/#{post_id}", (response) =>
+        console.log response
         @controls.feed.renderPostLoadResponse response
 
 
@@ -97,6 +98,7 @@ window.initApp = (page_id, access_token) =>
     FB.api("/#{page_id}/promotable_posts", (data) =>
                 # TODO: THESE ARE OUT POSTS
                 if data.data?
+                    console.log data
                     @controls = new App.PageController data, access_token, page_id
 
             )
@@ -120,6 +122,7 @@ window.paginateFeed = (pagination_string) =>
 
 
 window.fetchInsightData = (page_id) =>
+
     FB.api("/#{page_id}/insights/post_impressions,post_impressions_unique,post_impressions_fan,post_impressions_fan_unique", (data) ->
                 # TODO: More error handling?
                 if data.error? 
@@ -168,9 +171,10 @@ window.fbAsyncInit = =>
 
     
 PageScript = document.getElementsByTagName("script")[0]
-return if document.getElementById("FBScript")
-FBScript = document.createElement("script")
-FBScript.id = "FBScript"
-FBScript.async = true
-FBScript.src = "//connect.facebook.net/en_US/all.js"
-PageScript.parentNode.insertBefore(FBScript, PageScript)
+
+unless document.getElementById("FBScript")
+    FBScript = document.createElement("script")
+    FBScript.id = "FBScript"
+    FBScript.async = true
+    FBScript.src = "//connect.facebook.net/en_US/all.js"
+    PageScript.parentNode.insertBefore(FBScript, PageScript)

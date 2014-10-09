@@ -35,6 +35,7 @@ window.publishHelloWorld = (function(_this) {
 window.loadPost = (function(_this) {
   return function(post_id) {
     return FB.api("/" + post_id, function(response) {
+      console.log(response);
       return _this.controls.feed.renderPostLoadResponse(response);
     });
   };
@@ -105,6 +106,7 @@ window.initApp = (function(_this) {
   return function(page_id, access_token) {
     return FB.api("/" + page_id + "/promotable_posts", function(data) {
       if (data.data != null) {
+        console.log(data);
         return _this.controls = new App.PageController(data, access_token, page_id);
       }
     });
@@ -178,16 +180,10 @@ window.fbAsyncInit = (function(_this) {
 
 PageScript = document.getElementsByTagName("script")[0];
 
-if (document.getElementById("FBScript")) {
-  return;
+if (!document.getElementById("FBScript")) {
+  FBScript = document.createElement("script");
+  FBScript.id = "FBScript";
+  FBScript.async = true;
+  FBScript.src = "//connect.facebook.net/en_US/all.js";
+  PageScript.parentNode.insertBefore(FBScript, PageScript);
 }
-
-FBScript = document.createElement("script");
-
-FBScript.id = "FBScript";
-
-FBScript.async = true;
-
-FBScript.src = "//connect.facebook.net/en_US/all.js";
-
-PageScript.parentNode.insertBefore(FBScript, PageScript);

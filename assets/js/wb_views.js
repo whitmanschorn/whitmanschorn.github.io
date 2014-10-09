@@ -334,6 +334,7 @@ App.ComposeView = (function(_super) {
     this.readPostArgs = __bind(this.readPostArgs, this);
     this.composeCancel = __bind(this.composeCancel, this);
     this.composeSwitch = __bind(this.composeSwitch, this);
+    this.composePublish = __bind(this.composePublish, this);
     this.initialize = __bind(this.initialize, this);
     return ComposeView.__super__.constructor.apply(this, arguments);
   }
@@ -344,6 +345,7 @@ App.ComposeView = (function(_super) {
     $('.post-list li').click(this.unselect);
     this.isURL = false;
     this.isScheduling = false;
+    this.isScheduling = false;
     return $(window).on('sucessfulPost', this.composeCancel);
   };
 
@@ -352,8 +354,13 @@ App.ComposeView = (function(_super) {
       'click .compose-switch': 'composeSwitch',
       'click .compose-post': 'composePost',
       'click .compose-schedule': 'composeSchedule',
-      'click .compose-cancel': 'composeCancel'
+      'click .compose-cancel': 'composeCancel',
+      'change .compose-published': 'composePublish'
     };
+  };
+
+  ComposeView.prototype.composePublish = function() {
+    return this.isPub = !this.isPub;
   };
 
   ComposeView.prototype.select = function() {
@@ -409,6 +416,7 @@ App.ComposeView = (function(_super) {
       page_id: this.model.get('page_id')
     };
     postArgs.access_token = this.model.get('access_token');
+    postArgs.published = this.isPub;
     if (this.isScheduling) {
       inputDate = $('.datepicker').val();
       dateString = inputDate === '' ? moment().format('DD MMM, YYYY') : inputDate;
@@ -440,7 +448,9 @@ App.ComposeView = (function(_super) {
     this.select();
     this.$el.html(postComposeTemplate({
       isURL: this.isURL,
-      isScheduling: this.isScheduling
+      isScheduling: this.isScheduling,
+      isPub: this.isPub,
+      isPub: this.isPub
     }));
     return this.$el;
   };
