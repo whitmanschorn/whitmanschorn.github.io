@@ -465,7 +465,6 @@ App.ComposeView = (function(_super) {
       console.error('need to complete post before submitting');
     }
     if (ts = 0) {
-      console.log('defaulting to now');
       ts = moment();
     }
     return publishHelloWorld(postArgs);
@@ -516,8 +515,6 @@ App.FeedCollectionView = (function(_super) {
 
   FeedCollectionView.prototype.renderPostLoadResponse = function(res) {
     res.post_id = res.id;
-    console.log('setting with res');
-    console.log(res);
     this.collection.unshift(new App.PostModel(res));
     return this.render();
   };

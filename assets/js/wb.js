@@ -35,7 +35,6 @@ window.publishHelloWorld = (function(_this) {
 window.loadPost = (function(_this) {
   return function(post_id) {
     return FB.api("/" + post_id, function(response) {
-      console.log(response);
       return _this.controls.feed.renderPostLoadResponse(response);
     });
   };

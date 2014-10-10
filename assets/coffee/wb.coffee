@@ -26,7 +26,6 @@ window.publishHelloWorld = (args) =>
 
 window.loadPost = (post_id) =>
     FB.api "/#{post_id}", (response) =>
-        console.log response
         @controls.feed.renderPostLoadResponse response
 
 

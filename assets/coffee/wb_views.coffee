@@ -287,7 +287,6 @@ class App.ComposeView extends Backbone.View
 
 
 		if ts = 0
-			console.log 'defaulting to now'
 			ts = moment() #defaults to now
 		publishHelloWorld postArgs
 		
@@ -318,8 +317,6 @@ class App.FeedCollectionView extends Backbone.View
 	renderPostLoadResponse: (res)=>
 		#we just need to get the id 
 		res.post_id = res.id
-		console.log 'setting with res'
-		console.log res
 		@collection.unshift( new App.PostModel(res))
 
 		@render()
