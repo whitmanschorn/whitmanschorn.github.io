@@ -1,12 +1,12 @@
 
 
 <nav>
-  <h1 class="name">W. Schorn</h1>
+  <h1 class="name">Whitman</h1>
   <a href="/">
     <img src="/ws.svg" id="logo" alt="Blog logo"/>
   </a>
     <hr/>
-  <h2> <a href="/blog/2013/09/08/frontendery.html">Frontendery</a> &c.</h2>
+  <h2> <a href="/blog/2013/09/08/frontendery.html">Schorn</a></h2>
   <hr/>
   <ul>
 
@@ -22,11 +22,10 @@
     $(function() {
     items = ["coffee", "book", "edit", "save", "camera-retro", "fire-extinguisher", "magic", "picture", "gamepad", "food", "beaker", "beer", "bar-chart"]
     
-    console.log( "ready!" );
     $('.random').click(function (e) {
       e.preventDefault();
       item = items[Math.floor(Math.random()*items.length)];
-      $(this).attr('class', "icon-"+item +" random");
+      $(this).attr('class', "icon-"+ item +" random");
       $(this).addClass();
     });
   });
