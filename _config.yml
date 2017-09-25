@@ -1,7 +1,7 @@
 # General Jekyll Config
 pygments: true
 auto: true
-url: http://wschorn.com
+url: http://whitmanschornfoo.com
 lsi: false
 markdown: kramdown
 exclude: [LICENSE, CNAME, README.md, .gitignore]
