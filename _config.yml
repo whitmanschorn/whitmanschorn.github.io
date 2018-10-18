@@ -9,7 +9,7 @@ exclude: [LICENSE, CNAME, README.md, .gitignore]
 # Site settings
 title: Whitman Schorn
 tag_text: Whitman Schorn
-description: Solo is a Jekyll theme that supports single-page websites only, but supports them well. Yes, it’s responsive.
+description: A developer working in web, mobile, and AR/VR experiences and applications.
 
 sass:
   style: compressed
