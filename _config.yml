@@ -11,8 +11,5 @@ title: Whitman Schorn
 tag_text: Whitman Schorn
 description: A developer working in web, mobile, and AR/VR experiences and applications.
 
-# Build settings
-markdown: kramdown
-exclude: ["README.md"]
 sass:
   style: compressed
