@@ -6,7 +6,7 @@ layout: default
 
 I am a developer based in NYC, I’ve worked for tech startups developing web applications for social media analytics, healthcare, and logistics. My goal with thise site is to share my excitement about ubiquitous technology.
 
-Check out my [resume](wschorn_resume.pdf).
+Here is my my [resume](wschorn_resume.pdf).
 
 ## Contact me
 
